@@ -18,7 +18,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
       title="Kloroplas"
       subtitle="Kenali struktur dalam kloroplas"
       currentScene={2}
-      totalScenes={7}
+      totalScenes={8}
       onBack={onBack}
       onNext={onNext}
     >
