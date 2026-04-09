@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, RotateCcw } from "lucide-react";
+import { Play, Pause, RotateCcw, CheckCircle, Lightbulb } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface SimulasiProps {
@@ -24,7 +24,59 @@ interface DataPoint {
   glucose: number;
 }
 
+type Phase = "predict" | "simulate";
+
+interface Prediction {
+  scenario: string;
+  question: string;
+  options: { label: string; value: string; emoji: string }[];
+  correctValue: string;
+  explanation: string;
+}
+
+const predictions: Prediction[] = [
+  {
+    scenario: "Cahaya tinggi (80%), CO₂ tinggi (80%), Air cukup (70%)",
+    question: "Apa yang akan terjadi pada laju fotosintesis?",
+    options: [
+      { label: "Sangat rendah", value: "very-low", emoji: "🥀" },
+      { label: "Sedang", value: "medium", emoji: "🌱" },
+      { label: "Tinggi / Optimal", value: "high", emoji: "🌳" },
+    ],
+    correctValue: "high",
+    explanation: "Dengan cahaya dan CO₂ tinggi serta air yang cukup, semua faktor terpenuhi sehingga fotosintesis berlangsung optimal! 🌳",
+  },
+  {
+    scenario: "Cahaya tinggi (90%), CO₂ sangat rendah (10%), Air cukup (70%)",
+    question: "Apa yang akan terjadi pada produksi O₂?",
+    options: [
+      { label: "Banyak O₂", value: "high", emoji: "🫧" },
+      { label: "Sedikit O₂", value: "low", emoji: "💨" },
+      { label: "Tidak ada O₂", value: "none", emoji: "❌" },
+    ],
+    correctValue: "low",
+    explanation: "Meskipun cahaya tinggi, CO₂ yang sangat rendah menjadi faktor pembatas. Fotosintesis tetap rendah karena CO₂ dibutuhkan untuk siklus Calvin.",
+  },
+  {
+    scenario: "Cahaya gelap (5%), CO₂ tinggi (80%), Air banyak (90%)",
+    question: "Apa yang akan terjadi pada tanaman?",
+    options: [
+      { label: "Fotosintesis optimal", value: "optimal", emoji: "🌳" },
+      { label: "Fotosintesis sangat rendah", value: "very-low", emoji: "🥀" },
+      { label: "Fotosintesis sedang", value: "medium", emoji: "🌿" },
+    ],
+    correctValue: "very-low",
+    explanation: "Tanpa cahaya, reaksi terang tidak bisa berlangsung, sehingga ATP dan NADPH tidak dihasilkan. Fotosintesis hampir berhenti meskipun CO₂ dan air tersedia! ☀️ adalah kunci.",
+  },
+];
+
 const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
+  const [phase, setPhase] = useState<Phase>("predict");
+  const [currentPrediction, setCurrentPrediction] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
+  const [showPredictionResult, setShowPredictionResult] = useState<Record<number, boolean>>({});
+  const [predictionsDone, setPredictionsDone] = useState(false);
+
   const [lightIntensity, setLightIntensity] = useState(50);
   const [co2Level, setCo2Level] = useState(50);
   const [waterLevel, setWaterLevel] = useState(70);
@@ -90,7 +142,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
   };
 
   const addObservation = () => {
-    const obs = `t=${elapsedTime}s | Cahaya: ${lightIntensity}% | CO₂: ${co2Level}% | Air: ${waterLevel}% → O₂: ${o2Produced} | Glukosa: ${glucoseProduced}`;
+    const obs = `t=${elapsedTime}s | ☀️${lightIntensity}% | 💨${co2Level}% | 💧${waterLevel}% → O₂: ${o2Produced}mL | Glukosa: ${glucoseProduced}mg`;
     setObservations(prev => [...prev, obs]);
   };
 
@@ -110,6 +162,174 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
 
   const plant = getPlantHealth();
 
+  const handleSelectPrediction = (predIdx: number, value: string) => {
+    if (showPredictionResult[predIdx]) return;
+    setSelectedAnswers(prev => ({ ...prev, [predIdx]: value }));
+  };
+
+  const handleCheckPrediction = (predIdx: number) => {
+    setShowPredictionResult(prev => ({ ...prev, [predIdx]: true }));
+  };
+
+  const handleNextPrediction = () => {
+    if (currentPrediction < predictions.length - 1) {
+      setCurrentPrediction(currentPrediction + 1);
+    } else {
+      setPredictionsDone(true);
+    }
+  };
+
+  const correctCount = predictions.filter((p, i) => selectedAnswers[i] === p.correctValue).length;
+
+  // ─── PREDICTION PHASE ───
+  if (phase === "predict") {
+    const pred = predictions[currentPrediction];
+    const selected = selectedAnswers[currentPrediction];
+    const revealed = showPredictionResult[currentPrediction];
+    const isCorrect = selected === pred.correctValue;
+
+    return (
+      <SceneLayout
+        title="Simulasi Fotosintesis"
+        subtitle="Prediksi dulu sebelum bereksperimen!"
+        currentScene={5}
+        totalScenes={8}
+        onBack={onBack}
+        onNext={predictionsDone ? () => setPhase("simulate") : undefined}
+        nextLabel="Mulai Simulasi →"
+      >
+        <div className="max-w-2xl mx-auto py-4 space-y-4">
+          {/* Phase indicator */}
+          <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">1</div>
+              <span className="text-sm font-semibold text-primary">Prediksi</span>
+            </div>
+            <div className="flex-1 h-0.5 bg-border" />
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-bold">2</div>
+              <span className="text-sm font-semibold text-muted-foreground">Simulasi</span>
+            </div>
+          </div>
+
+          {/* Intro */}
+          {!predictionsDone && (
+            <div className="bg-sunlight/5 rounded-xl p-4 border border-sunlight/20">
+              <div className="flex items-start gap-3">
+                <Lightbulb className="w-5 h-5 text-sunlight mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-sm text-foreground">Berpikir Dulu! 🧠</h4>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Sebelum menjalankan simulasi, coba prediksi apa yang akan terjadi. Ini membantu melatih kemampuan berpikir ilmiahmu!
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Progress */}
+          <div className="flex gap-1">
+            {predictions.map((_, i) => (
+              <div key={i} className={`flex-1 h-2 rounded-full transition-colors ${
+                i < currentPrediction ? "bg-primary" : i === currentPrediction && !predictionsDone ? "bg-primary/50" : "bg-muted"
+              }`} />
+            ))}
+          </div>
+
+          {!predictionsDone ? (
+            <AnimatePresence mode="wait">
+              <motion.div key={currentPrediction} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                <div className="bg-card rounded-xl p-5 border border-border space-y-4">
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Skenario {currentPrediction + 1}/{predictions.length}</p>
+                    <h3 className="font-bold text-foreground">{pred.scenario}</h3>
+                  </div>
+
+                  <div className="bg-muted/30 rounded-lg p-3 border border-border">
+                    <p className="text-sm font-semibold text-foreground">{pred.question}</p>
+                  </div>
+
+                  {/* Options */}
+                  <div className="grid gap-2">
+                    {pred.options.map(opt => {
+                      const isSelected = selected === opt.value;
+                      const isRight = revealed && opt.value === pred.correctValue;
+                      const isWrong = revealed && isSelected && !isCorrect;
+
+                      return (
+                        <motion.button
+                          key={opt.value}
+                          whileHover={!revealed ? { scale: 1.02 } : {}}
+                          whileTap={!revealed ? { scale: 0.98 } : {}}
+                          onClick={() => handleSelectPrediction(currentPrediction, opt.value)}
+                          className={`flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all ${
+                            isRight
+                              ? "border-primary bg-primary/10"
+                              : isWrong
+                              ? "border-destructive bg-destructive/10"
+                              : isSelected
+                              ? "border-primary/50 bg-primary/5"
+                              : "border-border bg-background hover:border-primary/30"
+                          }`}
+                        >
+                          <span className="text-2xl">{opt.emoji}</span>
+                          <span className="text-sm font-medium text-foreground flex-1">{opt.label}</span>
+                          {isRight && <CheckCircle className="w-5 h-5 text-primary" />}
+                          {isWrong && <span className="text-destructive text-sm">✗</span>}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Check / Result */}
+                  {!revealed ? (
+                    <Button
+                      onClick={() => handleCheckPrediction(currentPrediction)}
+                      disabled={!selected}
+                      className="w-full"
+                    >
+                      Cek Jawaban
+                    </Button>
+                  ) : (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
+                      <div className={`rounded-lg p-3 text-sm ${isCorrect ? "bg-primary/10 border border-primary/20" : "bg-destructive/5 border border-destructive/20"}`}>
+                        <p className="font-semibold mb-1">{isCorrect ? "✅ Benar!" : "❌ Belum tepat"}</p>
+                        <p className="text-foreground/80 text-xs">{pred.explanation}</p>
+                      </div>
+                      <Button onClick={handleNextPrediction} className="w-full">
+                        {currentPrediction < predictions.length - 1 ? "Skenario Berikutnya →" : "Lihat Hasil Prediksi"}
+                      </Button>
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          ) : (
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-card rounded-xl p-6 border border-border text-center space-y-4">
+              <h3 className="text-xl font-bold text-foreground">🧠 Hasil Prediksi</h3>
+              <p className="text-3xl font-bold text-primary">{correctCount} / {predictions.length}</p>
+              <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: `${(correctCount / predictions.length) * 100}%` }} transition={{ duration: 0.8 }} className="h-full bg-primary rounded-full" />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                {correctCount === predictions.length
+                  ? "Sempurna! Kamu sudah memahami konsep fotosintesis dengan baik! 🌟"
+                  : correctCount >= 2
+                  ? "Bagus! Sekarang coba buktikan prediksimu dengan simulasi. 🔬"
+                  : "Tidak apa-apa! Simulasi akan membantumu memahami lebih baik. 💪"}
+              </p>
+              <Button onClick={() => setPhase("simulate")} size="lg" className="gap-2">
+                <Play className="w-4 h-4" />
+                Mulai Simulasi
+              </Button>
+            </motion.div>
+          )}
+        </div>
+      </SceneLayout>
+    );
+  }
+
+  // ─── SIMULATION PHASE ───
   return (
     <SceneLayout
       title="Simulasi Fotosintesis"
@@ -121,6 +341,19 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
       nextLabel="Ke Rangkuman"
     >
       <div className="max-w-3xl mx-auto py-4 space-y-4">
+        {/* Phase indicator */}
+        <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center text-sm font-bold">✓</div>
+            <span className="text-sm font-semibold text-primary/60">Prediksi</span>
+          </div>
+          <div className="flex-1 h-0.5 bg-primary/30" />
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">2</div>
+            <span className="text-sm font-semibold text-primary">Simulasi</span>
+          </div>
+        </div>
+
         {/* Simulation viewport */}
         <div className={`relative rounded-2xl overflow-hidden border-2 border-border bg-gradient-to-b ${getLightColor()} h-64 md:h-72`}>
           <motion.div animate={{ opacity: lightIntensity / 100, scale: 0.6 + (lightIntensity / 100) * 0.6 }} className="absolute top-3 left-4">
@@ -198,7 +431,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">☀️ Intensitas Cahaya</label>
+              <label className="text-sm font-semibold text-foreground">☀️ Intensitas Cahaya</label>
               <span className="text-sm font-bold text-sunlight">{lightIntensity}%</span>
             </div>
             <Slider value={[lightIntensity]} onValueChange={([v]) => setLightIntensity(v)} min={0} max={100} step={5} className="cursor-pointer" />
@@ -209,7 +442,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">💨 Konsentrasi CO₂</label>
+              <label className="text-sm font-semibold text-foreground">💨 Konsentrasi CO₂</label>
               <span className="text-sm font-bold text-co2">{co2Level}%</span>
             </div>
             <Slider value={[co2Level]} onValueChange={([v]) => setCo2Level(v)} min={0} max={100} step={5} className="cursor-pointer" />
@@ -220,7 +453,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">💧 Ketersediaan Air</label>
+              <label className="text-sm font-semibold text-foreground">💧 Ketersediaan Air</label>
               <span className="text-sm font-bold text-water">{waterLevel}%</span>
             </div>
             <Slider value={[waterLevel]} onValueChange={([v]) => setWaterLevel(v)} min={0} max={100} step={5} className="cursor-pointer" />
@@ -230,7 +463,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
           </div>
         </div>
 
-        {/* Real-time data */}
+        {/* Real-time data cards */}
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-card rounded-xl p-3 border border-border text-center">
             <div className="text-2xl mb-1">⏱️</div>
