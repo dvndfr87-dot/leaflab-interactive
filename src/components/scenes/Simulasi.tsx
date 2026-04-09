@@ -4,6 +4,7 @@ import SceneLayout from "@/components/SceneLayout";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, RotateCcw } from "lucide-react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface SimulasiProps {
   onNext: () => void;
@@ -17,6 +18,12 @@ interface Bubble {
   size: number;
 }
 
+interface DataPoint {
+  time: number;
+  o2: number;
+  glucose: number;
+}
+
 const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
   const [lightIntensity, setLightIntensity] = useState(50);
   const [co2Level, setCo2Level] = useState(50);
@@ -27,20 +34,32 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
   const [glucoseProduced, setGlucoseProduced] = useState(0);
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
   const [observations, setObservations] = useState<string[]>([]);
+  const [chartData, setChartData] = useState<DataPoint[]>([{ time: 0, o2: 0, glucose: 0 }]);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const bubbleIdRef = useRef(0);
 
-  // Calculate photosynthesis rate based on limiting factor
   const rate = Math.min(lightIntensity, co2Level, waterLevel) / 100;
 
   useEffect(() => {
     if (isRunning) {
       intervalRef.current = setInterval(() => {
-        setElapsedTime(t => t + 1);
-        setO2Produced(prev => +(prev + rate * 0.8).toFixed(1));
-        setGlucoseProduced(prev => +(prev + rate * 0.3).toFixed(1));
+        setElapsedTime(t => {
+          const newT = t + 1;
+          setO2Produced(prev => {
+            const newO2 = +(prev + rate * 0.8).toFixed(1);
+            setGlucoseProduced(prevG => {
+              const newGlc = +(prevG + rate * 0.3).toFixed(1);
+              setChartData(cd => {
+                const next = [...cd, { time: newT, o2: newO2, glucose: newGlc }];
+                return next.length > 60 ? next.slice(-60) : next;
+              });
+              return newGlc;
+            });
+            return newO2;
+          });
+          return newT;
+        });
 
-        // Generate bubbles proportional to rate
         if (rate > 0.1) {
           const count = Math.ceil(rate * 3);
           const newBubbles: Bubble[] = Array.from({ length: count }, () => ({
@@ -67,6 +86,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
     setGlucoseProduced(0);
     setBubbles([]);
     setObservations([]);
+    setChartData([{ time: 0, o2: 0, glucose: 0 }]);
   };
 
   const addObservation = () => {
@@ -103,111 +123,58 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
       <div className="max-w-3xl mx-auto py-4 space-y-4">
         {/* Simulation viewport */}
         <div className={`relative rounded-2xl overflow-hidden border-2 border-border bg-gradient-to-b ${getLightColor()} h-64 md:h-72`}>
-          {/* Sun indicator */}
-          <motion.div
-            animate={{
-              opacity: lightIntensity / 100,
-              scale: 0.6 + (lightIntensity / 100) * 0.6,
-            }}
-            className="absolute top-3 left-4"
-          >
+          <motion.div animate={{ opacity: lightIntensity / 100, scale: 0.6 + (lightIntensity / 100) * 0.6 }} className="absolute top-3 left-4">
             <div className="text-4xl">☀️</div>
             {lightIntensity > 30 && (
               <div className="absolute inset-0 flex items-center justify-center">
                 {[0, 45, 90, 135, 180, 225, 270, 315].map(deg => (
-                  <motion.div
-                    key={deg}
-                    animate={{ opacity: [0.2, 0.6, 0.2] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: deg / 360 }}
-                    className="absolute w-0.5 h-8 bg-sunlight/40 origin-bottom"
-                    style={{ transform: `rotate(${deg}deg) translateY(-24px)` }}
-                  />
+                  <motion.div key={deg} animate={{ opacity: [0.2, 0.6, 0.2] }} transition={{ duration: 2, repeat: Infinity, delay: deg / 360 }} className="absolute w-0.5 h-8 bg-sunlight/40 origin-bottom" style={{ transform: `rotate(${deg}deg) translateY(-24px)` }} />
                 ))}
               </div>
             )}
           </motion.div>
 
-          {/* CO2 particles */}
           {co2Level > 10 && (
             <div className="absolute top-4 right-4 flex flex-col gap-1">
               {Array.from({ length: Math.ceil(co2Level / 25) }, (_, i) => (
-                <motion.div
-                  key={i}
-                  animate={{ x: [0, -8, 0], opacity: [0.4, 0.8, 0.4] }}
-                  transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
-                  className="px-1.5 py-0.5 bg-co2/20 text-co2 text-[10px] font-bold rounded border border-co2/30"
-                >
+                <motion.div key={i} animate={{ x: [0, -8, 0], opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }} className="px-1.5 py-0.5 bg-co2/20 text-co2 text-[10px] font-bold rounded border border-co2/30">
                   CO₂
                 </motion.div>
               ))}
             </div>
           )}
 
-          {/* Water level indicator */}
-          <motion.div
-            animate={{ height: `${waterLevel * 0.4}%` }}
-            className="absolute bottom-0 left-0 right-0 bg-water/15 border-t border-water/30"
-          >
-            <motion.div
-              animate={{ x: [0, 10, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="absolute top-0 left-0 right-0 h-1 bg-water/30"
-            />
+          <motion.div animate={{ height: `${waterLevel * 0.4}%` }} className="absolute bottom-0 left-0 right-0 bg-water/15 border-t border-water/30">
+            <motion.div animate={{ x: [0, 10, 0] }} transition={{ duration: 4, repeat: Infinity }} className="absolute top-0 left-0 right-0 h-1 bg-water/30" />
           </motion.div>
 
-          {/* Plant (Elodea) */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center">
-            <motion.div
-              animate={isRunning && rate > 0.2 ? { scaleY: [1, 1.03, 1], scaleX: [1, 0.98, 1] } : {}}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="text-5xl"
-            >
+            <motion.div animate={isRunning && rate > 0.2 ? { scaleY: [1, 1.03, 1], scaleX: [1, 0.98, 1] } : {}} transition={{ duration: 2, repeat: Infinity }} className="text-5xl">
               {plant.emoji}
             </motion.div>
-            <div className="mt-1 px-2 py-0.5 bg-card/80 rounded text-[10px] font-medium text-foreground">
-              Tanaman Air (Elodea)
-            </div>
+            <div className="mt-1 px-2 py-0.5 bg-card/80 rounded text-[10px] font-medium text-foreground">Tanaman Air (Elodea)</div>
           </div>
 
-          {/* O₂ bubbles */}
           <AnimatePresence>
             {bubbles.map(bubble => (
-              <motion.div
-                key={bubble.id}
-                initial={{ opacity: 0.7, y: 0, x: `${bubble.x}%` }}
-                animate={{ opacity: 0, y: -200 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 2.5, delay: bubble.delay, ease: "easeOut" }}
-                className="absolute bottom-16 rounded-full bg-oxygen/50 border border-oxygen/40"
-                style={{ width: bubble.size, height: bubble.size }}
-              />
+              <motion.div key={bubble.id} initial={{ opacity: 0.7, y: 0, x: `${bubble.x}%` }} animate={{ opacity: 0, y: -200 }} exit={{ opacity: 0 }} transition={{ duration: 2.5, delay: bubble.delay, ease: "easeOut" }} className="absolute bottom-16 rounded-full bg-oxygen/50 border border-oxygen/40" style={{ width: bubble.size, height: bubble.size }} />
             ))}
           </AnimatePresence>
 
-          {/* Glucose indicators */}
           {isRunning && rate > 0.3 && (
-            <motion.div
-              animate={{ opacity: [0.3, 0.7, 0.3] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-glucose/20 rounded-full text-[9px] text-glucose font-bold border border-glucose/30"
-            >
+            <motion.div animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 3, repeat: Infinity }} className="absolute bottom-12 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-glucose/20 rounded-full text-[9px] text-glucose font-bold border border-glucose/30">
               Glukosa terbentuk...
             </motion.div>
           )}
 
-          {/* Rate meter */}
           <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-card/90 rounded-lg px-3 py-1.5 border border-border flex items-center gap-2">
             <span className="text-[10px] text-muted-foreground">Laju:</span>
             <div className="w-20 h-2 bg-muted rounded-full overflow-hidden">
-              <motion.div
-                animate={{ width: `${rate * 100}%` }}
-                className="h-full bg-primary rounded-full"
-              />
+              <motion.div animate={{ width: `${rate * 100}%` }} className="h-full bg-primary rounded-full" />
             </div>
             <span className="text-xs font-bold text-primary">{Math.round(rate * 100)}%</span>
           </div>
 
-          {/* Status */}
           <div className="absolute bottom-3 right-3 bg-card/90 rounded-lg px-2 py-1 border border-border text-[10px] text-foreground">
             {plant.label}
           </div>
@@ -218,12 +185,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-foreground text-lg">🎛️ Kontrol Variabel</h3>
             <div className="flex gap-2">
-              <Button
-                size="sm"
-                variant={isRunning ? "destructive" : "default"}
-                onClick={() => setIsRunning(!isRunning)}
-                className="gap-1"
-              >
+              <Button size="sm" variant={isRunning ? "destructive" : "default"} onClick={() => setIsRunning(!isRunning)} className="gap-1">
                 {isRunning ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
                 {isRunning ? "Jeda" : "Mulai"}
               </Button>
@@ -234,75 +196,36 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
             </div>
           </div>
 
-          {/* Light intensity slider */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                ☀️ Intensitas Cahaya
-              </label>
+              <label className="text-sm font-semibold text-foreground flex items-center gap-2">☀️ Intensitas Cahaya</label>
               <span className="text-sm font-bold text-sunlight">{lightIntensity}%</span>
             </div>
-            <Slider
-              value={[lightIntensity]}
-              onValueChange={([v]) => setLightIntensity(v)}
-              min={0}
-              max={100}
-              step={5}
-              className="cursor-pointer"
-            />
+            <Slider value={[lightIntensity]} onValueChange={([v]) => setLightIntensity(v)} min={0} max={100} step={5} className="cursor-pointer" />
             <div className="flex justify-between text-[10px] text-muted-foreground">
-              <span>Gelap</span>
-              <span>Redup</span>
-              <span>Terang</span>
-              <span>Sangat Terang</span>
+              <span>Gelap</span><span>Redup</span><span>Terang</span><span>Sangat Terang</span>
             </div>
           </div>
 
-          {/* CO2 slider */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                💨 Konsentrasi CO₂
-              </label>
+              <label className="text-sm font-semibold text-foreground flex items-center gap-2">💨 Konsentrasi CO₂</label>
               <span className="text-sm font-bold text-co2">{co2Level}%</span>
             </div>
-            <Slider
-              value={[co2Level]}
-              onValueChange={([v]) => setCo2Level(v)}
-              min={0}
-              max={100}
-              step={5}
-              className="cursor-pointer"
-            />
+            <Slider value={[co2Level]} onValueChange={([v]) => setCo2Level(v)} min={0} max={100} step={5} className="cursor-pointer" />
             <div className="flex justify-between text-[10px] text-muted-foreground">
-              <span>0 ppm</span>
-              <span>200 ppm</span>
-              <span>400 ppm</span>
-              <span>800 ppm</span>
+              <span>0 ppm</span><span>200 ppm</span><span>400 ppm</span><span>800 ppm</span>
             </div>
           </div>
 
-          {/* Water slider */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label className="text-sm font-semibold text-foreground flex items-center gap-2">
-                💧 Ketersediaan Air
-              </label>
+              <label className="text-sm font-semibold text-foreground flex items-center gap-2">💧 Ketersediaan Air</label>
               <span className="text-sm font-bold text-water">{waterLevel}%</span>
             </div>
-            <Slider
-              value={[waterLevel]}
-              onValueChange={([v]) => setWaterLevel(v)}
-              min={0}
-              max={100}
-              step={5}
-              className="cursor-pointer"
-            />
+            <Slider value={[waterLevel]} onValueChange={([v]) => setWaterLevel(v)} min={0} max={100} step={5} className="cursor-pointer" />
             <div className="flex justify-between text-[10px] text-muted-foreground">
-              <span>Kering</span>
-              <span>Sedikit</span>
-              <span>Cukup</span>
-              <span>Banyak</span>
+              <span>Kering</span><span>Sedikit</span><span>Cukup</span><span>Banyak</span>
             </div>
           </div>
         </div>
@@ -326,20 +249,31 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
           </div>
         </div>
 
+        {/* Real-time Chart */}
+        <div className="bg-card rounded-xl p-4 border border-border">
+          <h4 className="font-semibold text-sm text-foreground mb-3">📊 Grafik Produksi Real-Time</h4>
+          <div className="h-48">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="time" tick={{ fontSize: 10 }} label={{ value: "Waktu (s)", position: "insideBottom", offset: -2, fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                <YAxis tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
+                <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid hsl(var(--border))", background: "hsl(var(--card))" }} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Line type="monotone" dataKey="o2" name="O₂ (mL)" stroke="hsl(195 60% 50%)" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="glucose" name="Glukosa (mg)" stroke="hsl(35 90% 55%)" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
         {/* Record observation */}
         <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={addObservation}
-            disabled={!isRunning && elapsedTime === 0}
-            className="flex-1"
-          >
+          <Button variant="outline" size="sm" onClick={addObservation} disabled={!isRunning && elapsedTime === 0} className="flex-1">
             📝 Catat Pengamatan
           </Button>
         </div>
 
-        {/* Observations log */}
         {observations.length > 0 && (
           <div className="bg-card rounded-xl p-4 border border-border">
             <h4 className="font-semibold text-sm text-foreground mb-2">📋 Catatan Pengamatan</h4>

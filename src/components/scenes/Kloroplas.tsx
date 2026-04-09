@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import chloroplastImg from "@/assets/chloroplast.jpg";
+import chloroplastClean from "@/assets/chloroplast-clean.png";
 import SceneLayout from "@/components/SceneLayout";
 
 interface KloroplasProps {
@@ -36,12 +36,12 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                 Ini adalah kloroplas utuh. Klik tombol di bawah untuk melihat bagian dalamnya.
               </p>
               <img
-                src={chloroplastImg}
+                src={chloroplastClean}
                 alt="Kloroplas"
-                className="rounded-xl shadow-lg max-w-full w-[400px]"
+                className="rounded-xl max-w-full w-[400px]"
                 loading="lazy"
-                width={400}
-                height={300}
+                width={800}
+                height={600}
               />
               <button
                 onClick={() => setShowInner(true)}
@@ -62,7 +62,6 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                 Kloroplas memiliki dua bagian utama. Klik pada masing-masing bagian untuk mempelajari lebih lanjut!
               </p>
 
-              {/* Interactive chloroplast inner */}
               <div className="relative bg-gradient-to-br from-primary/5 to-primary/15 rounded-2xl p-8 w-full max-w-md">
                 <div className="flex flex-col items-center gap-8">
                   {/* Tilakoid */}
@@ -89,7 +88,6 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                     </div>
                   </motion.button>
 
-                  {/* Arrow */}
                   <div className="text-muted-foreground">↕</div>
 
                   {/* Stroma */}
