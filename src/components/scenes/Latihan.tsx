@@ -134,8 +134,8 @@ const Latihan = ({ onBack }: { onBack: () => void }) => {
     <SceneLayout
       title="Latihan Interaktif"
       subtitle="Uji pemahamanmu tentang fotosintesis"
-      currentScene={6}
-      totalScenes={7}
+      currentScene={7}
+      totalScenes={8}
       onBack={onBack}
       showNav={true}
     >

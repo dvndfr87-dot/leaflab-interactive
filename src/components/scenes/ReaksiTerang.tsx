@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
+import { Slider } from "@/components/ui/slider";
 import thylakoidImg from "@/assets/thylakoid-reaction.jpg";
 
 interface ReaksiTerangProps {
@@ -49,13 +50,18 @@ const steps = [
 
 const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [lightLevel, setLightLevel] = useState(60);
+  const [showMiniSim, setShowMiniSim] = useState(false);
+
+  const bubbleCount = Math.floor((lightLevel / 100) * 6);
+  const atpRate = Math.round((lightLevel / 100) * 100);
 
   return (
     <SceneLayout
       title="Reaksi Terang"
       subtitle="Lokasi: Tilakoid — Membutuhkan cahaya"
       currentScene={3}
-      totalScenes={7}
+      totalScenes={8}
       onBack={onBack}
       onNext={currentStep === steps.length - 1 ? onNext : undefined}
       nextLabel={currentStep === steps.length - 1 ? "Ke Reaksi Gelap" : undefined}
@@ -127,32 +133,76 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
           </button>
         </div>
 
-        {/* Animation visualization */}
+        {/* INTERACTIVE: Animated visualization with light control */}
         <div className="bg-card rounded-xl p-4 border border-border">
-          <h4 className="font-semibold text-sm text-foreground mb-3">Visualisasi Proses</h4>
-          <div className="relative h-32 bg-gradient-to-r from-primary/5 to-sunlight/10 rounded-lg overflow-hidden">
-            {/* Sun rays */}
-            {currentStep >= 0 && (
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-semibold text-sm text-foreground">Visualisasi Interaktif</h4>
+            <button
+              onClick={() => setShowMiniSim(!showMiniSim)}
+              className="text-xs text-primary font-semibold hover:underline"
+            >
+              {showMiniSim ? "Tutup kontrol ☀️" : "Coba atur cahaya ☀️"}
+            </button>
+          </div>
+
+          {/* Mini light slider */}
+          <AnimatePresence>
+            {showMiniSim && (
               <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="absolute top-2 left-2"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden mb-3"
               >
-                <motion.div
-                  animate={{ rotate: [0, 10, 0], opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-2xl"
-                >☀️</motion.div>
-                {[1,2,3].map(i => (
-                  <motion.div
-                    key={i}
-                    animate={{ width: ["20px", "60px", "20px"], opacity: [0.2, 0.5, 0.2] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                    className="h-0.5 bg-sunlight rounded-full mt-1"
+                <div className="bg-sunlight/5 rounded-lg p-3 border border-sunlight/20 space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-foreground font-medium">☀️ Intensitas Cahaya</span>
+                    <span className="font-bold text-sunlight">{lightLevel}%</span>
+                  </div>
+                  <Slider
+                    value={[lightLevel]}
+                    onValueChange={([v]) => setLightLevel(v)}
+                    min={0}
+                    max={100}
+                    step={5}
+                    className="cursor-pointer"
                   />
-                ))}
+                  <p className="text-[10px] text-muted-foreground">
+                    Geser untuk melihat bagaimana intensitas cahaya memengaruhi produksi O₂ dan ATP!
+                  </p>
+                </div>
               </motion.div>
             )}
+          </AnimatePresence>
+
+          <div
+            className="relative h-44 rounded-lg overflow-hidden transition-colors duration-700"
+            style={{
+              background: `linear-gradient(135deg, 
+                hsl(42 95% 60% / ${lightLevel / 250}) 0%, 
+                hsl(142 45% 38% / 0.05) 50%, 
+                hsl(195 80% 65% / 0.05) 100%)`
+            }}
+          >
+            {/* Sun rays - intensity based */}
+            <motion.div
+              animate={{ opacity: lightLevel / 100, scale: 0.7 + (lightLevel / 200) }}
+              className="absolute top-2 left-2"
+            >
+              <motion.div
+                animate={{ rotate: [0, 10, 0], opacity: [0.6, 1, 0.6] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-2xl"
+              >☀️</motion.div>
+              {Array.from({ length: Math.ceil(lightLevel / 20) }, (_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ width: ["20px", `${40 + lightLevel / 3}px`, "20px"], opacity: [0.2, 0.5, 0.2] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                  className="h-0.5 bg-sunlight rounded-full mt-1"
+                />
+              ))}
+            </motion.div>
 
             {/* Water */}
             {currentStep >= 1 && (
@@ -165,55 +215,91 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
               </motion.div>
             )}
 
-            {/* Tilakoid */}
+            {/* Tilakoid membrane */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <div className="flex flex-col gap-1">
-                {[1,2,3].map(i => (
+                {[1, 2, 3].map(i => (
                   <motion.div
                     key={i}
-                    animate={currentStep >= 2 ? { backgroundColor: ["hsl(142,45%,38%)", "hsl(42,95%,60%)", "hsl(142,45%,38%)"] } : {}}
+                    animate={
+                      lightLevel > 20
+                        ? { backgroundColor: ["hsl(142,45%,38%)", `hsl(42,95%,${40 + lightLevel / 3}%)`, "hsl(142,45%,38%)"] }
+                        : {}
+                    }
                     transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
                     className="w-20 h-2.5 bg-primary/60 rounded-full"
                   />
                 ))}
               </div>
-              <p className="text-[10px] text-center text-muted-foreground mt-1">Tilakoid</p>
+              <p className="text-[10px] text-center text-muted-foreground mt-1">Tilakoid (Grana)</p>
             </div>
 
-            {/* O2 bubbles */}
-            {currentStep >= 3 && (
-              <div className="absolute top-4 right-20">
-                {[0,1,2].map(i => (
+            {/* Electron transport chain */}
+            {currentStep >= 4 && (
+              <div className="absolute top-1/2 left-[55%]">
+                {[0, 1, 2].map(i => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: [0.8, 0], y: [20, -30], scale: [1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.7 }}
-                    className="w-3 h-3 rounded-full bg-oxygen/60 border border-oxygen absolute"
-                    style={{ left: i * 12 }}
+                    animate={{ x: [0, 30, 60], opacity: [1, 0.7, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.4 }}
+                    className="absolute w-2 h-2 rounded-full bg-atp/70"
+                    style={{ top: i * 6 - 6 }}
                   />
                 ))}
-                <span className="text-xs text-oxygen font-medium ml-10">O₂</span>
+                <span className="text-[9px] text-atp font-medium ml-16">e⁻</span>
               </div>
             )}
 
-            {/* ATP & NADPH */}
+            {/* O₂ bubbles - count based on light */}
+            {currentStep >= 3 && (
+              <div className="absolute top-2 right-16">
+                {Array.from({ length: bubbleCount }, (_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ opacity: [0.8, 0], y: [20, -40], scale: [1, 0.4] }}
+                    transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.5 }}
+                    className="w-3 h-3 rounded-full bg-oxygen/60 border border-oxygen absolute"
+                    style={{ left: i * 10, top: i * 4 }}
+                  />
+                ))}
+                <span className="text-xs text-oxygen font-medium ml-16">O₂</span>
+              </div>
+            )}
+
+            {/* ATP & NADPH output */}
             {currentStep >= 5 && (
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="absolute bottom-3 right-4 flex gap-2"
+                className="absolute bottom-3 right-3 flex gap-2"
               >
                 <motion.span
                   animate={{ y: [0, -4, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                   className="px-2 py-1 bg-atp/20 text-atp text-xs font-bold rounded-md border border-atp/40"
-                >ATP</motion.span>
+                >
+                  ATP {showMiniSim && `(${atpRate}%)`}
+                </motion.span>
                 <motion.span
                   animate={{ y: [0, -4, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
                   className="px-2 py-1 bg-nadph/20 text-nadph text-xs font-bold rounded-md border border-nadph/40"
-                >NADPH</motion.span>
+                >
+                  NADPH
+                </motion.span>
+              </motion.div>
+            )}
+
+            {/* Low light warning */}
+            {showMiniSim && lightLevel < 15 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 flex items-center justify-center bg-background/60 rounded-lg"
+              >
+                <p className="text-sm text-foreground font-medium px-4 text-center">
+                  🌙 Cahaya terlalu redup — fotosintesis hampir berhenti
+                </p>
               </motion.div>
             )}
           </div>
