@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
+import { Slider } from "@/components/ui/slider";
 import calvinImg from "@/assets/calvin-cycle.jpg";
 
 interface ReaksiGelapProps {
@@ -43,16 +44,21 @@ const steps = [
 
 const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [co2Slider, setCo2Slider] = useState(50);
+  const [showMiniSim, setShowMiniSim] = useState(false);
+
+  const glucoseRate = Math.round((co2Slider / 100) * 100);
+  const cycleSpeed = 4 + (1 - co2Slider / 100) * 12; // faster at higher CO2
 
   return (
     <SceneLayout
       title="Reaksi Gelap (Siklus Calvin)"
       subtitle="Lokasi: Stroma — Tidak memerlukan cahaya langsung"
       currentScene={4}
-      totalScenes={7}
+      totalScenes={8}
       onBack={onBack}
       onNext={currentStep === steps.length - 1 ? onNext : undefined}
-      nextLabel={currentStep === steps.length - 1 ? "Ke Rangkuman" : undefined}
+      nextLabel={currentStep === steps.length - 1 ? "Ke Simulasi" : undefined}
     >
       <div className="max-w-2xl mx-auto py-4 space-y-4">
         {/* Reference image */}
@@ -121,40 +127,97 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
           </button>
         </div>
 
-        {/* Animation visualization - Calvin Cycle */}
+        {/* Interactive Calvin Cycle Visualization */}
         <div className="bg-card rounded-xl p-4 border border-border">
-          <h4 className="font-semibold text-sm text-foreground mb-3">Visualisasi Siklus Calvin</h4>
-          <div className="relative h-40 bg-gradient-to-br from-sunlight/5 to-primary/5 rounded-lg overflow-hidden flex items-center justify-center">
-            {/* Central cycle */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              className="w-24 h-24 rounded-full border-2 border-dashed border-primary/40"
-            />
-            <div className="absolute text-[10px] text-muted-foreground font-medium">Siklus Calvin</div>
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-semibold text-sm text-foreground">Visualisasi Siklus Calvin</h4>
+            <button
+              onClick={() => setShowMiniSim(!showMiniSim)}
+              className="text-xs text-primary font-semibold hover:underline"
+            >
+              {showMiniSim ? "Tutup kontrol 💨" : "Coba atur CO₂ 💨"}
+            </button>
+          </div>
 
-            {/* CO2 input */}
-            {currentStep >= 1 && (
+          {/* CO2 slider */}
+          <AnimatePresence>
+            {showMiniSim && (
               <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="absolute top-4 left-4 flex items-center gap-1"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden mb-3"
               >
-                <motion.span
-                  animate={{ x: [0, 10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-sm"
-                >💨</motion.span>
-                <span className="text-xs font-bold text-co2">CO₂</span>
+                <div className="bg-muted/30 rounded-lg p-3 border border-border space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-foreground font-medium">💨 Konsentrasi CO₂</span>
+                    <span className="font-bold text-co2">{co2Slider}%</span>
+                  </div>
+                  <Slider
+                    value={[co2Slider]}
+                    onValueChange={([v]) => setCo2Slider(v)}
+                    min={0}
+                    max={100}
+                    step={5}
+                    className="cursor-pointer"
+                  />
+                  <p className="text-[10px] text-muted-foreground">
+                    Geser untuk melihat bagaimana CO₂ memengaruhi kecepatan siklus dan produksi glukosa!
+                  </p>
+                </div>
               </motion.div>
             )}
+          </AnimatePresence>
 
-            {/* ATP input */}
+          <div className="relative h-48 bg-gradient-to-br from-sunlight/5 to-primary/5 rounded-lg overflow-hidden flex items-center justify-center">
+            {/* Central cycle - speed changes with CO2 */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: cycleSpeed, repeat: Infinity, ease: "linear" }}
+              className="w-28 h-28 rounded-full border-2 border-dashed border-primary/40 relative"
+            >
+              {/* Cycle markers */}
+              {["RuBP", "3-PGA", "G3P"].map((label, i) => (
+                <motion.div
+                  key={label}
+                  className="absolute w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-[8px] font-bold text-primary"
+                  style={{
+                    top: `${50 - 45 * Math.cos((i * 2 * Math.PI) / 3)}%`,
+                    left: `${50 + 45 * Math.sin((i * 2 * Math.PI) / 3)}%`,
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <motion.span animate={{ rotate: -360 }} transition={{ duration: cycleSpeed, repeat: Infinity, ease: "linear" }}>
+                    {label}
+                  </motion.span>
+                </motion.div>
+              ))}
+            </motion.div>
+            <div className="absolute text-[10px] text-muted-foreground font-medium">Siklus Calvin</div>
+
+            {/* CO2 input - count based on slider */}
+            {currentStep >= 1 && (
+              <div className="absolute top-3 left-3">
+                {Array.from({ length: Math.max(1, Math.ceil(co2Slider / 25)) }, (_, i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ x: [0, 15, 0], opacity: [0.4, 0.9, 0.4] }}
+                    transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.4 }}
+                    className="flex items-center gap-1 mb-1"
+                  >
+                    <span className="text-xs">💨</span>
+                    <span className="text-[10px] font-bold text-co2">CO₂</span>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+
+            {/* ATP/NADPH input */}
             {currentStep >= 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute bottom-3 left-4 flex gap-1"
+                className="absolute bottom-3 left-3 flex gap-1"
               >
                 <motion.span
                   animate={currentStep >= 3 ? { opacity: [1, 0.3, 1] } : {}}
@@ -169,13 +232,24 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
               </motion.div>
             )}
 
+            {/* RuBisCO enzyme indicator */}
+            {currentStep >= 2 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute top-3 right-3 px-2 py-1 bg-primary/10 rounded border border-primary/30"
+              >
+                <span className="text-[9px] font-bold text-primary">🧬 RuBisCO</span>
+              </motion.div>
+            )}
+
             {/* Glucose output */}
             {currentStep >= 4 && (
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", bounce: 0.5 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2"
+                className="absolute right-3 bottom-3"
               >
                 <motion.div
                   animate={{ y: [0, -4, 0] }}
@@ -183,8 +257,26 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                   className="flex items-center gap-1 px-2 py-1 bg-glucose/20 rounded-lg border border-glucose/40"
                 >
                   <span className="text-lg">🍬</span>
-                  <span className="text-xs font-bold text-glucose">Glukosa</span>
+                  <div>
+                    <span className="text-xs font-bold text-glucose">Glukosa</span>
+                    {showMiniSim && (
+                      <div className="text-[8px] text-glucose/70">{glucoseRate}%</div>
+                    )}
+                  </div>
                 </motion.div>
+              </motion.div>
+            )}
+
+            {/* Low CO2 warning */}
+            {showMiniSim && co2Slider < 10 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute inset-0 flex items-center justify-center bg-background/60 rounded-lg"
+              >
+                <p className="text-sm text-foreground font-medium px-4 text-center">
+                  ⚠️ CO₂ sangat rendah — siklus Calvin hampir berhenti
+                </p>
               </motion.div>
             )}
           </div>
