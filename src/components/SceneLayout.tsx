@@ -22,7 +22,6 @@ const sceneNames = [
   "Kloroplas",
   "Reaksi Terang",
   "Reaksi Gelap",
-  "Simulasi",
   "Rangkuman",
   "Latihan",
 ];

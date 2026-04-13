@@ -56,10 +56,10 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
       title="Reaksi Gelap (Siklus Calvin)"
       subtitle="Lokasi: Stroma — Tidak memerlukan cahaya langsung"
       currentScene={4}
-      totalScenes={8}
+      totalScenes={7}
       onBack={onBack}
       onNext={currentStep === steps.length - 1 ? onNext : undefined}
-      nextLabel={currentStep === steps.length - 1 ? "Ke Simulasi" : undefined}
+      nextLabel={currentStep === steps.length - 1 ? "Ke Rangkuman" : undefined}
     >
       <div className="max-w-2xl mx-auto py-4 space-y-4">
         {/* Reference image */}
