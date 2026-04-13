@@ -11,8 +11,8 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
     <SceneLayout
       title="Rangkuman"
       subtitle="Ringkasan proses fotosintesis"
-      currentScene={6}
-      totalScenes={8}
+      currentScene={5}
+      totalScenes={7}
       onBack={onBack}
       onNext={onNext}
       nextLabel="Ke Latihan"

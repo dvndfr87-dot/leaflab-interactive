@@ -77,7 +77,7 @@ const exercises: Exercise[] = [
   },
 ];
 
-const Latihan = ({ onBack }: { onBack: () => void }) => {
+const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => void }) => {
   const [currentEx, setCurrentEx] = useState(0);
   // Store placements per exercise
   const [allPlacements, setAllPlacements] = useState<Record<number, Record<string, string>>>({ 0: {}, 1: {}, 2: {} });
@@ -218,8 +218,8 @@ const Latihan = ({ onBack }: { onBack: () => void }) => {
     <SceneLayout
       title="Latihan Interaktif"
       subtitle="Uji pemahamanmu tentang fotosintesis"
-      currentScene={7}
-      totalScenes={8}
+      currentScene={6}
+      totalScenes={7}
       onBack={onBack}
       showNav={true}
     >
@@ -394,6 +394,14 @@ const Latihan = ({ onBack }: { onBack: () => void }) => {
                 <RotateCcw className="w-4 h-4" />
                 Ulangi Semua Latihan
               </Button>
+              {onGoHome && (
+                <Button
+                  onClick={onGoHome}
+                  className="gap-1 bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
+                >
+                  🏠 Kembali ke Halaman Awal
+                </Button>
+              )}
             </div>
           </motion.div>
         )}

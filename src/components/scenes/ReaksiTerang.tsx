@@ -62,7 +62,7 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
       title="Reaksi Terang"
       subtitle="Lokasi: Tilakoid — Membutuhkan cahaya"
       currentScene={3}
-      totalScenes={8}
+      totalScenes={7}
       onBack={onBack}
       onNext={currentStep === steps.length - 1 ? onNext : undefined}
       nextLabel={currentStep === steps.length - 1 ? "Ke Reaksi Gelap" : undefined}

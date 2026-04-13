@@ -64,11 +64,14 @@ const Pembuka = ({ onStart }: PembukaProps) => {
                 <DialogTitle>Cara Menggunakan Media</DialogTitle>
               </DialogHeader>
               <div className="space-y-3 text-sm text-foreground">
-                <p>1. Klik tombol <strong>"Mulai"</strong> untuk memulai simulasi.</p>
-                <p>2. Ikuti setiap tahapan pembelajaran secara berurutan.</p>
-                <p>3. Klik objek atau bagian yang ditunjuk untuk melihat penjelasan lebih lanjut.</p>
-                <p>4. Perhatikan animasi yang ditampilkan pada setiap proses.</p>
-                <p>5. Gunakan tombol <strong>"Selanjutnya"</strong> untuk melanjutkan dan <strong>"Kembali"</strong> untuk kembali.</p>
+                <p className="font-semibold">Cara Menggunakan Media:</p>
+                <ol className="list-decimal pl-5 space-y-1">
+                  <li>Klik tombol <strong>"Mulai"</strong> untuk memulai simulasi.</li>
+                  <li>Ikuti setiap tahapan pembelajaran secara berurutan.</li>
+                  <li>Klik objek atau bagian yang ditunjuk untuk melihat penjelasan lebih lanjut.</li>
+                  <li>Perhatikan animasi yang ditampilkan pada setiap proses.</li>
+                  <li>Gunakan tombol <strong>"Next"</strong> untuk melanjutkan dan <strong>"Back"</strong> untuk kembali ke tahap sebelumnya.</li>
+                </ol>
                 <hr className="border-border" />
                 <p className="font-semibold">Saat Mengamati Simulasi:</p>
                 <ul className="list-disc pl-5 space-y-1">
@@ -76,6 +79,16 @@ const Pembuka = ({ onStart }: PembukaProps) => {
                   <li>Amati proses yang terjadi pada setiap tahap fotosintesis.</li>
                   <li>Fokus pada perubahan yang ditunjukkan dalam animasi.</li>
                 </ul>
+                <hr className="border-border" />
+                <p className="font-semibold">Pengerjaan Latihan:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Bacalah setiap soal dengan teliti.</li>
+                  <li>Pilih atau seret jawaban sesuai instruksi.</li>
+                  <li>Periksa kembali jawaban sebelum melanjutkan.</li>
+                </ul>
+                <hr className="border-border" />
+                <p className="font-semibold">Tujuan Penggunaan:</p>
+                <p>Media ini bertujuan membantu siswa memahami hubungan antara reaksi terang dan reaksi gelap dalam proses fotosintesis.</p>
               </div>
             </DialogContent>
           </Dialog>

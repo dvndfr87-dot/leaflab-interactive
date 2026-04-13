@@ -102,7 +102,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
       title="Sel Tumbuhan"
       subtitle="Temukan lokasi fotosintesis di dalam sel tumbuhan"
       currentScene={1}
-      totalScenes={8}
+      totalScenes={7}
       onBack={onBack}
       showNav={true}
       onNext={discoveredIds.has("kloroplas1") || discoveredIds.has("kloroplas2") ? onNext : undefined}
