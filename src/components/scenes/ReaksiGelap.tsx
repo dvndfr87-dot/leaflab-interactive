@@ -123,6 +123,29 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
             {/* ── STROMA LABEL ── */}
             <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[9px] text-muted-foreground font-semibold tracking-wider bg-card/60 px-2 py-0.5 rounded-full">STROMA</div>
 
+            {/* ── ATP & NADPH TRANSITION FROM TILAKOID ── */}
+            {currentStep >= 0 && (
+              <div className="absolute top-[6%] left-[6%]">
+                <div className="text-[7px] text-muted-foreground mb-0.5 font-medium">dari Tilakoid →</div>
+                <motion.div
+                  animate={{ x: [0, 20, 40], opacity: [0.9, 0.6, 0.2] }}
+                  transition={{ duration: 2.5, repeat: Infinity, delay: 0 }}
+                  className="flex items-center gap-1 mb-1"
+                >
+                  <span className="text-[10px]">⚡</span>
+                  <span className="text-[8px] font-bold text-atp bg-atp/10 px-1 rounded">ATP</span>
+                </motion.div>
+                <motion.div
+                  animate={{ x: [0, 20, 40], opacity: [0.9, 0.6, 0.2] }}
+                  transition={{ duration: 2.5, repeat: Infinity, delay: 0.4 }}
+                  className="flex items-center gap-1"
+                >
+                  <span className="text-[10px]">🔋</span>
+                  <span className="text-[8px] font-bold text-nadph bg-nadph/10 px-1 rounded">NADPH</span>
+                </motion.div>
+              </div>
+            )}
+
             {/* ── CENTRAL CYCLE RING ── */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <motion.svg
