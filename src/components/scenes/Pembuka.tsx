@@ -3,6 +3,7 @@ import { Play, BookOpen, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-photosynthesis.jpg";
+import { sounds } from "@/lib/sounds";
 
 interface PembukaProps {
   onStart: () => void;
@@ -45,14 +46,14 @@ const Pembuka = ({ onStart }: PembukaProps) => {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button
             size="lg"
-            onClick={onStart}
+            onClick={() => { sounds.start(); onStart(); }}
             className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
           >
             <Play className="w-5 h-5" />
             Mulai
           </Button>
 
-          <Dialog>
+          <Dialog onOpenChange={(open) => open && sounds.popup()}>
             <DialogTrigger asChild>
               <Button size="lg" variant="outline" className="gap-2">
                 <BookOpen className="w-5 h-5" />
@@ -93,7 +94,7 @@ const Pembuka = ({ onStart }: PembukaProps) => {
             </DialogContent>
           </Dialog>
 
-          <Dialog>
+          <Dialog onOpenChange={(open) => open && sounds.popup()}>
             <DialogTrigger asChild>
               <Button size="lg" variant="outline" className="gap-2">
                 <Target className="w-5 h-5" />

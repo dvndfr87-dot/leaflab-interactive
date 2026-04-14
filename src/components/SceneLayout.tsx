@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { sounds } from "@/lib/sounds";
 
 interface SceneLayoutProps {
   children: ReactNode;
@@ -94,7 +95,7 @@ const SceneLayout = ({
             {onBack ? (
               <Button
                 variant="outline"
-                onClick={onBack}
+                onClick={() => { sounds.back(); onBack(); }}
                 className="gap-1"
               >
                 <ChevronLeft className="w-4 h-4" />
@@ -104,7 +105,7 @@ const SceneLayout = ({
               <div />
             )}
             {onNext && (
-              <Button onClick={onNext} className="gap-1 bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button onClick={() => { sounds.next(); onNext(); }} className="gap-1 bg-primary text-primary-foreground hover:bg-primary/90">
                 {nextLabel}
                 <ChevronRight className="w-4 h-4" />
               </Button>

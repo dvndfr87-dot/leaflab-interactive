@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, RotateCcw, GripVertical, Eye } from "lucide-react";
+import { sounds } from "@/lib/sounds";
 
 type ExerciseType = "drag-location" | "drag-io" | "drag-energy";
 
@@ -99,12 +100,14 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
   };
 
   const handleDragStart = (itemId: string) => {
+    sounds.pickup();
     setDraggedItem(itemId);
   };
 
   const handleDrop = useCallback((zoneId: string) => {
     const item = draggedItem || touchDragItem;
     if (item) {
+      sounds.drop();
       setPlacements(prev => ({ ...prev, [item]: zoneId }));
       setDraggedItem(null);
       setTouchDragItem(null);
@@ -113,6 +116,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
 
   const handleRemoveFromZone = (itemId: string) => {
     if (showFinalScore) return;
+    sounds.remove();
     setPlacements(prev => {
       const next = { ...prev };
       delete next[itemId];
@@ -134,6 +138,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
     if (zone) {
       const zoneId = zone.getAttribute("data-zone-id");
       if (zoneId) {
+        sounds.drop();
         setPlacements(prev => ({ ...prev, [touchDragItem]: zoneId }));
       }
     }
@@ -143,11 +148,13 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
 
   const handleNextExercise = () => {
     if (currentEx < exercises.length - 1) {
+      sounds.next();
       setCurrentEx(currentEx + 1);
     }
   };
 
   const handleReset = () => {
+    sounds.reset();
     setPlacements(() => ({}));
   };
 
@@ -232,7 +239,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
             return (
               <button
                 key={i}
-                onClick={() => !showFinalScore && setCurrentEx(i)}
+                onClick={() => { if (!showFinalScore) { sounds.tab(); setCurrentEx(i); } }}
                 className={`flex-1 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                   i === currentEx
                     ? "bg-primary text-primary-foreground shadow-md"
@@ -312,7 +319,23 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
                   ) : (
                     <Button
                       size="sm"
-                      onClick={() => setShowFinalScore(true)}
+                      onClick={() => {
+                        setShowFinalScore(true);
+                        // Play score-based sound after a brief delay for reveal
+                        sounds.reveal();
+                        const sc = exercises.map((ex, i) => {
+                          const p = allPlacements[i] || {};
+                          return ex.items.filter(item => p[item.id] === item.correctZone).length;
+                        });
+                        const total = sc.reduce((a, b) => a + b, 0);
+                        const totalI = exercises.reduce((a, e) => a + e.items.length, 0);
+                        const pct = total / totalI;
+                        setTimeout(() => {
+                          if (pct >= 0.8) sounds.success();
+                          else if (pct < 0.5) sounds.fail();
+                          else sounds.okay();
+                        }, 600);
+                      }}
                       disabled={!allExercisesFilled}
                       className="bg-primary text-primary-foreground gap-1"
                     >
@@ -384,6 +407,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
             <div className="text-center">
               <Button
                 onClick={() => {
+                  sounds.reset();
                   setShowFinalScore(false);
                   setCurrentEx(0);
                   setAllPlacements({ 0: {}, 1: {}, 2: {} });
@@ -396,7 +420,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
               </Button>
               {onGoHome && (
                 <Button
-                  onClick={onGoHome}
+                  onClick={() => { sounds.start(); onGoHome(); }}
                   className="gap-1 bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
                 >
                   🏠 Kembali ke Halaman Awal

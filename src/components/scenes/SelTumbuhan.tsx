@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import plantCellImg from "@/assets/plant-cell.jpg";
 import SceneLayout from "@/components/SceneLayout";
+import { sounds } from "@/lib/sounds";
 
 interface SelTumbuhanProps {
   onNext: () => void;
@@ -90,6 +91,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
   const [discoveredIds, setDiscoveredIds] = useState<Set<string>>(new Set());
 
   const handleClick = (org: Organelle) => {
+    sounds.click();
     setSelectedOrganelle(org.id);
     setDiscoveredIds(prev => new Set(prev).add(org.id));
   };

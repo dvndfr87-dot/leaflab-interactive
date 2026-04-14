@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import chloroplastClean from "@/assets/chloroplast-clean.png";
 import SceneLayout from "@/components/SceneLayout";
+import { sounds } from "@/lib/sounds";
 
 interface KloroplasProps {
   onNext: () => void;
@@ -44,7 +45,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                 height={600}
               />
               <button
-                onClick={() => setShowInner(true)}
+                onClick={() => { sounds.popup(); setShowInner(true); }}
                 className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               >
                 🔍 Lihat Bagian Dalam
@@ -66,7 +67,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                 <div className="flex flex-col items-center gap-8">
                   {/* Tilakoid */}
                   <motion.button
-                    onClick={() => setSelectedPart("tilakoid")}
+                    onClick={() => { sounds.click(); setSelectedPart("tilakoid"); }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`w-full p-4 rounded-xl border-2 transition-all ${
@@ -92,7 +93,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
 
                   {/* Stroma */}
                   <motion.button
-                    onClick={() => setSelectedPart("stroma")}
+                    onClick={() => { sounds.click(); setSelectedPart("stroma"); }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`w-full p-4 rounded-xl border-2 transition-all ${
@@ -132,7 +133,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                           <strong> reaksi terang</strong> terjadi — cahaya diserap oleh klorofil dan diubah menjadi energi kimia (ATP & NADPH).
                         </p>
                         <button
-                          onClick={() => onGoToScene(3)}
+                          onClick={() => { sounds.next(); onGoToScene(3); }}
                           className="text-primary font-semibold text-xs hover:underline"
                         >
                           ➜ Pelajari Reaksi Terang
@@ -146,7 +147,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                           <strong> reaksi gelap (Siklus Calvin)</strong> berlangsung — CO₂ diubah menjadi glukosa menggunakan ATP dan NADPH.
                         </p>
                         <button
-                          onClick={() => onGoToScene(4)}
+                          onClick={() => { sounds.next(); onGoToScene(4); }}
                           className="text-primary font-semibold text-xs hover:underline"
                         >
                           ➜ Pelajari Reaksi Gelap
@@ -158,7 +159,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
               </AnimatePresence>
 
               <button
-                onClick={() => setShowInner(false)}
+                onClick={() => { sounds.back(); setShowInner(false); }}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 ← Kembali ke tampilan luar
