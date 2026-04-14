@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
 import { Slider } from "@/components/ui/slider";
 import calvinImg from "@/assets/calvin-cycle.jpg";
+import { sounds } from "@/lib/sounds";
 
 interface ReaksiGelapProps {
   onNext: () => void;
@@ -70,7 +71,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
         {/* Step progress */}
         <div className="flex gap-1">
           {steps.map((_, i) => (
-            <button key={i} onClick={() => setCurrentStep(i)} className={`flex-1 h-2 rounded-full transition-colors cursor-pointer ${i <= currentStep ? "bg-primary" : "bg-muted"}`} />
+            <button key={i} onClick={() => { sounds.step(); setCurrentStep(i); }} className={`flex-1 h-2 rounded-full transition-colors cursor-pointer ${i <= currentStep ? "bg-primary" : "bg-muted"}`} />
           ))}
         </div>
 
@@ -89,16 +90,16 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
 
         {/* Step navigation */}
         <div className="flex justify-between">
-          <button onClick={() => setCurrentStep(Math.max(0, currentStep - 1))} disabled={currentStep === 0} className="px-4 py-2 text-sm rounded-lg bg-muted text-muted-foreground disabled:opacity-40 hover:bg-muted/80 transition-colors">← Sebelumnya</button>
+          <button onClick={() => { sounds.back(); setCurrentStep(Math.max(0, currentStep - 1)); }} disabled={currentStep === 0} className="px-4 py-2 text-sm rounded-lg bg-muted text-muted-foreground disabled:opacity-40 hover:bg-muted/80 transition-colors">← Sebelumnya</button>
           <span className="text-xs text-muted-foreground self-center">Tahap {currentStep + 1} / {steps.length}</span>
-          <button onClick={() => setCurrentStep(Math.min(steps.length - 1, currentStep + 1))} disabled={currentStep === steps.length - 1} className="px-4 py-2 text-sm rounded-lg bg-primary text-primary-foreground disabled:opacity-40 hover:bg-primary/90 transition-colors">Berikutnya →</button>
+          <button onClick={() => { sounds.step(); setCurrentStep(Math.min(steps.length - 1, currentStep + 1)); }} disabled={currentStep === steps.length - 1} className="px-4 py-2 text-sm rounded-lg bg-primary text-primary-foreground disabled:opacity-40 hover:bg-primary/90 transition-colors">Berikutnya →</button>
         </div>
 
         {/* ===== DETAILED CALVIN CYCLE VISUALIZATION ===== */}
         <div className="bg-card rounded-xl p-4 border border-border">
           <div className="flex items-center justify-between mb-3">
             <h4 className="font-semibold text-sm text-foreground">🔬 Visualisasi Siklus Calvin</h4>
-            <button onClick={() => setShowMiniSim(!showMiniSim)} className="text-xs text-primary font-semibold hover:underline">
+            <button onClick={() => { sounds.click(); setShowMiniSim(!showMiniSim); }} className="text-xs text-primary font-semibold hover:underline">
               {showMiniSim ? "Tutup kontrol 💨" : "Coba atur CO₂ 💨"}
             </button>
           </div>
