@@ -420,7 +420,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
               </Button>
               {onGoHome && (
                 <Button
-                  onClick={onGoHome}
+                  onClick={() => { sounds.start(); onGoHome(); }}
                   className="gap-1 bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
                 >
                   🏠 Kembali ke Halaman Awal
