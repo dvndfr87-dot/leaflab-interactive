@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { sounds } from "@/lib/sounds";
 
 interface SceneLayoutProps {
   children: ReactNode;
