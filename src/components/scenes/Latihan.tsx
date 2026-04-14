@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, RotateCcw, GripVertical, Eye } from "lucide-react";
+import { sounds } from "@/lib/sounds";
 
 type ExerciseType = "drag-location" | "drag-io" | "drag-energy";
 
@@ -99,12 +100,14 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
   };
 
   const handleDragStart = (itemId: string) => {
+    sounds.pickup();
     setDraggedItem(itemId);
   };
 
   const handleDrop = useCallback((zoneId: string) => {
     const item = draggedItem || touchDragItem;
     if (item) {
+      sounds.drop();
       setPlacements(prev => ({ ...prev, [item]: zoneId }));
       setDraggedItem(null);
       setTouchDragItem(null);
@@ -113,6 +116,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
 
   const handleRemoveFromZone = (itemId: string) => {
     if (showFinalScore) return;
+    sounds.remove();
     setPlacements(prev => {
       const next = { ...prev };
       delete next[itemId];
@@ -134,6 +138,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
     if (zone) {
       const zoneId = zone.getAttribute("data-zone-id");
       if (zoneId) {
+        sounds.drop();
         setPlacements(prev => ({ ...prev, [touchDragItem]: zoneId }));
       }
     }
@@ -143,11 +148,13 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
 
   const handleNextExercise = () => {
     if (currentEx < exercises.length - 1) {
+      sounds.next();
       setCurrentEx(currentEx + 1);
     }
   };
 
   const handleReset = () => {
+    sounds.reset();
     setPlacements(() => ({}));
   };
 
