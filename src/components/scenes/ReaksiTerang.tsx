@@ -104,23 +104,30 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
         {/* ===== DETAILED ANIMATION PANEL ===== */}
         <div className="bg-card rounded-xl p-4 border border-border">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="font-semibold text-sm text-foreground">🔬 Visualisasi Membran Tilakoid</h4>
-            <button onClick={() => { sounds.click(); setShowMiniSim(!showMiniSim); }} className="text-xs text-primary font-semibold hover:underline">
-              {showMiniSim ? "Tutup kontrol ☀️" : "Coba atur cahaya ☀️"}
+            <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+              <span className="lab-led" />
+              Visualisasi Membran Tilakoid
+            </h4>
+            <button onClick={() => { sounds.click(); setShowMiniSim(!showMiniSim); }} className="font-mono text-[10px] tracking-widest text-primary hover:underline">
+              {showMiniSim ? "▾ CLOSE PANEL" : "▸ CONTROL PANEL"}
             </button>
           </div>
 
-          {/* Light slider */}
+          {/* Light intensity instrument panel */}
           <AnimatePresence>
             {showMiniSim && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-3">
-                <div className="bg-sunlight/5 rounded-lg p-3 border border-sunlight/20 space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-foreground font-medium">☀️ Intensitas Cahaya</span>
-                    <span className="font-bold text-sunlight">{lightLevel}%</span>
+                <div className="lab-panel lab-corner p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="lab-label">CH-01 · Intensitas Cahaya (PAR)</div>
+                    <div className="lcd-readout">{lightLevel.toString().padStart(3, "0")}%</div>
                   </div>
                   <Slider value={[lightLevel]} onValueChange={([v]) => setLightLevel(v)} min={0} max={100} step={5} className="cursor-pointer" />
-                  <p className="text-[10px] text-muted-foreground">Geser untuk mengubah intensitas — perhatikan perubahan jumlah O₂, kecepatan elektron, dan produksi ATP!</p>
+                  <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground">
+                    <span>0</span>
+                    <span>μmol·m⁻²·s⁻¹ (relatif)</span>
+                    <span>100</span>
+                  </div>
                 </div>
               </motion.div>
             )}
