@@ -98,23 +98,30 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
         {/* ===== DETAILED CALVIN CYCLE VISUALIZATION ===== */}
         <div className="bg-card rounded-xl p-4 border border-border">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="font-semibold text-sm text-foreground">🔬 Visualisasi Siklus Calvin</h4>
-            <button onClick={() => { sounds.click(); setShowMiniSim(!showMiniSim); }} className="text-xs text-primary font-semibold hover:underline">
-              {showMiniSim ? "Tutup kontrol 💨" : "Coba atur CO₂ 💨"}
+            <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+              <span className="lab-led" />
+              Visualisasi Siklus Calvin
+            </h4>
+            <button onClick={() => { sounds.click(); setShowMiniSim(!showMiniSim); }} className="font-mono text-[10px] tracking-widest text-primary hover:underline">
+              {showMiniSim ? "▾ CLOSE PANEL" : "▸ CONTROL PANEL"}
             </button>
           </div>
 
-          {/* CO2 slider */}
+          {/* CO₂ instrument panel */}
           <AnimatePresence>
             {showMiniSim && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-3">
-                <div className="bg-muted/30 rounded-lg p-3 border border-border space-y-2">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-foreground font-medium">💨 Konsentrasi CO₂</span>
-                    <span className="font-bold text-co2">{co2Slider}%</span>
+                <div className="lab-panel lab-corner p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="lab-label">CH-02 · Konsentrasi CO₂ (ppm rel.)</div>
+                    <div className="lcd-readout">{co2Slider.toString().padStart(3, "0")}%</div>
                   </div>
                   <Slider value={[co2Slider]} onValueChange={([v]) => setCo2Slider(v)} min={0} max={100} step={5} className="cursor-pointer" />
-                  <p className="text-[10px] text-muted-foreground">Geser — perhatikan kecepatan siklus, jumlah CO₂ masuk, dan laju glukosa!</p>
+                  <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground">
+                    <span>0</span>
+                    <span>laju siklus · output glukosa</span>
+                    <span>100</span>
+                  </div>
                 </div>
               </motion.div>
             )}
