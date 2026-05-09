@@ -34,7 +34,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
               className="flex flex-col items-center gap-4"
             >
               <p className="text-center text-sm text-muted-foreground">
-                Ini adalah kloroplas utuh. Klik tombol di bawah untuk melihat bagian dalamnya.
+                Spesimen: kloroplas utuh dengan membran ganda. Lakukan diseksi optik untuk mengamati ultrastruktur internal.
               </p>
               <img
                 src={chloroplastClean}
@@ -46,9 +46,9 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
               />
               <button
                 onClick={() => { sounds.popup(); setShowInner(true); }}
-                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-mono text-sm uppercase tracking-wider hover:bg-primary/90 transition-colors"
               >
-                🔍 Lihat Bagian Dalam
+                Diseksi Ultrastruktur →
               </button>
             </motion.div>
           ) : (
@@ -60,7 +60,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
               className="flex flex-col items-center gap-4 w-full"
             >
               <p className="text-center text-sm text-muted-foreground">
-                Kloroplas memiliki dua bagian utama. Klik pada masing-masing bagian untuk mempelajari lebih lanjut!
+                Kloroplas terbagi menjadi dua kompartemen fungsional. Pilih komponen untuk meninjau peranannya dalam fotosintesis.
               </p>
 
               <div className="relative bg-gradient-to-br from-primary/5 to-primary/15 rounded-2xl p-8 w-full max-w-md">
@@ -127,30 +127,34 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                   >
                     {selectedPart === "tilakoid" ? (
                       <>
-                        <h3 className="font-semibold text-primary mb-2">☀️ Tilakoid</h3>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="specimen-chip">THY</span>
+                          <h3 className="font-semibold text-primary">Membran Tilakoid</h3>
+                        </div>
                         <p className="text-muted-foreground mb-3">
-                          Tilakoid adalah membran berbentuk cakram yang tersusun bertumpuk (grana). Di sinilah 
-                          <strong> reaksi terang</strong> terjadi — cahaya diserap oleh klorofil dan diubah menjadi energi kimia (ATP & NADPH).
+                          Sistem membran berbentuk cakram yang tersusun bertumpuk membentuk grana. Mengandung fotosistem I & II tempat berlangsungnya <strong>reaksi terang</strong>: penyerapan foton oleh klorofil, fotolisis H₂O, serta sintesis ATP dan NADPH.
                         </p>
                         <button
                           onClick={() => { sounds.next(); onGoToScene(3); }}
-                          className="text-primary font-semibold text-xs hover:underline"
+                          className="text-primary font-mono text-[11px] uppercase tracking-wider hover:underline"
                         >
-                          ➜ Pelajari Reaksi Terang
+                          → Tinjau Reaksi Terang
                         </button>
                       </>
                     ) : (
                       <>
-                        <h3 className="font-semibold text-foreground mb-2">🌙 Stroma</h3>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="specimen-chip">STR</span>
+                          <h3 className="font-semibold text-foreground">Stroma</h3>
+                        </div>
                         <p className="text-muted-foreground mb-3">
-                          Stroma adalah cairan yang mengisi ruang dalam kloroplas. Di sinilah 
-                          <strong> reaksi gelap (Siklus Calvin)</strong> berlangsung — CO₂ diubah menjadi glukosa menggunakan ATP dan NADPH.
+                          Matriks cair di dalam membran kloroplas yang mengandung enzim RuBisCO. Tempat berlangsungnya <strong>Siklus Calvin (reaksi gelap)</strong>: fiksasi CO₂ menjadi G3P, kemudian disintesis menjadi glukosa menggunakan ATP dan NADPH.
                         </p>
                         <button
                           onClick={() => { sounds.next(); onGoToScene(4); }}
-                          className="text-primary font-semibold text-xs hover:underline"
+                          className="text-primary font-mono text-[11px] uppercase tracking-wider hover:underline"
                         >
-                          ➜ Pelajari Reaksi Gelap
+                          → Tinjau Siklus Calvin
                         </button>
                       </>
                     )}
@@ -160,9 +164,9 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
 
               <button
                 onClick={() => { sounds.back(); setShowInner(false); }}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
               >
-                ← Kembali ke tampilan luar
+                ← Tampilan eksternal
               </button>
             </motion.div>
           )}

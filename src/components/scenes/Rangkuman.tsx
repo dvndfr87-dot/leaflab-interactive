@@ -21,14 +21,11 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-card rounded-xl p-5 border border-border"
+          className="lab-panel p-5"
         >
+          <div className="lab-label mb-2">Abstrak</div>
           <p className="text-sm text-foreground leading-relaxed">
-            Fotosintesis merupakan proses pembentukan makanan (glukosa) pada tumbuhan 
-            dengan bantuan cahaya matahari yang berlangsung di dalam <strong className="text-primary">kloroplas</strong>.
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Proses fotosintesis terdiri dari dua tahap utama:
+            Fotosintesis adalah proses anabolik yang berlangsung di dalam <strong className="text-primary">kloroplas</strong>, mengubah energi cahaya menjadi energi kimia yang tersimpan dalam molekul glukosa. Proses ini terdiri atas dua tahap yang saling berkesinambungan:
           </p>
         </motion.div>
 
@@ -37,21 +34,22 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-gradient-to-r from-sunlight/10 to-primary/5 rounded-xl p-5 border border-sunlight/30"
+          className="lab-panel p-5"
         >
-          <h3 className="font-bold text-foreground text-lg flex items-center gap-2">
-            ☀️ 1. Reaksi Terang
-          </h3>
-          <ul className="mt-3 space-y-1.5 text-sm text-foreground/80">
-            <li>📍 Terjadi di <strong>tilakoid</strong></li>
-            <li>☀️ Membutuhkan <strong>cahaya</strong></li>
-            <li>💧 Menggunakan <strong>air (H₂O)</strong></li>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="specimen-chip">PHASE-1</span>
+            <h3 className="font-bold text-foreground text-lg">Reaksi Terang</h3>
+          </div>
+          <ul className="space-y-1.5 text-sm text-foreground/80 font-mono">
+            <li><span className="lab-label">Lokasi:</span> Membran tilakoid</li>
+            <li><span className="lab-label">Input:</span> H₂O · foton (hν)</li>
+            <li><span className="lab-label">Proses:</span> Fotolisis air, transpor elektron, fotofosforilasi</li>
             <li className="pt-1">
-              <span className="font-semibold">Menghasilkan:</span>
+              <span className="lab-label">Output:</span>
               <div className="flex gap-2 mt-1 flex-wrap">
-                <span className="px-2 py-0.5 bg-oxygen/20 text-oxygen text-xs font-medium rounded-md">O₂</span>
-                <span className="px-2 py-0.5 bg-atp/20 text-atp text-xs font-medium rounded-md">ATP</span>
-                <span className="px-2 py-0.5 bg-nadph/20 text-nadph text-xs font-medium rounded-md">NADPH</span>
+                <span className="specimen-chip">O₂</span>
+                <span className="specimen-chip">ATP</span>
+                <span className="specimen-chip">NADPH</span>
               </div>
             </li>
           </ul>
@@ -62,9 +60,9 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
-          className="flex flex-col items-center gap-1 text-muted-foreground"
+          className="flex flex-col items-center gap-1 text-muted-foreground font-mono"
         >
-          <span className="text-xs">ATP & NADPH</span>
+          <span className="text-[10px] uppercase tracking-widest">Transfer ATP &amp; NADPH</span>
           <span className="text-lg">↓</span>
         </motion.div>
 
@@ -73,26 +71,20 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gradient-to-r from-primary/5 to-glucose/10 rounded-xl p-5 border border-primary/20"
+          className="lab-panel p-5"
         >
-          <h3 className="font-bold text-foreground text-lg flex items-center gap-2">
-            🌙 2. Reaksi Gelap (Siklus Calvin)
-          </h3>
-          <ul className="mt-3 space-y-1.5 text-sm text-foreground/80">
-            <li>📍 Terjadi di <strong>stroma</strong></li>
-            <li>🌙 Tidak membutuhkan cahaya secara langsung</li>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="specimen-chip">PHASE-2</span>
+            <h3 className="font-bold text-foreground text-lg">Reaksi Gelap — Siklus Calvin</h3>
+          </div>
+          <ul className="space-y-1.5 text-sm text-foreground/80 font-mono">
+            <li><span className="lab-label">Lokasi:</span> Stroma kloroplas</li>
+            <li><span className="lab-label">Input:</span> CO₂ · ATP · NADPH</li>
+            <li><span className="lab-label">Proses:</span> Fiksasi (RuBisCO) → Reduksi → Regenerasi RuBP</li>
             <li className="pt-1">
-              <span className="font-semibold">Menggunakan:</span>
-              <div className="flex gap-2 mt-1 flex-wrap">
-                <span className="px-2 py-0.5 bg-muted text-co2 text-xs font-medium rounded-md">CO₂</span>
-                <span className="px-2 py-0.5 bg-atp/20 text-atp text-xs font-medium rounded-md">ATP</span>
-                <span className="px-2 py-0.5 bg-nadph/20 text-nadph text-xs font-medium rounded-md">NADPH</span>
-              </div>
-            </li>
-            <li className="pt-1">
-              <span className="font-semibold">Menghasilkan:</span>
+              <span className="lab-label">Output:</span>
               <div className="flex gap-2 mt-1">
-                <span className="px-2 py-0.5 bg-glucose/20 text-glucose text-xs font-medium rounded-md">Glukosa</span>
+                <span className="specimen-chip">C₆H₁₂O₆</span>
               </div>
             </li>
           </ul>
@@ -105,10 +97,9 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
           transition={{ delay: 0.7 }}
           className="bg-primary/10 rounded-xl p-4 border border-primary/20 text-sm"
         >
-          <h4 className="font-bold text-primary mb-1">🔗 Hubungan Kedua Reaksi</h4>
+          <div className="lab-label text-primary mb-1">Keterhubungan Reaksi</div>
           <p className="text-foreground/80">
-            Reaksi terang menghasilkan energi dalam bentuk <strong>ATP</strong> dan <strong>NADPH</strong> yang 
-            digunakan pada reaksi gelap untuk membentuk glukosa. Kedua reaksi saling berhubungan dan tidak dapat dipisahkan.
+            Reaksi terang memasok <strong>ATP</strong> dan <strong>NADPH</strong> sebagai sumber energi dan daya reduksi yang dimanfaatkan Siklus Calvin untuk mereduksi CO₂ menjadi karbohidrat. Kedua reaksi bersifat saling bergantung (interdependen).
           </p>
         </motion.div>
 
@@ -117,11 +108,11 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
-          className="bg-card rounded-xl p-4 border border-border text-center"
+          className="lab-panel p-4 text-center"
         >
-          <p className="text-xs text-muted-foreground mb-1">Persamaan umum fotosintesis:</p>
-          <p className="font-heading font-bold text-foreground">
-            6CO₂ + 6H₂O <span className="text-sunlight mx-2">→ cahaya</span> C₆H₁₂O₆ + 6O₂
+          <div className="lab-label mb-1">Persamaan netto fotosintesis</div>
+          <p className="font-mono font-bold text-foreground">
+            6 CO₂ + 6 H₂O <span className="text-primary mx-1">—hν→</span> C₆H₁₂O₆ + 6 O₂
           </p>
         </motion.div>
       </div>
