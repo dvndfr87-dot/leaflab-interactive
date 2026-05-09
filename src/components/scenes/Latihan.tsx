@@ -225,34 +225,52 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
 
   return (
     <SceneLayout
-      title="Latihan Interaktif"
-      subtitle="Uji pemahamanmu tentang fotosintesis"
+      title="Stasiun Uji · Laboratorium Virtual"
+      subtitle="Asesmen pemahaman fotosintesis"
       currentScene={6}
       totalScenes={7}
       onBack={onBack}
       showNav={true}
     >
-      <div className="max-w-2xl mx-auto py-4 space-y-4">
-        {/* Exercise tabs */}
-        <div className="flex gap-2">
+      <div className="max-w-3xl mx-auto py-4 space-y-4">
+        {/* Lab bench header strip */}
+        <div className="lab-panel px-3 py-2 flex items-center justify-between text-[11px] font-mono">
+          <div className="flex items-center gap-2">
+            <span className="lab-led" />
+            <span className="text-muted-foreground">WORKSTATION</span>
+            <span className="text-foreground/80">PSY-LAB · 02</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 text-muted-foreground">
+            <span>MODE: <span className="text-primary">{showFinalScore ? "REVIEW" : "ASSESS"}</span></span>
+            <span>TASK <span className="text-foreground">{currentEx + 1}/{exercises.length}</span></span>
+          </div>
+        </div>
+
+        {/* Exercise tabs as instrument selector */}
+        <div className="grid grid-cols-3 gap-2">
           {exercises.map((ex, i) => {
             const p = allPlacements[i] || {};
             const filled = Object.keys(p).length >= ex.items.length;
+            const code = i === 0 ? "EX-01" : i === 1 ? "EX-02" : "EX-03";
             return (
               <button
                 key={i}
                 onClick={() => { if (!showFinalScore) { sounds.tab(); setCurrentEx(i); } }}
-                className={`flex-1 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                className={`relative px-3 py-2 rounded-md text-left transition-all border ${
                   i === currentEx
-                    ? "bg-primary text-primary-foreground shadow-md"
+                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
                     : filled
-                    ? "bg-primary/20 text-primary border border-primary/30"
-                    : "bg-muted text-muted-foreground border border-border"
+                    ? "bg-primary/10 text-foreground border-primary/30"
+                    : "bg-card text-muted-foreground border-border hover:border-foreground/30"
                 }`}
               >
-                <span className="text-base block mb-0.5">{i === 0 ? "📍" : i === 1 ? "🔬" : "⚡"}</span>
-                {i + 1}. {ex.type === "drag-location" ? "Lokasi" : ex.type === "drag-io" ? "Input/Output" : "Energi"}
-                {filled && !showFinalScore && " ✓"}
+                <div className="font-mono text-[10px] tracking-widest opacity-80">{code}</div>
+                <div className="text-xs font-semibold leading-tight mt-0.5">
+                  {ex.type === "drag-location" ? "Lokasi" : ex.type === "drag-io" ? "I/O" : "Energetika"}
+                </div>
+                {filled && !showFinalScore && (
+                  <span className="absolute top-1.5 right-1.5 lab-led" />
+                )}
               </button>
             );
           })}
@@ -261,23 +279,32 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
         {!showFinalScore ? (
           <AnimatePresence mode="wait">
             <motion.div key={currentEx} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <div className="bg-card rounded-xl p-5 border border-border space-y-4">
-                <div>
-                  <h3 className="font-bold text-foreground text-lg mb-1">{exercise.title}</h3>
-                  <p className="text-sm text-muted-foreground">{exercise.instruction}</p>
-                </div>
-
-                {/* Unplaced items */}
-                <div className="space-y-2">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                    {unplacedItems.length > 0 ? "Seret item ke zona yang benar:" : "Semua item sudah ditempatkan ✓"}
-                  </p>
-                  <div className="flex flex-wrap gap-2 min-h-[48px] p-3 bg-muted/30 rounded-xl border-2 border-dashed border-muted-foreground/20">
-                    {unplacedItems.map(item => renderItem(item, false))}
+              <div className="lab-panel lab-corner p-5 space-y-4 bg-card">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="lab-label mb-1">Prosedur</div>
+                    <h3 className="font-bold text-foreground text-base md:text-lg">{exercise.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground mt-1">{exercise.instruction}</p>
+                  </div>
+                  <div className="lcd-readout flex-shrink-0">
+                    {placedItems.length.toString().padStart(2, "0")}/{exercise.items.length.toString().padStart(2, "0")}
                   </div>
                 </div>
 
-                {/* Drop zones */}
+                {/* Specimen tray */}
+                <div className="space-y-1.5">
+                  <div className="lab-label flex items-center justify-between">
+                    <span>Specimen Tray</span>
+                    <span>{unplacedItems.length} item</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 min-h-[52px] p-3 bg-foreground/[0.03] rounded-md border border-dashed border-foreground/15">
+                    {unplacedItems.length > 0
+                      ? unplacedItems.map(item => renderItem(item, false))
+                      : <span className="text-xs text-muted-foreground italic self-center">Tray kosong — semua spesimen telah ditempatkan</span>}
+                  </div>
+                </div>
+
+                {/* Drop compartments */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {exercise.zones.map(zone => {
                     const itemsInZone = exercise.items.filter(item => placements[item.id] === zone.id);
@@ -287,19 +314,20 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
                         data-zone-id={zone.id}
                         onDragOver={e => e.preventDefault()}
                         onDrop={() => handleDrop(zone.id)}
-                        className={`rounded-xl p-4 border-2 border-dashed min-h-[140px] transition-all ${zone.color} ${
-                          draggedItem || touchDragItem ? "ring-2 ring-primary/30 border-primary/50" : ""
+                        className={`relative lab-corner rounded-md p-3 border-2 border-dashed min-h-[150px] transition-all ${zone.color} ${
+                          draggedItem || touchDragItem ? "ring-2 ring-primary/40 border-primary/60" : ""
                         }`}
                       >
-                        <h4 className="font-bold text-sm text-foreground mb-3 text-center flex items-center justify-center gap-2">
-                          <span className="text-xl">{zone.emoji}</span>
-                          {zone.label}
-                        </h4>
+                        <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-foreground/10">
+                          <span className="specimen-chip">{zone.emoji}</span>
+                          <h4 className="text-xs font-semibold text-foreground tracking-wide">{zone.label}</h4>
+                          <span className="font-mono text-[10px] text-muted-foreground">n={itemsInZone.length}</span>
+                        </div>
                         <div className="flex flex-col gap-1.5">
                           {itemsInZone.map(item => renderItem(item, true))}
                           {itemsInZone.length === 0 && (
-                            <div className="text-center text-xs text-muted-foreground py-4 border border-dashed border-muted-foreground/20 rounded-lg">
-                              Seret item ke sini
+                            <div className="text-center text-[11px] text-muted-foreground/70 py-5 font-mono">
+                              [ drop zone ]
                             </div>
                           )}
                         </div>
@@ -309,21 +337,20 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-between items-center pt-2">
-                  <Button variant="outline" size="sm" onClick={handleReset} className="gap-1">
+                <div className="flex justify-between items-center pt-2 border-t border-foreground/10">
+                  <Button variant="outline" size="sm" onClick={handleReset} className="gap-1 font-mono text-xs">
                     <RotateCcw className="w-3 h-3" />
-                    Reset
+                    RESET
                   </Button>
                   {currentEx < exercises.length - 1 ? (
-                    <Button size="sm" onClick={handleNextExercise} disabled={!currentExFilled} className="bg-primary text-primary-foreground">
-                      Latihan Berikutnya →
+                    <Button size="sm" onClick={handleNextExercise} disabled={!currentExFilled} className="bg-primary text-primary-foreground font-mono text-xs">
+                      NEXT TASK →
                     </Button>
                   ) : (
                     <Button
                       size="sm"
                       onClick={() => {
                         setShowFinalScore(true);
-                        // Play score-based sound after a brief delay for reveal
                         sounds.reveal();
                         const sc = exercises.map((ex, i) => {
                           const p = allPlacements[i] || {};
@@ -339,10 +366,10 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
                         }, 600);
                       }}
                       disabled={!allExercisesFilled}
-                      className="bg-primary text-primary-foreground gap-1"
+                      className="bg-primary text-primary-foreground gap-1 font-mono text-xs"
                     >
                       <Eye className="w-3.5 h-3.5" />
-                      Lihat Skor
+                      ANALYZE
                     </Button>
                   )}
                 </div>
