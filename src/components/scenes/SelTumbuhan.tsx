@@ -25,8 +25,8 @@ const organelles: Organelle[] = [
   {
     id: "kloroplas1",
     name: "Kloroplas",
-    emoji: "🟢",
-    desc: "Organel tempat fotosintesis berlangsung. Mengandung klorofil yang menyerap cahaya matahari.",
+    emoji: "CHL",
+    desc: "Organel plastida bermembran ganda yang mengandung klorofil. Tempat berlangsungnya fotosintesis — mengubah energi cahaya menjadi energi kimia (ATP, NADPH) dan akhirnya glukosa.",
     top: "18%",
     left: "35%",
     w: "w-14",
@@ -36,8 +36,8 @@ const organelles: Organelle[] = [
   {
     id: "kloroplas2",
     name: "Kloroplas",
-    emoji: "🟢",
-    desc: "Organel tempat fotosintesis berlangsung. Mengandung klorofil yang menyerap cahaya matahari.",
+    emoji: "CHL",
+    desc: "Organel plastida bermembran ganda yang mengandung klorofil. Tempat berlangsungnya fotosintesis — mengubah energi cahaya menjadi energi kimia (ATP, NADPH) dan akhirnya glukosa.",
     top: "30%",
     left: "18%",
     w: "w-12",
@@ -47,8 +47,8 @@ const organelles: Organelle[] = [
   {
     id: "nukleus",
     name: "Nukleus",
-    emoji: "🔵",
-    desc: "Inti sel yang menyimpan materi genetik (DNA). Mengontrol semua aktivitas sel.",
+    emoji: "NUC",
+    desc: "Inti sel yang menyimpan materi genetik (DNA) dan mengatur ekspresi gen serta seluruh aktivitas metabolik sel.",
     top: "45%",
     left: "50%",
     w: "w-12",
@@ -57,8 +57,8 @@ const organelles: Organelle[] = [
   {
     id: "vakuola",
     name: "Vakuola Sentral",
-    emoji: "🟣",
-    desc: "Organel besar berisi cairan sel. Menyimpan air, nutrisi, dan menjaga tekanan turgor sel.",
+    emoji: "VAC",
+    desc: "Organel besar berisi cairan sel (getah vakuola). Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder.",
     top: "55%",
     left: "30%",
     w: "w-20",
@@ -67,8 +67,8 @@ const organelles: Organelle[] = [
   {
     id: "dinding",
     name: "Dinding Sel",
-    emoji: "🟤",
-    desc: "Lapisan kaku di luar membran sel. Memberikan bentuk dan perlindungan pada sel tumbuhan.",
+    emoji: "CW",
+    desc: "Lapisan kaku tersusun dari selulosa di luar membran plasma. Memberi bentuk, dukungan mekanik, dan proteksi sel tumbuhan.",
     top: "5%",
     left: "50%",
     w: "w-10",
@@ -77,8 +77,8 @@ const organelles: Organelle[] = [
   {
     id: "mitokondria",
     name: "Mitokondria",
-    emoji: "🟠",
-    desc: "Organel penghasil energi melalui respirasi seluler. Mengubah glukosa menjadi ATP.",
+    emoji: "MIT",
+    desc: "Organel respirasi seluler. Mengoksidasi glukosa menjadi ATP melalui siklus Krebs dan rantai transpor elektron.",
     top: "70%",
     left: "60%",
     w: "w-10",
@@ -112,27 +112,27 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
     >
       <div className="max-w-2xl mx-auto flex flex-col items-center gap-4 py-4">
         <p className="text-center text-sm text-muted-foreground">
-          Klik pada setiap organel untuk mempelajari fungsinya. Temukan <strong className="text-primary">kloroplas</strong> untuk melanjutkan!
+          Identifikasi organel sel tumbuhan dengan mengklik area target pada preparat. Temukan organel <strong className="text-primary">kloroplas</strong> untuk melanjutkan analisis.
         </p>
 
         {/* Discovery progress */}
-        <div className="flex items-center gap-2 bg-card rounded-lg px-3 py-1.5 border border-border">
-          <span className="text-xs text-muted-foreground">Ditemukan:</span>
+        <div className="flex items-center gap-3 lab-panel px-3 py-1.5">
+          <span className="lab-label">Identified</span>
           <div className="flex gap-1">
             {organelles.map(org => (
               <div
                 key={org.id}
-                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] transition-all ${
+                className={`px-1.5 h-5 rounded flex items-center justify-center font-mono text-[9px] tracking-tight transition-all ${
                   discoveredIds.has(org.id)
-                    ? "bg-primary/20 border border-primary/40 scale-100"
-                    : "bg-muted border border-border scale-90 opacity-40"
+                    ? "bg-primary/20 border border-primary/40 text-primary"
+                    : "bg-muted border border-border text-muted-foreground/60"
                 }`}
               >
-                {discoveredIds.has(org.id) ? org.emoji : "?"}
+                {discoveredIds.has(org.id) ? org.emoji : "—"}
               </div>
             ))}
           </div>
-          <span className="text-xs font-bold text-primary">{discoveredCount}/{organelles.length}</span>
+          <span className="lcd-readout">{discoveredCount.toString().padStart(2,"0")}/{organelles.length.toString().padStart(2,"0")}</span>
         </div>
 
         <div className="relative">
@@ -194,13 +194,14 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                   : "bg-card border-border"
               }`}
             >
-              <h3 className="font-semibold text-foreground mb-1 flex items-center gap-2">
-                {selected.emoji} {selected.name}
-              </h3>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="specimen-chip">{selected.emoji}</span>
+                <h3 className="font-semibold text-foreground">{selected.name}</h3>
+              </div>
               <p className="text-muted-foreground">{selected.desc}</p>
               {selected.isTarget && (
-                <p className="mt-2 text-primary text-xs font-semibold">
-                  ✅ Ini adalah organel utama untuk fotosintesis! Klik "Lanjut" untuk melihat lebih detail.
+                <p className="mt-2 text-primary text-xs font-mono uppercase tracking-wider">
+                  → Target organel teridentifikasi. Lanjutkan ke analisis ultrastruktur kloroplas.
                 </p>
               )}
             </motion.div>
@@ -209,12 +210,11 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               key="hint"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="bg-card rounded-lg p-4 border border-border max-w-md text-sm"
+              className="lab-panel p-4 max-w-md text-sm"
             >
-              <h3 className="font-semibold text-foreground mb-2">📖 Tahukah kamu?</h3>
+              <div className="lab-label mb-2">Briefing</div>
               <p className="text-muted-foreground">
-                Sel tumbuhan memiliki organel khusus bernama <strong className="text-primary">kloroplas</strong> yang
-                berisi pigmen hijau (klorofil). Klik pada bagian-bagian sel di atas untuk menjelajah!
+                Sel tumbuhan memiliki organel plastida bernama <strong className="text-primary">kloroplas</strong> yang mengandung pigmen klorofil. Lakukan identifikasi struktur untuk melokalisasi tempat berlangsungnya fotosintesis.
               </p>
             </motion.div>
           )}

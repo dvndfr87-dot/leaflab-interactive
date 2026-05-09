@@ -24,23 +24,22 @@ const Pembuka = ({ onStart }: PembukaProps) => {
         transition={{ duration: 0.8 }}
         className="relative z-10 text-center px-6 max-w-lg"
       >
-        {/* Icon */}
-        <motion.div
-          animate={{ y: [0, -8, 0] }}
-          transition={{ duration: 3, repeat: Infinity }}
-          className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border-2 border-primary/30 mb-6"
-        >
-          <span className="text-4xl">🌿</span>
-        </motion.div>
+        {/* Module identifier */}
+        <div className="inline-flex flex-col items-center gap-2 mb-6">
+          <span className="lab-label">Biology · Kelas XII · KD 3.2</span>
+          <div className="font-mono text-[10px] tracking-widest text-primary/80 border border-primary/30 rounded px-2 py-0.5">
+            MODUL · VLAB-PHOTO-01
+          </div>
+        </div>
 
         <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-          Virtual Laboratorium
+          Virtual Laboratorium Fotosintesis
         </h1>
-        <h2 className="text-xl md:text-2xl font-semibold text-primary mb-4">
-          Fotosintesis
+        <h2 className="text-base md:text-lg font-medium text-primary mb-4 font-mono">
+          6 CO₂ + 6 H₂O ⟶ C₆H₁₂O₆ + 6 O₂
         </h2>
         <p className="text-muted-foreground mb-8 text-sm md:text-base">
-          Jelajahi dunia fotosintesis melalui simulasi interaktif. Pelajari bagaimana tumbuhan mengubah cahaya matahari menjadi energi!
+          Modul simulasi yang memvisualisasikan mekanisme fotosintesis pada tingkat seluler — meliputi reaksi terang di membran tilakoid dan reaksi gelap (Siklus Calvin) di stroma kloroplas.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
