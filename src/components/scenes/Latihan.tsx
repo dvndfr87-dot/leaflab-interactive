@@ -378,15 +378,27 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
           </AnimatePresence>
         ) : (
           /* ── FINAL SCORE VIEW ── */
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-4">
-            {/* Overall score */}
-            <div className="bg-gradient-to-br from-primary/10 to-glucose/10 rounded-xl p-6 border border-primary/20 text-center">
-              <h3 className="text-2xl font-bold text-primary mb-2">🎉 Hasil Latihan</h3>
-              <p className="text-foreground text-sm mb-1">Total Skor Keseluruhan:</p>
-              <p className="text-4xl font-bold text-primary my-2">
-                {totalScore} / {totalItems}
-              </p>
-              <div className="w-full bg-muted rounded-full h-3 mt-3 mb-2 overflow-hidden">
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} className="space-y-4">
+            {/* Overall score — diagnostic report */}
+            <div className="lab-panel lab-corner p-6 bg-card">
+              <div className="flex items-center justify-between mb-3">
+                <div className="lab-label">Diagnostic Report</div>
+                <div className="flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground">
+                  <span className="lab-led" /> ANALYSIS COMPLETE
+                </div>
+              </div>
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider">Skor Total</p>
+                  <p className="text-5xl font-bold text-primary font-mono mt-1 leading-none">
+                    {totalScore}<span className="text-2xl text-muted-foreground">/{totalItems}</span>
+                  </p>
+                </div>
+                <div className="lcd-readout text-base">
+                  {Math.round((totalScore / totalItems) * 100)}%
+                </div>
+              </div>
+              <div className="w-full bg-foreground/10 rounded-full h-2 mt-4 overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${(totalScore / totalItems) * 100}%` }}
@@ -394,33 +406,36 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
                   className="h-full bg-primary rounded-full"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground mt-3 font-mono">
                 {totalScore === totalItems
-                  ? "Sempurna! Kamu sudah menguasai materi fotosintesis! 🌟"
+                  ? "// Status: Mastery — pemahaman konsep telah tervalidasi."
                   : totalScore >= totalItems * 0.7
-                  ? "Bagus sekali! Terus tingkatkan pemahamanmu! 💪"
-                  : "Jangan menyerah! Coba ulangi lagi untuk memahami lebih baik. 📖"}
+                  ? "// Status: Proficient — pemahaman baik, masih ada ruang penajaman."
+                  : "// Status: Review required — tinjau kembali materi reaksi terang & gelap."}
               </p>
             </div>
 
-            {/* Per-exercise breakdown with correct/wrong */}
+            {/* Per-exercise breakdown */}
             {exercises.map((ex, i) => {
               const p = allPlacements[i] || {};
               const exScore = scores[i];
               return (
-                <div key={i} className="bg-card rounded-xl p-4 border border-border">
+                <div key={i} className="lab-panel p-4 bg-card">
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="font-bold text-sm text-foreground">{ex.title}</h4>
-                    <span className={`text-sm font-bold ${exScore === ex.items.length ? "text-primary" : "text-destructive"}`}>
-                      {exScore} / {ex.items.length}
+                    <span className={`font-mono text-sm font-bold ${exScore === ex.items.length ? "text-primary" : "text-destructive"}`}>
+                      {exScore}/{ex.items.length}
                     </span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {ex.zones.map(zone => {
                       const itemsInZone = ex.items.filter(item => p[item.id] === zone.id);
                       return (
-                        <div key={zone.id} className={`rounded-lg p-3 border ${zone.color}`}>
-                          <h5 className="text-xs font-semibold text-foreground mb-2 text-center">{zone.emoji} {zone.label}</h5>
+                        <div key={zone.id} className={`rounded-md p-3 border ${zone.color}`}>
+                          <h5 className="text-[11px] font-semibold text-foreground mb-2 flex items-center justify-between">
+                            <span className="specimen-chip">{zone.emoji}</span>
+                            <span>{zone.label}</span>
+                          </h5>
                           <div className="flex flex-col gap-1">
                             {itemsInZone.map(item => renderItem(item, true, item.correctZone === zone.id))}
                           </div>
@@ -432,8 +447,8 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
               );
             })}
 
-            {/* Retry button */}
-            <div className="text-center">
+            {/* Retry / Home */}
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
               <Button
                 onClick={() => {
                   sounds.reset();
@@ -442,17 +457,17 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
                   setAllPlacements({ 0: {}, 1: {}, 2: {} });
                 }}
                 variant="outline"
-                className="gap-1"
+                className="gap-1 font-mono text-xs"
               >
                 <RotateCcw className="w-4 h-4" />
-                Ulangi Semua Latihan
+                RUN AGAIN
               </Button>
               {onGoHome && (
                 <Button
                   onClick={() => { sounds.start(); onGoHome(); }}
-                  className="gap-1 bg-primary text-primary-foreground hover:bg-primary/90 mt-2"
+                  className="gap-1 bg-primary text-primary-foreground hover:bg-primary/90 font-mono text-xs"
                 >
-                  🏠 Kembali ke Halaman Awal
+                  ← MAIN MENU
                 </Button>
               )}
             </div>
