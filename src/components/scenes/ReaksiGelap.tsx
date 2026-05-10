@@ -45,10 +45,12 @@ const steps = [
 
 const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [co2Slider, setCo2Slider] = useState(50);
+  const [co2Slider, setCo2Slider] = useState(60);
+  const [o2Atm, setO2Atm] = useState(40);
+  const [energy, setEnergy] = useState(70);
   const [showMiniSim, setShowMiniSim] = useState(false);
 
-  const glucoseRate = Math.round((co2Slider / 100) * 100);
+  const glucoseRate = Math.round((co2Slider / 100) * (energy / 100) * 100);
   const cycleSpeed = Math.max(3, 14 - (co2Slider / 100) * 10);
   const co2MoleculeCount = Math.max(1, Math.ceil(co2Slider / 20));
 
