@@ -1,54 +1,58 @@
 import { useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 import LiveSparkline from "./LiveSparkline";
 import BatteryGauge from "./BatteryGauge";
 import StatusBadge from "./StatusBadge";
+import ProtonRelay from "./ProtonRelay";
+import ExperimentLog from "./ExperimentLog";
+import { useExperimentLog } from "./useExperimentLog";
 
 interface Props {
-  light: number;        // 0..20
+  light: number;
   setLight: (v: number) => void;
-  water: number;        // 0..100
+  water: number;
   setWater: (v: number) => void;
 }
 
-/**
- * Stasiun Uji Reaksi Terang.
- * Logika simulasi:
- *  - light = 0   → reaksi terang berhenti, H+ ≈ 1
- *  - 1..6        → produksi H+ rendah, reaksi lambat
- *  - 7..14       → reaksi sedang–cepat, PSI mulai aktif
- *  - >14 + H₂O↑  → PSI cepat, O₂ meningkat tajam
- */
+const SliderTip = ({ children }: { children: React.ReactNode }) => (
+  <Tooltip delayDuration={150}>
+    <TooltipTrigger asChild>
+      <Info className="w-3 h-3 text-muted-foreground/70 cursor-help" />
+    </TooltipTrigger>
+    <TooltipContent side="top" className="max-w-[260px] text-xs">{children}</TooltipContent>
+  </Tooltip>
+);
+
 const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
   const m = useMemo(() => {
     const L = Math.max(0, Math.min(20, light));
     const W = Math.max(0, Math.min(100, water)) / 100;
-
-    // Akumulasi proton H+ (skala 1–100, 1 saat gelap).
     const protons = L === 0 ? 1 : Math.min(100, 1 + (L / 20) * 70 + W * 25);
-
-    // Laju reaksi terang (0..100).
     const lightSpeed = L === 0 ? 0 : Math.min(100, (L / 20) * 75 + W * 20);
-
-    // Produksi O₂ — perlu cahaya & air.
     const o2 = L === 0 || W === 0 ? 0 : Math.min(100, (L / 20) * 60 + W * 45);
-
-    // ATP via gradien proton (kemiosmosis).
     const atp = Math.min(100, (protons / 100) * 90 + (L / 20) * 10);
-
-    // NADPH dari fotosistem I — butuh cahaya tinggi.
     const nadph = L < 4 ? L * 6 : Math.min(100, (L / 20) * 70 + W * 25);
-
     return { protons, lightSpeed, o2, atp, nadph };
   }, [light, water]);
 
+  const log = useExperimentLog({
+    params: { Cahaya: light, "H₂O": water },
+    results: { "H⁺": +m.protons.toFixed(1), Kec: +m.lightSpeed.toFixed(1), "O₂": +m.o2.toFixed(1), ATP: +m.atp.toFixed(1), NADPH: +m.nadph.toFixed(1) },
+  });
+
   return (
     <div className="space-y-3">
-      {/* Control sliders */}
       <div className="grid md:grid-cols-2 gap-2">
         <div className="lab-panel lab-corner p-3 space-y-2">
           <div className="flex items-center justify-between">
-            <div className="lab-label" title="Photosynthetically Active Radiation, fase pembelajaran">CH-01 · Intensitas Cahaya</div>
+            <div className="flex items-center gap-1">
+              <div className="lab-label">CH-01 · Intensitas Cahaya</div>
+              <SliderTip>
+                Skala 0–20 (fase pembelajaran). 0 = gelap, reaksi terang berhenti. 1–6 produksi H⁺ rendah, 7–14 reaksi mulai cepat, &gt;14 + H₂O tinggi → PSI cepat & O₂ melonjak.
+              </SliderTip>
+            </div>
             <div className="lcd-readout">{light.toString().padStart(2, "0")}/20</div>
           </div>
           <Slider value={[light]} onValueChange={([v]) => setLight(v)} min={0} max={20} step={1} />
@@ -59,7 +63,12 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
 
         <div className="lab-panel lab-corner p-3 space-y-2">
           <div className="flex items-center justify-between">
-            <div className="lab-label" title="Substrat fotolisis di lumen tilakoid">CH-02 · Konsentrasi H₂O</div>
+            <div className="flex items-center gap-1">
+              <div className="lab-label">CH-02 · Konsentrasi H₂O</div>
+              <SliderTip>
+                Substrat fotolisis di lumen tilakoid. Saat cahaya tinggi, H₂O melimpah → PSI bekerja lebih cepat → produksi O₂ meningkat tajam.
+              </SliderTip>
+            </div>
             <div className="lcd-readout">{water.toString().padStart(3, "0")}%</div>
           </div>
           <Slider value={[water]} onValueChange={([v]) => setWater(v)} min={0} max={100} step={5} />
@@ -69,7 +78,9 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
         </div>
       </div>
 
-      {/* Status + readouts */}
+      {/* Cahaya → H⁺ → Kecepatan relay */}
+      <ProtonRelay light={light} protons={m.protons} speed={m.lightSpeed} />
+
       <div className="grid md:grid-cols-2 gap-2">
         <StatusBadge speed={m.lightSpeed} label="Laju Reaksi Terang" />
         <div className="lab-panel lab-corner p-2">
@@ -86,25 +97,28 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
         </div>
       </div>
 
-      {/* Battery indicators */}
       <div className="grid grid-cols-3 gap-2">
-        <BatteryGauge label="ATP" sublabel="dari ATP-sintase" value={m.atp} colorVar="--atp" tooltip="Dihasilkan via kemiosmosis (gradien H⁺)." />
-        <BatteryGauge label="NADPH" sublabel="dari Fotosistem I" value={m.nadph} colorVar="--nadph" tooltip="Reduksi NADP⁺ oleh elektron PSI." />
-        <BatteryGauge label="O₂" sublabel="hasil fotolisis" value={m.o2} colorVar="--oxygen" tooltip="Produk samping pemecahan H₂O." />
+        <BatteryGauge label="ATP" sublabel="dari ATP-sintase" value={m.atp} colorVar="--atp"
+          tooltip="ATP terbentuk via kemiosmosis: H⁺ mengalir balik melalui ATP-sintase. Energi ini dipakai siklus Calvin untuk reduksi 3-PGA → G3P." />
+        <BatteryGauge label="NADPH" sublabel="dari Fotosistem I" value={m.nadph} colorVar="--nadph"
+          tooltip="NADP⁺ menerima elektron dari PSI menjadi NADPH. Bersama ATP, NADPH menyumbang elektron berenergi tinggi untuk fiksasi karbon." />
+        <BatteryGauge label="O₂" sublabel="hasil fotolisis" value={m.o2} colorVar="--oxygen"
+          tooltip="Pemecahan H₂O di PSII menghasilkan O₂ sebagai produk samping. Tanpa cahaya atau air, produksi O₂ = 0." />
       </div>
 
-      {/* Live graph */}
       <LiveSparkline
         series={[
-          { label: "Cahaya",  color: "hsl(var(--sunlight))", value: (light / 20) * 100 },
-          { label: "H⁺",      color: "hsl(var(--accent))",   value: m.protons },
-          { label: "O₂",      color: "hsl(var(--oxygen))",   value: m.o2 },
-          { label: "ATP",     color: "hsl(var(--atp))",      value: m.atp },
+          { label: "Cahaya", color: "hsl(var(--sunlight))", value: (light / 20) * 100 },
+          { label: "H⁺", color: "hsl(var(--accent))", value: m.protons },
+          { label: "O₂", color: "hsl(var(--oxygen))", value: m.o2 },
+          { label: "ATP", color: "hsl(var(--atp))", value: m.atp },
         ]}
       />
 
+      <ExperimentLog entries={log.entries} onClear={log.clear} onDownload={log.downloadCSV} title="Log Eksperimen · Reaksi Terang" />
+
       <p className="text-[11px] text-muted-foreground italic px-1">
-        💡 Coba turunkan cahaya ke 0 — perhatikan H⁺ dan O₂ runtuh. Naikkan H₂O saat cahaya tinggi untuk mempercepat PSI dan O₂.
+        💡 Coba turunkan cahaya ke 0 — H⁺ dan O₂ runtuh, status berubah ke <b>Stopped</b>. Naikkan H₂O saat cahaya tinggi untuk mempercepat PSI.
       </p>
     </div>
   );
