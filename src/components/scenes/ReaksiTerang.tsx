@@ -51,11 +51,14 @@ const steps = [
 
 const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [lightLevel, setLightLevel] = useState(60);
+  const [light, setLight] = useState(12);   // 0..20
+  const [water, setWater] = useState(60);   // 0..100
   const [showMiniSim, setShowMiniSim] = useState(false);
 
+  // Visual derivations (kept for the existing animation).
+  const lightLevel = (light / 20) * 100;
   const bubbleCount = Math.max(1, Math.floor((lightLevel / 100) * 8));
-  const atpRate = Math.round((lightLevel / 100) * 100);
+  const atpRate = Math.round(Math.min(100, lightLevel * 0.9 + water * 0.2));
   const rayCount = Math.max(1, Math.ceil(lightLevel / 15));
 
   return (
@@ -117,18 +120,7 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
           <AnimatePresence>
             {showMiniSim && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-3">
-                <div className="lab-panel lab-corner p-3 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="lab-label">CH-01 · Intensitas Cahaya (PAR)</div>
-                    <div className="lcd-readout">{lightLevel.toString().padStart(3, "0")}%</div>
-                  </div>
-                  <Slider value={[lightLevel]} onValueChange={([v]) => setLightLevel(v)} min={0} max={100} step={5} className="cursor-pointer" />
-                  <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground">
-                    <span>0</span>
-                    <span>μmol·m⁻²·s⁻¹ (relatif)</span>
-                    <span>100</span>
-                  </div>
-                </div>
+                <LightReactionLab light={light} setLight={setLight} water={water} setWater={setWater} />
               </motion.div>
             )}
           </AnimatePresence>
