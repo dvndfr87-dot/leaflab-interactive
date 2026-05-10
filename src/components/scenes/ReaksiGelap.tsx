@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
-import { Slider } from "@/components/ui/slider";
+import DarkReactionLab from "@/components/lab/DarkReactionLab";
 import calvinImg from "@/assets/calvin-cycle.jpg";
 import { sounds } from "@/lib/sounds";
 
@@ -45,10 +45,12 @@ const steps = [
 
 const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [co2Slider, setCo2Slider] = useState(50);
+  const [co2Slider, setCo2Slider] = useState(60);
+  const [o2Atm, setO2Atm] = useState(40);
+  const [energy, setEnergy] = useState(70);
   const [showMiniSim, setShowMiniSim] = useState(false);
 
-  const glucoseRate = Math.round((co2Slider / 100) * 100);
+  const glucoseRate = Math.round((co2Slider / 100) * (energy / 100) * 100);
   const cycleSpeed = Math.max(3, 14 - (co2Slider / 100) * 10);
   const co2MoleculeCount = Math.max(1, Math.ceil(co2Slider / 20));
 
@@ -111,18 +113,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
           <AnimatePresence>
             {showMiniSim && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-3">
-                <div className="lab-panel lab-corner p-3 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="lab-label">CH-02 · Konsentrasi CO₂ (ppm rel.)</div>
-                    <div className="lcd-readout">{co2Slider.toString().padStart(3, "0")}%</div>
-                  </div>
-                  <Slider value={[co2Slider]} onValueChange={([v]) => setCo2Slider(v)} min={0} max={100} step={5} className="cursor-pointer" />
-                  <div className="flex items-center justify-between font-mono text-[10px] text-muted-foreground">
-                    <span>0</span>
-                    <span>laju siklus · output glukosa</span>
-                    <span>100</span>
-                  </div>
-                </div>
+                <DarkReactionLab co2={co2Slider} setCo2={setCo2Slider} o2={o2Atm} setO2={setO2Atm} energy={energy} setEnergy={setEnergy} />
               </motion.div>
             )}
           </AnimatePresence>
