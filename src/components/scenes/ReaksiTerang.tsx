@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
-import { Slider } from "@/components/ui/slider";
+import LightReactionLab from "@/components/lab/LightReactionLab";
 import thylakoidImg from "@/assets/thylakoid-reaction.jpg";
 import { sounds } from "@/lib/sounds";
 
