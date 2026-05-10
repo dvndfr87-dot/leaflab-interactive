@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
-import { Slider } from "@/components/ui/slider";
+import DarkReactionLab from "@/components/lab/DarkReactionLab";
 import calvinImg from "@/assets/calvin-cycle.jpg";
 import { sounds } from "@/lib/sounds";
 
