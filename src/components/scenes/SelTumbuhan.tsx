@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 import plantCellImg from "@/assets/plant-cell.jpg";
 import SceneLayout from "@/components/SceneLayout";
 import { sounds } from "@/lib/sounds";
@@ -31,17 +32,6 @@ const organelles: Organelle[] = [
     left: "35%",
     w: "w-14",
     h: "h-8",
-    isTarget: true,
-  },
-  {
-    id: "kloroplas2",
-    name: "Kloroplas",
-    emoji: "CHL",
-    desc: "Organel plastida bermembran ganda yang mengandung klorofil. Tempat berlangsungnya fotosintesis — mengubah energi cahaya menjadi energi kimia (ATP, NADPH) dan akhirnya glukosa.",
-    top: "30%",
-    left: "18%",
-    w: "w-12",
-    h: "h-7",
     isTarget: true,
   },
   {
@@ -87,17 +77,20 @@ const organelles: Organelle[] = [
 ];
 
 const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
-  const [selectedOrganelle, setSelectedOrganelle] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [hoverId, setHoverId] = useState<string | null>(null);
   const [discoveredIds, setDiscoveredIds] = useState<Set<string>>(new Set());
 
-  const handleClick = (org: Organelle) => {
+  const handleSelect = (org: Organelle) => {
     sounds.click();
-    setSelectedOrganelle(org.id);
-    setDiscoveredIds(prev => new Set(prev).add(org.id));
+    setSelectedId(org.id);
+    setDiscoveredIds((prev) => new Set(prev).add(org.id));
   };
 
-  const selected = organelles.find(o => o.id === selectedOrganelle);
+  const selected = organelles.find((o) => o.id === selectedId);
+  const activeId = hoverId ?? selectedId;
   const discoveredCount = discoveredIds.size;
+  const targetFound = discoveredIds.has("kloroplas1");
 
   return (
     <SceneLayout
@@ -107,19 +100,20 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
       totalScenes={7}
       onBack={onBack}
       showNav={true}
-      onNext={discoveredIds.has("kloroplas1") || discoveredIds.has("kloroplas2") ? onNext : undefined}
+      onNext={targetFound ? onNext : undefined}
       nextLabel="Lanjut ke Kloroplas"
     >
-      <div className="max-w-2xl mx-auto flex flex-col items-center gap-4 py-4">
-        <p className="text-center text-sm text-muted-foreground">
-          Identifikasi organel sel tumbuhan dengan mengklik area target pada preparat. Temukan organel <strong className="text-primary">kloroplas</strong> untuk melanjutkan analisis.
+      <div className="max-w-3xl mx-auto flex flex-col items-center gap-4 py-4">
+        <p className="text-center text-sm text-muted-foreground max-w-lg">
+          Pilih nama organel di panel kiri untuk menyorot lokasinya pada preparat.
+          Temukan <strong className="text-primary">Kloroplas</strong> untuk melanjutkan.
         </p>
 
-        {/* Discovery progress */}
+        {/* Identified chips */}
         <div className="flex items-center gap-3 lab-panel px-3 py-1.5">
           <span className="lab-label">Identified</span>
           <div className="flex gap-1">
-            {organelles.map(org => (
+            {organelles.map((org) => (
               <div
                 key={org.id}
                 className={`px-1.5 h-5 rounded flex items-center justify-center font-mono text-[9px] tracking-tight transition-all ${
@@ -132,52 +126,130 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               </div>
             ))}
           </div>
-          <span className="lcd-readout">{discoveredCount.toString().padStart(2,"0")}/{organelles.length.toString().padStart(2,"0")}</span>
+          <span className="lcd-readout">
+            {discoveredCount.toString().padStart(2, "0")}/
+            {organelles.length.toString().padStart(2, "0")}
+          </span>
         </div>
 
-        <div className="relative">
-          <motion.img
-            src={plantCellImg}
-            alt="Sel Tumbuhan"
-            className="rounded-xl shadow-lg max-w-full w-[400px]"
-            width={400}
-            height={400}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-5 w-full items-start">
+          {/* Organelle name list */}
+          <div className="lab-panel p-3 flex flex-col gap-1.5">
+            <div className="lab-label mb-1">Organel</div>
+            {organelles.map((org) => {
+              const isActive = activeId === org.id;
+              const isFound = discoveredIds.has(org.id);
+              return (
+                <button
+                  key={org.id}
+                  onClick={() => handleSelect(org)}
+                  onMouseEnter={() => setHoverId(org.id)}
+                  onMouseLeave={() => setHoverId(null)}
+                  onFocus={() => setHoverId(org.id)}
+                  onBlur={() => setHoverId(null)}
+                  className={`group flex items-center justify-between gap-2 text-left px-2.5 py-2 rounded-md border transition-all ${
+                    isActive
+                      ? "bg-primary/15 border-primary text-foreground shadow-[0_0_0_2px_hsl(var(--primary)/0.25)]"
+                      : "bg-card/40 border-border hover:border-primary/60 hover:bg-primary/5"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span
+                      className={`font-mono text-[10px] px-1.5 py-0.5 rounded ${
+                        isActive
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {org.emoji}
+                    </span>
+                    <span className="text-sm truncate">{org.name}</span>
+                  </div>
+                  {isFound && (
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
 
-          {/* Clickable organelle hotspots */}
-          {organelles.map(org => (
-            <motion.button
-              key={org.id}
-              onClick={() => handleClick(org)}
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.9 }}
-              animate={
-                org.isTarget && !discoveredIds.has(org.id)
-                  ? {
-                      boxShadow: [
-                        "0 0 8px hsl(142 45% 38% / 0.3)",
-                        "0 0 20px hsl(142 45% 38% / 0.6)",
-                        "0 0 8px hsl(142 45% 38% / 0.3)",
-                      ],
-                    }
-                  : {}
-              }
-              transition={
-                org.isTarget ? { boxShadow: { duration: 2, repeat: Infinity } } : undefined
-              }
-              className={`absolute ${org.w} ${org.h} rounded-full cursor-pointer transition-all ${
-                selectedOrganelle === org.id
-                  ? "bg-primary/40 border-2 border-primary ring-2 ring-primary/30"
-                  : discoveredIds.has(org.id)
-                  ? "bg-primary/20 border-2 border-primary/50"
-                  : org.isTarget
-                  ? "bg-primary/30 border-2 border-primary"
-                  : "bg-foreground/10 border-2 border-foreground/20 hover:bg-foreground/20"
-              }`}
-              style={{ top: org.top, left: org.left }}
-              title={discoveredIds.has(org.id) ? org.name : "Klik untuk mengetahui"}
+          {/* Image with highlights */}
+          <div className="relative justify-self-center">
+            <motion.img
+              src={plantCellImg}
+              alt="Sel Tumbuhan"
+              className="rounded-xl shadow-lg max-w-full w-[400px]"
+              width={400}
+              height={400}
             />
-          ))}
+
+            {/* Dim overlay when something is highlighted */}
+            <AnimatePresence>
+              {activeId && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 rounded-xl bg-background/45 pointer-events-none"
+                />
+              )}
+            </AnimatePresence>
+
+            {/* Highlight rings */}
+            {organelles.map((org) => {
+              const isActive = activeId === org.id;
+              const isFound = discoveredIds.has(org.id);
+              if (!isActive && !isFound) return null;
+              return (
+                <motion.div
+                  key={org.id}
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={
+                    isActive
+                      ? {
+                          opacity: 1,
+                          scale: [1, 1.18, 1],
+                          boxShadow: [
+                            "0 0 0 3px hsl(var(--primary)/0.9), 0 0 22px 6px hsl(var(--primary)/0.7)",
+                            "0 0 0 3px hsl(var(--primary)/1), 0 0 38px 14px hsl(var(--primary)/0.9)",
+                            "0 0 0 3px hsl(var(--primary)/0.9), 0 0 22px 6px hsl(var(--primary)/0.7)",
+                          ],
+                        }
+                      : { opacity: 0.55, scale: 1 }
+                  }
+                  transition={
+                    isActive
+                      ? {
+                          scale: { duration: 1.4, repeat: Infinity, ease: "easeInOut" },
+                          boxShadow: { duration: 1.4, repeat: Infinity, ease: "easeInOut" },
+                        }
+                      : { duration: 0.3 }
+                  }
+                  className={`absolute ${org.w} ${org.h} rounded-full pointer-events-none border-2 ${
+                    isActive
+                      ? "border-primary bg-primary/25"
+                      : "border-primary/50 bg-primary/10"
+                  }`}
+                  style={{ top: org.top, left: org.left }}
+                />
+              );
+            })}
+
+            {/* Floating label for active */}
+            <AnimatePresence>
+              {activeId && (
+                <motion.div
+                  key={activeId}
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-mono px-2.5 py-1 rounded shadow-lg whitespace-nowrap"
+                >
+                  {organelles.find((o) => o.id === activeId)?.name}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Info panel */}
@@ -197,6 +269,9 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               <div className="flex items-center gap-2 mb-2">
                 <span className="specimen-chip">{selected.emoji}</span>
                 <h3 className="font-semibold text-foreground">{selected.name}</h3>
+                <span className="ml-auto text-[10px] font-mono text-primary flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> ditemukan
+                </span>
               </div>
               <p className="text-muted-foreground">{selected.desc}</p>
               {selected.isTarget && (
@@ -214,7 +289,9 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
             >
               <div className="lab-label mb-2">Briefing</div>
               <p className="text-muted-foreground">
-                Sel tumbuhan memiliki organel plastida bernama <strong className="text-primary">kloroplas</strong> yang mengandung pigmen klorofil. Lakukan identifikasi struktur untuk melokalisasi tempat berlangsungnya fotosintesis.
+                Klik nama organel di panel sebelah untuk menyorot lokasinya pada preparat.
+                Sel tumbuhan memiliki organel plastida bernama{" "}
+                <strong className="text-primary">kloroplas</strong> yang mengandung klorofil.
               </p>
             </motion.div>
           )}
