@@ -7,6 +7,7 @@ import ReaksiGelap from "@/components/scenes/ReaksiGelap";
 import Rangkuman from "@/components/scenes/Rangkuman";
 import Latihan from "@/components/scenes/Latihan";
 import { AnimatePresence } from "framer-motion";
+import { NavProvider } from "@/lib/navContext";
 
 const STORAGE_KEY = "vlab_current_scene";
 
@@ -26,22 +27,24 @@ const Index = () => {
 
   const next = useCallback(() => setScene(s => Math.min(6, s + 1)), []);
   const back = useCallback(() => setScene(s => Math.max(0, s - 1)), []);
-  const goTo = useCallback((s: number) => setScene(Math.max(0, Math.min(6, s))), []);
+  const goToScene = useCallback((s: number) => setScene(Math.max(0, Math.min(6, s))), []);
   const reset = useCallback(() => {
     try { window.localStorage.removeItem(STORAGE_KEY); } catch {}
     setScene(0);
   }, []);
 
   return (
-    <AnimatePresence mode="wait">
-      {scene === 0 && <Pembuka key="pembuka" onStart={next} />}
-      {scene === 1 && <SelTumbuhan key="sel" onNext={next} onBack={back} onGoToScene={goTo} onReset={reset} />}
-      {scene === 2 && <Kloroplas key="kloroplas" onNext={next} onBack={back} onGoToScene={goTo} onReset={reset} />}
-      {scene === 3 && <ReaksiTerang key="terang" onNext={next} onBack={back} onGoToScene={goTo} onReset={reset} />}
-      {scene === 4 && <ReaksiGelap key="gelap" onNext={next} onBack={back} onGoToScene={goTo} onReset={reset} />}
-      {scene === 5 && <Rangkuman key="rangkuman" onNext={next} onBack={back} onGoToScene={goTo} onReset={reset} />}
-      {scene === 6 && <Latihan key="latihan" onBack={back} onGoHome={reset} onGoToScene={goTo} onReset={reset} />}
-    </AnimatePresence>
+    <NavProvider value={{ goToScene, reset }}>
+      <AnimatePresence mode="wait">
+        {scene === 0 && <Pembuka key="pembuka" onStart={next} />}
+        {scene === 1 && <SelTumbuhan key="sel" onNext={next} onBack={back} />}
+        {scene === 2 && <Kloroplas key="kloroplas" onNext={next} onBack={back} onGoToScene={goToScene} />}
+        {scene === 3 && <ReaksiTerang key="terang" onNext={next} onBack={back} />}
+        {scene === 4 && <ReaksiGelap key="gelap" onNext={next} onBack={back} />}
+        {scene === 5 && <Rangkuman key="rangkuman" onNext={next} onBack={back} />}
+        {scene === 6 && <Latihan key="latihan" onBack={back} onGoHome={reset} />}
+      </AnimatePresence>
+    </NavProvider>
   );
 };
 
