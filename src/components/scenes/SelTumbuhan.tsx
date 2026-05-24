@@ -180,7 +180,9 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                   onMouseLeave={() => setHoverId(null)}
                   onFocus={() => setHoverId(org.id)}
                   onBlur={() => setHoverId(null)}
-                  className={`group flex items-center justify-between gap-2 text-left px-2.5 py-2 rounded-md border transition-all ${
+                  aria-pressed={selectedId === org.id}
+                  aria-label={`${org.name}${isFound ? " (sudah ditemukan)" : ""}`}
+                  className={`group flex items-center justify-between gap-2 text-left px-2.5 py-2 rounded-md border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                     isActive
                       ? "bg-primary/15 border-primary text-foreground shadow-[0_0_0_2px_hsl(var(--primary)/0.25)]"
                       : "bg-card/40 border-border hover:border-primary/60 hover:bg-primary/5"
@@ -188,6 +190,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <span
+                      aria-hidden="true"
                       className={`font-mono text-[10px] px-1.5 py-0.5 rounded ${
                         isActive
                           ? "bg-primary text-primary-foreground"
@@ -199,7 +202,10 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                     <span className="text-sm truncate">{org.name}</span>
                   </div>
                   {isFound && (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                    <CheckCircle2
+                      className="w-3.5 h-3.5 text-primary shrink-0"
+                      aria-hidden="true"
+                    />
                   )}
                 </button>
               );
@@ -210,7 +216,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
           <div className="relative justify-self-center">
             <motion.img
               src={plantCellImg}
-              alt="Sel Tumbuhan"
+              alt="Mikrograf sel tumbuhan dengan organel-organel yang dapat dipilih"
               className="rounded-xl shadow-lg max-w-full w-[400px]"
               width={400}
               height={400}
