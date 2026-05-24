@@ -109,27 +109,60 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
           Temukan <strong className="text-primary">Kloroplas</strong> untuk melanjutkan.
         </p>
 
-        {/* Identified chips */}
-        <div className="flex items-center gap-3 lab-panel px-3 py-1.5">
-          <span className="lab-label">Identified</span>
-          <div className="flex gap-1">
-            {organelles.map((org) => (
-              <div
-                key={org.id}
-                className={`px-1.5 h-5 rounded flex items-center justify-center font-mono text-[9px] tracking-tight transition-all ${
-                  discoveredIds.has(org.id)
-                    ? "bg-primary/20 border border-primary/40 text-primary"
-                    : "bg-muted border border-border text-muted-foreground/60"
-                }`}
-              >
-                {discoveredIds.has(org.id) ? org.emoji : "—"}
-              </div>
-            ))}
+        {/* Checklist progress */}
+        <div
+          className="lab-panel w-full max-w-md p-4"
+          role="region"
+          aria-label="Daftar organel ditemukan"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="lab-label">Organel Ditemukan</span>
+            <span className="lcd-readout" aria-live="polite" aria-atomic="true">
+              {discoveredCount.toString().padStart(2, "0")}/
+              {organelles.length.toString().padStart(2, "0")}
+            </span>
           </div>
-          <span className="lcd-readout">
-            {discoveredCount.toString().padStart(2, "0")}/
-            {organelles.length.toString().padStart(2, "0")}
-          </span>
+          <div
+            className="h-1.5 w-full rounded-full bg-muted overflow-hidden mb-3"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={organelles.length}
+            aria-valuenow={discoveredCount}
+            aria-label={`${discoveredCount} dari ${organelles.length} organel ditemukan`}
+          >
+            <motion.div
+              className="h-full bg-primary"
+              initial={false}
+              animate={{ width: `${(discoveredCount / organelles.length) * 100}%` }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            />
+          </div>
+          <ul className="grid grid-cols-2 gap-1.5 text-xs">
+            {organelles.map((org) => {
+              const found = discoveredIds.has(org.id);
+              return (
+                <li
+                  key={org.id}
+                  className={`flex items-center gap-1.5 px-2 py-1 rounded border transition-colors ${
+                    found
+                      ? "bg-primary/10 border-primary/30 text-foreground"
+                      : "bg-muted/40 border-border text-muted-foreground"
+                  }`}
+                >
+                  <CheckCircle2
+                    className={`w-3.5 h-3.5 shrink-0 ${
+                      found ? "text-primary" : "text-muted-foreground/40"
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <span className="truncate">{org.name}</span>
+                  <span className="sr-only">
+                    {found ? "ditemukan" : "belum ditemukan"}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-5 w-full items-start">
