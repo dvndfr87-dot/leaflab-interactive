@@ -153,7 +153,7 @@ const SceneLayout = ({
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-          </div>
+          </nav>
           {showSaved && (
             <div className="absolute right-3 -bottom-6 text-[10px] font-mono text-primary bg-card border border-primary/30 rounded px-2 py-0.5 shadow-sm">
               ✓ Progress tersimpan
