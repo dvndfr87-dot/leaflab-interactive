@@ -78,7 +78,7 @@ const SceneLayout = ({
               aria-live="polite"
               aria-label="Memuat scene"
             >
-              <div className="h-full w-1/3 bg-primary animate-[slide-in-right_0.8s_ease-in-out_infinite]" />
+              <div className="h-full w-full bg-primary animate-pulse" />
             </div>
           )}
           <nav
