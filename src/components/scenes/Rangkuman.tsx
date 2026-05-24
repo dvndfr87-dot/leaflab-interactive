@@ -25,7 +25,10 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
         >
           <div className="lab-label mb-2">Abstrak</div>
           <p className="text-sm text-foreground leading-relaxed">
-            Fotosintesis adalah proses anabolik yang berlangsung di dalam <strong className="text-primary">kloroplas</strong>, mengubah energi cahaya menjadi energi kimia yang tersimpan dalam molekul glukosa. Proses ini terdiri atas dua tahap yang saling berkesinambungan:
+            Fotosintesis adalah proses pembentukan makanan pada tumbuhan hijau yang berlangsung di dalam <strong className="text-primary">kloroplas</strong> dengan bantuan cahaya matahari. Pada proses ini, energi cahaya diubah menjadi energi kimia yang disimpan dalam bentuk <strong>glukosa</strong>.
+          </p>
+          <p className="text-sm text-foreground leading-relaxed mt-2">
+            Fotosintesis terdiri atas dua tahap utama, yaitu <strong>reaksi terang</strong> dan <strong>reaksi gelap (Siklus Calvin)</strong>, yang saling berhubungan.
           </p>
         </motion.div>
 
@@ -40,10 +43,23 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
             <span className="specimen-chip">PHASE-1</span>
             <h3 className="font-bold text-foreground text-lg">Reaksi Terang</h3>
           </div>
+          <p className="text-sm text-foreground/80 mb-3">
+            Reaksi terang berlangsung di <strong>membran tilakoid</strong> dan membutuhkan cahaya matahari.
+          </p>
           <ul className="space-y-1.5 text-sm text-foreground/80 font-mono">
-            <li><span className="lab-label">Lokasi:</span> Membran tilakoid</li>
-            <li><span className="lab-label">Input:</span> H₂O · foton (hν)</li>
-            <li><span className="lab-label">Proses:</span> Fotolisis air, transpor elektron, fotofosforilasi</li>
+            <li>
+              <span className="lab-label">Input:</span>
+              <div className="flex gap-2 mt-1 flex-wrap">
+                <span className="specimen-chip">Cahaya</span>
+                <span className="specimen-chip">H₂O</span>
+              </div>
+            </li>
+            <li className="pt-1">
+              <span className="lab-label">Proses:</span>
+              <p className="font-sans text-foreground/80 mt-1">
+                Energi cahaya diserap oleh klorofil sehingga terjadi pemecahan air (fotolisis). Proses ini menghasilkan oksigen (O₂), ATP, dan NADPH. Elektron yang dihasilkan bergerak melalui rantai transpor elektron sehingga energi meningkat dan digunakan untuk membentuk ATP dan NADPH.
+              </p>
+            </li>
             <li className="pt-1">
               <span className="lab-label">Output:</span>
               <div className="flex gap-2 mt-1 flex-wrap">
@@ -53,6 +69,9 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
               </div>
             </li>
           </ul>
+          <p className="text-xs text-muted-foreground mt-3 italic">
+            ATP dan NADPH digunakan sebagai sumber energi pada reaksi gelap.
+          </p>
         </motion.div>
 
         {/* Arrow */}
@@ -77,17 +96,34 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
             <span className="specimen-chip">PHASE-2</span>
             <h3 className="font-bold text-foreground text-lg">Reaksi Gelap — Siklus Calvin</h3>
           </div>
+          <p className="text-sm text-foreground/80 mb-3">
+            Reaksi gelap berlangsung di <strong>stroma kloroplas</strong> dan tidak memerlukan cahaya secara langsung.
+          </p>
           <ul className="space-y-1.5 text-sm text-foreground/80 font-mono">
-            <li><span className="lab-label">Lokasi:</span> Stroma kloroplas</li>
-            <li><span className="lab-label">Input:</span> CO₂ · ATP · NADPH</li>
-            <li><span className="lab-label">Proses:</span> Fiksasi (RuBisCO) → Reduksi → Regenerasi RuBP</li>
+            <li>
+              <span className="lab-label">Input:</span>
+              <div className="flex gap-2 mt-1 flex-wrap">
+                <span className="specimen-chip">CO₂</span>
+                <span className="specimen-chip">ATP</span>
+                <span className="specimen-chip">NADPH</span>
+              </div>
+            </li>
+            <li className="pt-1">
+              <span className="lab-label">Proses:</span>
+              <p className="font-sans text-foreground/80 mt-1">
+                CO₂ diikat dan diolah melalui Siklus Calvin dengan bantuan energi dari ATP dan NADPH hingga terbentuk glukosa.
+              </p>
+            </li>
             <li className="pt-1">
               <span className="lab-label">Output:</span>
               <div className="flex gap-2 mt-1">
-                <span className="specimen-chip">C₆H₁₂O₆</span>
+                <span className="specimen-chip">C₆H₁₂O₆ (Glukosa)</span>
               </div>
             </li>
           </ul>
+          <p className="text-xs text-muted-foreground mt-3 italic">
+            Semakin tinggi konsentrasi CO₂, maka pembentukan glukosa semakin meningkat.
+          </p>
         </motion.div>
 
         {/* Key point */}
