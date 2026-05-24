@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { motion } from "framer-motion";
 import { Play, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-photosynthesis.jpg";
@@ -20,6 +21,9 @@ interface PembukaProps {
 const Pembuka = ({ onStart }: PembukaProps) => {
   const [open, setOpen] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+  const checkboxId = useId();
+  const hintId = useId();
+
 
   const handleMulai = () => {
     sounds.popup?.();
@@ -79,6 +83,10 @@ const Pembuka = ({ onStart }: PembukaProps) => {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Petunjuk Penggunaan</DialogTitle>
+            <DialogDescription>
+              Bacalah seluruh petunjuk berikut, lalu centang pernyataan konfirmasi
+              di bawah untuk melanjutkan ke simulasi.
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm text-foreground max-h-[55vh] overflow-y-auto pr-1">
             <p className="font-semibold">Cara Menggunakan Media:</p>
@@ -111,21 +119,31 @@ const Pembuka = ({ onStart }: PembukaProps) => {
             </ul>
           </div>
 
-          <label className="flex items-start gap-2 p-3 rounded-md border border-border bg-muted/40 cursor-pointer">
+          <div className="flex items-start gap-2 p-3 rounded-md border border-border bg-muted/40">
             <Checkbox
+              id={checkboxId}
               checked={confirmed}
               onCheckedChange={(v) => setConfirmed(v === true)}
               className="mt-0.5"
+              aria-describedby={hintId}
             />
-            <span className="text-xs text-foreground leading-relaxed">
+            <label
+              htmlFor={checkboxId}
+              className="text-xs text-foreground leading-relaxed cursor-pointer select-none"
+            >
               Saya telah membaca dan memahami seluruh petunjuk penggunaan di atas.
-            </span>
-          </label>
+            </label>
+          </div>
+          <p id={hintId} className="sr-only">
+            Centang kotak ini untuk mengaktifkan tombol Lanjutkan ke Simulasi.
+          </p>
 
           <DialogFooter>
             <Button
               onClick={handleLanjut}
               disabled={!confirmed}
+              aria-disabled={!confirmed}
+              aria-describedby={hintId}
               className="w-full sm:w-auto gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <CheckCircle2 className="w-4 h-4" />

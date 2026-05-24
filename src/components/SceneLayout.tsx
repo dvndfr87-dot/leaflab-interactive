@@ -52,13 +52,18 @@ const SceneLayout = ({
 }: SceneLayoutProps) => {
   const { goToScene, reset } = useNav();
   const [showSaved, setShowSaved] = useState(false);
+  const [jumping, setJumping] = useState(false);
 
   const handleJump = (i: number) => {
-    if (i === currentScene) return;
+    if (i === currentScene || jumping) return;
     sounds.click?.();
-    goToScene(i);
+    setJumping(true);
     setShowSaved(true);
-    window.setTimeout(() => setShowSaved(false), 1500);
+    window.setTimeout(() => {
+      goToScene(i);
+      setShowSaved(false);
+      setJumping(false);
+    }, 280);
   };
 
   return (
@@ -66,36 +71,54 @@ const SceneLayout = ({
       {/* Progress bar */}
       {currentScene > 0 && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-sm border-b border-border">
-          <div className="flex items-center gap-1 px-4 py-2">
-            {sceneNames.map((name, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => handleJump(i)}
-                className="flex-1 flex flex-col items-center group cursor-pointer focus:outline-none"
-                aria-label={`Pergi ke ${name}`}
-                title={`Pergi ke ${name}`}
-              >
-                <div
-                  className={`h-1.5 w-full rounded-full transition-all duration-300 ${
-                    i === currentScene
-                      ? "bg-primary ring-2 ring-primary/40"
-                      : i < currentScene
-                      ? "bg-primary/80 group-hover:bg-primary"
-                      : "bg-muted group-hover:bg-muted-foreground/40"
-                  }`}
-                />
-                <span
-                  className={`text-[10px] mt-1 hidden sm:block transition-colors ${
-                    i === currentScene
-                      ? "text-primary font-semibold"
-                      : "text-muted-foreground group-hover:text-foreground"
-                  }`}
+          {jumping && (
+            <div
+              className="absolute top-0 left-0 right-0 h-0.5 bg-primary/20 overflow-hidden"
+              role="status"
+              aria-live="polite"
+              aria-label="Memuat scene"
+            >
+              <div className="h-full w-full bg-primary animate-pulse" />
+            </div>
+          )}
+          <nav
+            className="flex items-center gap-1 px-4 py-2"
+            aria-label="Navigasi scene"
+          >
+            {sceneNames.map((name, i) => {
+              const isCurrent = i === currentScene;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => handleJump(i)}
+                  disabled={jumping}
+                  aria-current={isCurrent ? "step" : undefined}
+                  aria-label={`Scene ${i + 1} dari ${sceneNames.length}: ${name}${isCurrent ? " (sedang aktif)" : ""}`}
+                  title={`Pergi ke ${name}`}
+                  className="flex-1 flex flex-col items-center group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 focus-visible:ring-offset-background rounded disabled:cursor-wait"
                 >
-                  {name}
-                </span>
-              </button>
-            ))}
+                  <div
+                    className={`h-1.5 w-full rounded-full transition-all duration-300 ${
+                      isCurrent
+                        ? "bg-primary ring-2 ring-primary/40"
+                        : i < currentScene
+                        ? "bg-primary/80 group-hover:bg-primary"
+                        : "bg-muted group-hover:bg-muted-foreground/40"
+                    }`}
+                  />
+                  <span
+                    className={`text-[10px] mt-1 hidden sm:block transition-colors ${
+                      isCurrent
+                        ? "text-primary font-semibold"
+                        : "text-muted-foreground group-hover:text-foreground"
+                    }`}
+                  >
+                    {name}
+                  </span>
+                </button>
+              );
+            })}
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -130,7 +153,7 @@ const SceneLayout = ({
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-          </div>
+          </nav>
           {showSaved && (
             <div className="absolute right-3 -bottom-6 text-[10px] font-mono text-primary bg-card border border-primary/30 rounded px-2 py-0.5 shadow-sm">
               ✓ Progress tersimpan
