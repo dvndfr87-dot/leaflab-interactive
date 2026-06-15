@@ -36,14 +36,19 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
               <p className="text-center text-sm text-muted-foreground">
                 Spesimen: kloroplas utuh dengan membran ganda. Lakukan diseksi optik untuk mengamati ultrastruktur internal.
               </p>
-              <img
-                src={chloroplastClean}
-                alt="Kloroplas"
-                className="rounded-xl max-w-full w-[400px]"
-                loading="lazy"
-                width={800}
-                height={600}
-              />
+              <figure className="m-0">
+                <img
+                  src={chloroplastClean}
+                  alt="Ilustrasi kloroplas dengan membran ganda dan tumpukan grana"
+                  className="rounded-xl max-w-full w-[400px]"
+                  loading="lazy"
+                  width={800}
+                  height={600}
+                />
+                <figcaption className="mt-1.5 text-[11px] text-muted-foreground text-center italic">
+                  Sumber: Ilustrasi Virtual Lab Fotosintesis (2026)
+                </figcaption>
+              </figure>
               <button
                 onClick={() => { sounds.popup(); setShowInner(true); }}
                 className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-mono text-sm uppercase tracking-wider hover:bg-primary/90 transition-colors"

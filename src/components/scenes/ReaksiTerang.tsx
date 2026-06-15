@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
 import LightReactionLab from "@/components/lab/LightReactionLab";
+import InfoLabel from "@/components/lab/InfoLabel";
+import { lightInfo } from "@/components/lab/infoEntries";
 import thylakoidImg from "@/assets/thylakoid-reaction.jpg";
 import { sounds } from "@/lib/sounds";
 
@@ -73,9 +75,14 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
     >
       <div className="max-w-2xl mx-auto py-4 space-y-4">
         {/* Reference image */}
-        <div className="rounded-xl overflow-hidden shadow-md">
-          <img src={thylakoidImg} alt="Reaksi Terang di Tilakoid" className="w-full h-48 object-cover" loading="lazy" width={900} height={600} />
-        </div>
+        <figure className="m-0">
+          <div className="rounded-xl overflow-hidden shadow-md">
+            <img src={thylakoidImg} alt="Diagram reaksi terang fotosintesis pada membran tilakoid" className="w-full h-48 object-cover" loading="lazy" width={900} height={600} />
+          </div>
+          <figcaption className="mt-1.5 text-[11px] text-muted-foreground text-center italic">
+            Sumber: Ilustrasi Virtual Lab Fotosintesis (2026)
+          </figcaption>
+        </figure>
 
         {/* Step progress */}
         <div className="flex gap-1">
@@ -416,11 +423,26 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
               { label: "O₂", color: "bg-oxygen/60" },
               { label: "H₂O", color: "bg-water/60" },
             ].map(l => (
-              <div key={l.label} className="flex items-center gap-1 text-[9px] text-muted-foreground">
+              <div key={l.label} className="flex items-center gap-1 text-[11px] text-muted-foreground">
                 <div className={`w-2.5 h-2.5 rounded-full ${l.color}`} />
                 {l.label}
               </div>
             ))}
+          </div>
+
+          {/* Label Interaktif — klik untuk penjelasan biologis */}
+          <div className="mt-4 pt-3 border-t border-border/60">
+            <div className="flex items-center justify-between mb-2">
+              <span className="lab-label">Label Interaktif</span>
+              <span className="text-[11px] text-muted-foreground italic">klik label untuk penjelasan</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {Object.values(lightInfo).map((entry) => (
+                <InfoLabel key={entry.id} entry={entry} className="px-2 py-1 border border-border bg-card text-foreground text-xs">
+                  <span className="font-semibold">{entry.label}</span>
+                </InfoLabel>
+              ))}
+            </div>
           </div>
         </div>
 
