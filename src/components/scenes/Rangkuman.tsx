@@ -18,19 +18,7 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
       nextLabel="Ke Latihan"
     >
       <div className="max-w-2xl mx-auto py-4 space-y-5">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="lab-panel p-5"
-        >
-          <div className="lab-label mb-2">Abstrak</div>
-          <p className="text-sm text-foreground leading-relaxed">
-            Fotosintesis adalah proses pembentukan makanan pada tumbuhan hijau yang berlangsung di dalam <strong className="text-primary">kloroplas</strong> dengan bantuan cahaya matahari. Pada proses ini, energi cahaya diubah menjadi energi kimia yang disimpan dalam bentuk <strong>glukosa</strong>.
-          </p>
-          <p className="text-sm text-foreground leading-relaxed mt-2">
-            Fotosintesis terdiri atas dua tahap utama, yaitu <strong>reaksi terang</strong> dan <strong>reaksi gelap (Siklus Calvin)</strong>, yang saling berhubungan.
-          </p>
-        </motion.div>
+
 
         {/* Reaksi Terang */}
         <motion.div
