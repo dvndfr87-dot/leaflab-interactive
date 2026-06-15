@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-import plantCellImg from "@/assets/plant-cell.jpg";
+import plantCellImg from "@/assets/plant-cell-id.jpg";
 import SceneLayout from "@/components/SceneLayout";
 import { sounds } from "@/lib/sounds";
 
@@ -19,59 +19,84 @@ interface Organelle {
   left: string;
   w: string;
   h: string;
+  /** Tailwind classes override untuk warna ring + chip kalau organel ini perlu kontras tinggi. */
+  markerClass?: string;
   isTarget?: boolean;
 }
 
+// Posisi ditujukan untuk gambar `plant-cell-id.jpg` (square, 1024×1024).
 const organelles: Organelle[] = [
   {
     id: "kloroplas1",
     name: "Kloroplas",
-    emoji: "CHL",
+    emoji: "KLO",
     desc: "Organel plastida bermembran ganda yang mengandung klorofil. Tempat berlangsungnya fotosintesis — mengubah energi cahaya menjadi energi kimia (ATP, NADPH) dan akhirnya glukosa.",
-    top: "18%",
-    left: "35%",
-    w: "w-14",
-    h: "h-8",
+    top: "26%",
+    left: "33%",
+    w: "w-12",
+    h: "h-7",
+    // Warna kontras (oranye) supaya tidak menyatu dengan warna hijau sel & kloroplas.
+    markerClass: "border-[hsl(var(--glucose))] bg-[hsl(var(--glucose)/0.25)] shadow-[0_0_0_3px_hsl(var(--glucose)/0.9),0_0_22px_6px_hsl(var(--glucose)/0.7)]",
     isTarget: true,
   },
   {
     id: "nukleus",
     name: "Nukleus",
-    emoji: "NUC",
+    emoji: "NUK",
     desc: "Inti sel yang menyimpan materi genetik (DNA) dan mengatur ekspresi gen serta seluruh aktivitas metabolik sel.",
-    top: "52%",
-    left: "54%",
-    w: "w-10",
-    h: "h-10",
+    top: "48%",
+    left: "33%",
+    w: "w-14",
+    h: "h-14",
   },
   {
     id: "vakuola",
-    name: "Vakuola Sentral",
-    emoji: "VAC",
+    name: "Vakuola",
+    emoji: "VAK",
     desc: "Organel besar berisi cairan sel (getah vakuola). Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder.",
-    top: "55%",
-    left: "30%",
-    w: "w-20",
-    h: "h-14",
+    top: "44%",
+    left: "55%",
+    w: "w-24",
+    h: "h-20",
   },
   {
     id: "dinding",
     name: "Dinding Sel",
-    emoji: "CW",
+    emoji: "DSL",
     desc: "Lapisan kaku tersusun dari selulosa di luar membran plasma. Memberi bentuk, dukungan mekanik, dan proteksi sel tumbuhan.",
-    top: "5%",
-    left: "50%",
+    top: "18%",
+    left: "48%",
+    w: "w-16",
+    h: "h-4",
+  },
+  {
+    id: "membran",
+    name: "Membran Sel",
+    emoji: "MEM",
+    desc: "Lapisan tipis di sebelah dalam dinding sel. Mengatur lalu lintas molekul keluar–masuk sel secara selektif.",
+    top: "26%",
+    left: "70%",
     w: "w-10",
-    h: "h-6",
+    h: "h-10",
+  },
+  {
+    id: "sitoplasma",
+    name: "Sitoplasma",
+    emoji: "SIT",
+    desc: "Cairan kental di dalam sel tempat organel-organel berada. Menjadi medium berlangsungnya banyak reaksi metabolik.",
+    top: "62%",
+    left: "50%",
+    w: "w-16",
+    h: "h-8",
   },
   {
     id: "mitokondria",
     name: "Mitokondria",
     emoji: "MIT",
     desc: "Organel respirasi seluler. Mengoksidasi glukosa menjadi ATP melalui siklus Krebs dan rantai transpor elektron.",
-    top: "70%",
-    left: "60%",
-    w: "w-10",
+    top: "65%",
+    left: "36%",
+    w: "w-12",
     h: "h-6",
   },
 ];
@@ -213,11 +238,11 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
           </div>
 
           {/* Image with highlights */}
-          <div className="relative justify-self-center">
+          <figure className="relative justify-self-center m-0">
             <motion.img
               src={plantCellImg}
-              alt="Mikrograf sel tumbuhan dengan organel-organel yang dapat dipilih"
-              className="rounded-xl shadow-lg max-w-full w-[400px]"
+              alt="Ilustrasi struktur sel tumbuhan dengan kloroplas, nukleus, vakuola, mitokondria, dinding sel, dan sitoplasma"
+              className="rounded-xl shadow-lg max-w-full w-[400px] block"
               width={400}
               height={400}
             />
@@ -239,6 +264,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               const isActive = activeId === org.id;
               const isFound = discoveredIds.has(org.id);
               if (!isActive && !isFound) return null;
+              const customMarker = org.markerClass;
               return (
                 <motion.div
                   key={org.id}
@@ -248,25 +274,20 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                       ? {
                           opacity: 1,
                           scale: [1, 1.18, 1],
-                          boxShadow: [
-                            "0 0 0 3px hsl(var(--primary)/0.9), 0 0 22px 6px hsl(var(--primary)/0.7)",
-                            "0 0 0 3px hsl(var(--primary)/1), 0 0 38px 14px hsl(var(--primary)/0.9)",
-                            "0 0 0 3px hsl(var(--primary)/0.9), 0 0 22px 6px hsl(var(--primary)/0.7)",
-                          ],
                         }
                       : { opacity: 0.55, scale: 1 }
                   }
                   transition={
                     isActive
-                      ? {
-                          scale: { duration: 1.4, repeat: Infinity, ease: "easeInOut" },
-                          boxShadow: { duration: 1.4, repeat: Infinity, ease: "easeInOut" },
-                        }
+                      ? { scale: { duration: 1.4, repeat: Infinity, ease: "easeInOut" } }
                       : { duration: 0.3 }
                   }
                   className={`absolute ${org.w} ${org.h} rounded-full pointer-events-none border-2 ${
                     isActive
-                      ? "border-primary bg-primary/25"
+                      ? customMarker ??
+                        "border-primary bg-primary/25 shadow-[0_0_0_3px_hsl(var(--primary)/0.9),0_0_22px_6px_hsl(var(--primary)/0.7)]"
+                      : customMarker
+                      ? "border-[hsl(var(--glucose))]/60 bg-[hsl(var(--glucose)/0.15)]"
                       : "border-primary/50 bg-primary/10"
                   }`}
                   style={{ top: org.top, left: org.left }}
@@ -282,13 +303,21 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-mono px-2.5 py-1 rounded shadow-lg whitespace-nowrap"
+                  className={`absolute -bottom-3 left-1/2 -translate-x-1/2 text-xs font-mono px-2.5 py-1 rounded shadow-lg whitespace-nowrap ${
+                    activeId === "kloroplas1"
+                      ? "bg-[hsl(var(--glucose))] text-white"
+                      : "bg-primary text-primary-foreground"
+                  }`}
                 >
                   {organelles.find((o) => o.id === activeId)?.name}
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+
+            <figcaption className="mt-4 text-[11px] text-muted-foreground text-center italic">
+              Sumber: Ilustrasi original Virtual Lab Fotosintesis (2026)
+            </figcaption>
+          </figure>
         </div>
 
         {/* Info panel */}
@@ -301,7 +330,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               exit={{ opacity: 0, y: -10 }}
               className={`rounded-lg p-4 border max-w-md text-sm w-full ${
                 selected.isTarget
-                  ? "bg-primary/5 border-primary/30"
+                  ? "bg-[hsl(var(--glucose)/0.08)] border-[hsl(var(--glucose)/0.4)]"
                   : "bg-card border-border"
               }`}
             >
@@ -314,7 +343,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               </div>
               <p className="text-muted-foreground">{selected.desc}</p>
               {selected.isTarget && (
-                <p className="mt-2 text-primary text-xs font-mono uppercase tracking-wider">
+                <p className="mt-2 text-[hsl(var(--glucose))] text-xs font-mono uppercase tracking-wider">
                   → Target organel teridentifikasi. Lanjutkan ke analisis ultrastruktur kloroplas.
                 </p>
               )}
