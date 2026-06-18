@@ -430,20 +430,27 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
             ))}
           </div>
 
-          {/* Label Interaktif — klik untuk penjelasan biologis */}
+          {/* Penjelasan Lengkap — dropdown */}
           <div className="mt-4 pt-3 border-t border-border/60">
-            <div className="flex items-center justify-between mb-2">
-              <span className="lab-label">Label Interaktif</span>
-              <span className="text-[11px] text-muted-foreground italic">klik label untuk penjelasan</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {Object.values(lightInfo).map((entry) => (
-                <InfoLabel key={entry.id} entry={entry} className="px-2 py-1 border border-border bg-card text-foreground text-xs">
-                  <span className="font-semibold">{entry.label}</span>
-                </InfoLabel>
-              ))}
-            </div>
+            <details className="group rounded-md border border-border/60 bg-muted/20 open:bg-muted/40 transition-colors">
+              <summary className="cursor-pointer list-none px-3 py-2 flex items-center justify-between">
+                <span className="lab-label">📖 Penjelasan Komponen Reaksi Terang</span>
+                <span className="font-mono text-[10px] text-primary group-open:rotate-180 transition-transform">▾</span>
+              </summary>
+              <div className="px-3 pb-3 pt-1 space-y-2">
+                {Object.values(lightInfo).map((entry) => (
+                  <div key={entry.id} className="rounded border border-border/50 bg-card p-2">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded">{entry.label}</span>
+                      <span className="text-xs font-semibold text-foreground">{entry.title}</span>
+                    </div>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">{entry.description}</p>
+                  </div>
+                ))}
+              </div>
+            </details>
           </div>
+
         </div>
 
         {/* Summary */}
