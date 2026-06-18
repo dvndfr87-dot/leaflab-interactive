@@ -315,7 +315,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
             </AnimatePresence>
 
             <figcaption className="mt-4 text-[11px] text-muted-foreground text-center italic">
-              Sumber: Ilustrasi original Virtual Lab Fotosintesis (2026)
+              Sumber: Diadaptasi dari OpenStax Biology 2e (CC BY 4.0) — Bab 4.4 "Eukaryotic Cells".
             </figcaption>
           </figure>
         </div>
