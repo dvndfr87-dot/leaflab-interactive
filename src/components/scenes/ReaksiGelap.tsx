@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SceneLayout from "@/components/SceneLayout";
 import DarkReactionLab from "@/components/lab/DarkReactionLab";
-import InfoLabel from "@/components/lab/InfoLabel";
 import { darkInfo } from "@/components/lab/infoEntries";
 import calvinImg from "@/assets/calvin-cycle.jpg";
 import { sounds } from "@/lib/sounds";
