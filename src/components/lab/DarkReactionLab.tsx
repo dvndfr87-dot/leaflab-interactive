@@ -71,6 +71,15 @@ const DarkReactionLab = ({ co2, setCo2, o2, setO2, energy, setEnergy }: Props) =
             <div className="lcd-readout">{co2.toString().padStart(3, "0")}%</div>
           </div>
           <Slider value={[co2]} onValueChange={([v]) => setCo2(v)} min={0} max={100} step={5} />
+          <details className="group rounded-md border border-border/60 bg-muted/30">
+            <summary className="cursor-pointer list-none px-2 py-1.5 text-[11px] font-semibold text-foreground/80 flex items-center justify-between">
+              <span>📖 Penjelasan CO₂</span>
+              <span className="font-mono text-[10px] text-primary group-open:rotate-180 transition-transform">▾</span>
+            </summary>
+            <div className="px-2 pb-2 pt-1 text-[11px] text-muted-foreground leading-relaxed">
+              CO₂ masuk daun melalui stomata. RuBisCO mengikat CO₂ ke RuBP membentuk 2 × 3-PGA (fiksasi karbon). Tanpa CO₂, tidak ada atom karbon baru → glukosa = 0.
+            </div>
+          </details>
         </div>
 
         <div className="lab-panel lab-corner p-3 space-y-2">
@@ -86,6 +95,15 @@ const DarkReactionLab = ({ co2, setCo2, o2, setO2, energy, setEnergy }: Props) =
           </div>
           <Slider value={[o2]} onValueChange={([v]) => setO2(v)} min={0} max={100} step={5} />
           <div className="font-mono text-[9px] text-muted-foreground">faktor RuBisCO ×{m.o2Factor.toFixed(2)}</div>
+          <details className="group rounded-md border border-border/60 bg-muted/30">
+            <summary className="cursor-pointer list-none px-2 py-1.5 text-[11px] font-semibold text-foreground/80 flex items-center justify-between">
+              <span>📖 Penjelasan O₂ & Fotorespirasi</span>
+              <span className="font-mono text-[10px] text-primary group-open:rotate-180 transition-transform">▾</span>
+            </summary>
+            <div className="px-2 pb-2 pt-1 text-[11px] text-muted-foreground leading-relaxed">
+              O₂ dapat menggantikan CO₂ pada situs aktif RuBisCO (aktivitas oksigenase) → fotorespirasi yang tidak menghasilkan glukosa. Rentang 30–50% adalah zona pembelajaran optimal; &gt;70% siklus tertekan kuat.
+            </div>
+          </details>
         </div>
 
         <div className="lab-panel lab-corner p-3 space-y-2">
@@ -98,6 +116,15 @@ const DarkReactionLab = ({ co2, setCo2, o2, setO2, energy, setEnergy }: Props) =
           </div>
           <Slider value={[energy]} onValueChange={([v]) => setEnergy(v)} min={0} max={100} step={5} />
           <div className="font-mono text-[9px] text-muted-foreground">dari Reaksi Terang</div>
+          <details className="group rounded-md border border-border/60 bg-muted/30">
+            <summary className="cursor-pointer list-none px-2 py-1.5 text-[11px] font-semibold text-foreground/80 flex items-center justify-between">
+              <span>📖 Penjelasan ATP/NADPH</span>
+              <span className="font-mono text-[10px] text-primary group-open:rotate-180 transition-transform">▾</span>
+            </summary>
+            <div className="px-2 pb-2 pt-1 text-[11px] text-muted-foreground leading-relaxed">
+              ATP memberi energi fosforilasi 3-PGA → 1,3-BPG. NADPH menyumbang elektron untuk reduksi 1,3-BPG → G3P. Bila pasokan 0%, fase reduksi mandek meski CO₂ melimpah.
+            </div>
+          </details>
         </div>
       </div>
 
