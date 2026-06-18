@@ -59,6 +59,21 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
           <div className="flex justify-between font-mono text-[9px] text-muted-foreground">
             <span>gelap</span><span>fase rendah</span><span>fase optimal</span>
           </div>
+          <details className="group rounded-md border border-border/60 bg-muted/30 open:bg-muted/50 transition-colors">
+            <summary className="cursor-pointer list-none px-2 py-1.5 text-[11px] font-semibold text-foreground/80 flex items-center justify-between">
+              <span>📖 Penjelasan Intensitas Cahaya</span>
+              <span className="font-mono text-[10px] text-primary group-open:rotate-180 transition-transform">▾</span>
+            </summary>
+            <div className="px-2 pb-2 pt-1 text-[11px] leading-relaxed text-muted-foreground space-y-1.5">
+              <p>Intensitas cahaya mengontrol jumlah foton yang diserap klorofil pada PSII & PSI. Semakin banyak foton, semakin banyak elektron tereksitasi → rantai transpor elektron (ETC) makin cepat.</p>
+              <ul className="space-y-0.5 list-disc pl-4">
+                <li><b className="text-foreground">0</b> — gelap total, reaksi terang berhenti (Stopped).</li>
+                <li><b className="text-foreground">1–6</b> — fase rendah, H⁺ & O₂ terbentuk sangat lambat.</li>
+                <li><b className="text-foreground">7–14</b> — fase optimal pembelajaran, ATP & NADPH terbentuk stabil.</li>
+                <li><b className="text-foreground">15–20</b> — saturasi: bila H₂O cukup, O₂ melonjak; bila H₂O rendah, PSII tertahan (photoinhibition).</li>
+              </ul>
+            </div>
+          </details>
         </div>
 
         <div className="lab-panel lab-corner p-3 space-y-2">
@@ -75,6 +90,20 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
           <div className="flex justify-between font-mono text-[9px] text-muted-foreground">
             <span>0</span><span>substrat fotolisis</span><span>jenuh</span>
           </div>
+          <details className="group rounded-md border border-border/60 bg-muted/30 open:bg-muted/50 transition-colors">
+            <summary className="cursor-pointer list-none px-2 py-1.5 text-[11px] font-semibold text-foreground/80 flex items-center justify-between">
+              <span>📖 Penjelasan Konsentrasi H₂O</span>
+              <span className="font-mono text-[10px] text-primary group-open:rotate-180 transition-transform">▾</span>
+            </summary>
+            <div className="px-2 pb-2 pt-1 text-[11px] leading-relaxed text-muted-foreground space-y-1.5">
+              <p>Air adalah donor elektron utama. Kompleks pemecah air (OEC) di PSII memecah 2H₂O → 4H⁺ + O₂ + 4e⁻. Tanpa H₂O, elektron PSII tidak tergantikan → ETC mandek.</p>
+              <ul className="space-y-0.5 list-disc pl-4">
+                <li><b className="text-foreground">0%</b> — tidak ada substrat, O₂ = 0 walau cahaya kuat.</li>
+                <li><b className="text-foreground">40–70%</b> — pasokan ideal, fotolisis lancar.</li>
+                <li><b className="text-foreground">&gt;80%</b> — jenuh, hanya berdampak besar bila cahaya juga tinggi.</li>
+              </ul>
+            </div>
+          </details>
         </div>
       </div>
 
