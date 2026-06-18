@@ -80,7 +80,7 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
             <img src={thylakoidImg} alt="Diagram reaksi terang fotosintesis pada membran tilakoid" className="w-full h-48 object-cover" loading="lazy" width={900} height={600} />
           </div>
           <figcaption className="mt-1.5 text-[11px] text-muted-foreground text-center italic">
-            Sumber: Ilustrasi Virtual Lab Fotosintesis (2026)
+            Sumber: Diadaptasi dari OpenStax Biology 2e (CC BY 4.0) — Bab 8.2 "The Light-Dependent Reactions of Photosynthesis", serta Campbell & Reece, <i>Biology</i> (Pearson).
           </figcaption>
         </figure>
 
