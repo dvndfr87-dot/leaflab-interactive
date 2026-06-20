@@ -73,6 +73,34 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
       nextLabel={currentStep === steps.length - 1 ? "Ke Reaksi Gelap" : undefined}
     >
       <div className="max-w-2xl mx-auto py-4 space-y-4">
+        {/* Penjelasan Singkat Reaksi Terang — di bawah label scene */}
+        <details className="group rounded-xl border border-primary/30 bg-gradient-to-br from-primary/5 to-sunlight/5 open:from-primary/10 open:to-sunlight/10 transition-colors shadow-sm">
+          <summary className="cursor-pointer list-none px-4 py-3 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">📖</span>
+              <div>
+                <div className="text-sm font-semibold text-foreground leading-tight">Penjelasan Reaksi Terang</div>
+                <div className="text-[11px] text-muted-foreground leading-tight">Komponen kunci pada membran tilakoid</div>
+              </div>
+            </div>
+            <span className="font-mono text-xs text-primary group-open:rotate-180 transition-transform">▾</span>
+          </summary>
+          <div className="px-4 pb-4 pt-1 space-y-2 border-t border-border/40">
+            <p className="text-[12px] text-muted-foreground leading-relaxed pt-2">
+              Reaksi terang terjadi di <b className="text-foreground">membran tilakoid</b>. Cahaya memecah H₂O (fotolisis), elektron mengalir melalui rantai transpor (ETC) dan menghasilkan <b className="text-atp">ATP</b> + <b className="text-nadph">NADPH</b> sebagai energi untuk Siklus Calvin.
+            </p>
+            {Object.values(lightInfo).map((entry) => (
+              <div key={entry.id} className="rounded-lg border border-border/50 bg-card p-2.5">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded">{entry.label}</span>
+                  <span className="text-xs font-semibold text-foreground">{entry.title}</span>
+                </div>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">{entry.description}</p>
+              </div>
+            ))}
+          </div>
+        </details>
+
         {/* Reference image */}
         <figure className="m-0">
           <div className="rounded-xl overflow-hidden shadow-md">
