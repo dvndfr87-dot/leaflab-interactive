@@ -71,15 +71,6 @@ const DarkReactionLab = ({ co2, setCo2, o2, setO2, energy, setEnergy }: Props) =
             <div className="lcd-readout">{co2.toString().padStart(3, "0")}%</div>
           </div>
           <Slider value={[co2]} onValueChange={([v]) => setCo2(v)} min={0} max={100} step={5} />
-          <details className="group rounded-md border border-border/60 bg-muted/30">
-            <summary className="cursor-pointer list-none px-2 py-1.5 text-[11px] font-semibold text-foreground/80 flex items-center justify-between">
-              <span>📖 Penjelasan CO₂</span>
-              <span className="font-mono text-[10px] text-primary group-open:rotate-180 transition-transform">▾</span>
-            </summary>
-            <div className="px-2 pb-2 pt-1 text-[11px] text-muted-foreground leading-relaxed">
-              CO₂ masuk daun melalui stomata. RuBisCO mengikat CO₂ ke RuBP membentuk 2 × 3-PGA (fiksasi karbon). Tanpa CO₂, tidak ada atom karbon baru → glukosa = 0.
-            </div>
-          </details>
         </div>
 
         <div className="lab-panel lab-corner p-3 space-y-2">
