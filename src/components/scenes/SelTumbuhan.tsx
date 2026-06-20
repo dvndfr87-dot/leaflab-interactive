@@ -13,92 +13,44 @@ interface SelTumbuhanProps {
 interface Organelle {
   id: string;
   name: string;
-  emoji: string;
+  short: string;
   desc: string;
+  /** Posisi marker (persentase relatif terhadap gambar `plant-cell-id.jpg`, 640×380). */
   top: string;
   left: string;
-  w: string;
-  h: string;
-  /** Tailwind classes override untuk warna ring + chip kalau organel ini perlu kontras tinggi. */
+  /** Ukuran lingkaran sorotan. */
+  size?: string;
   markerClass?: string;
   isTarget?: boolean;
 }
 
-// Posisi ditujukan untuk gambar `plant-cell-id.jpg` (square, 1024×1024).
+/**
+ * 22 organel sesuai diagram Bioearthworm/Encyclopaedia Britannica (2008).
+ * Nama semua dalam Bahasa Indonesia. Banyak penanda klik tersebar di seluruh sel.
+ */
 const organelles: Organelle[] = [
-  {
-    id: "kloroplas1",
-    name: "Kloroplas",
-    emoji: "KLO",
-    desc: "Organel plastida bermembran ganda yang mengandung klorofil. Tempat berlangsungnya fotosintesis — mengubah energi cahaya menjadi energi kimia (ATP, NADPH) dan akhirnya glukosa.",
-    top: "26%",
-    left: "33%",
-    w: "w-12",
-    h: "h-7",
-    // Warna kontras (oranye) supaya tidak menyatu dengan warna hijau sel & kloroplas.
-    markerClass: "border-[hsl(var(--glucose))] bg-[hsl(var(--glucose)/0.25)] shadow-[0_0_0_3px_hsl(var(--glucose)/0.9),0_0_22px_6px_hsl(var(--glucose)/0.7)]",
-    isTarget: true,
-  },
-  {
-    id: "nukleus",
-    name: "Nukleus",
-    emoji: "NUK",
-    desc: "Inti sel yang menyimpan materi genetik (DNA) dan mengatur ekspresi gen serta seluruh aktivitas metabolik sel.",
-    top: "48%",
-    left: "33%",
-    w: "w-14",
-    h: "h-14",
-  },
-  {
-    id: "vakuola",
-    name: "Vakuola",
-    emoji: "VAK",
-    desc: "Organel besar berisi cairan sel (getah vakuola). Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder.",
-    top: "44%",
-    left: "55%",
-    w: "w-24",
-    h: "h-20",
-  },
-  {
-    id: "dinding",
-    name: "Dinding Sel",
-    emoji: "DSL",
-    desc: "Lapisan kaku tersusun dari selulosa di luar membran plasma. Memberi bentuk, dukungan mekanik, dan proteksi sel tumbuhan.",
-    top: "18%",
-    left: "48%",
-    w: "w-16",
-    h: "h-4",
-  },
-  {
-    id: "membran",
-    name: "Membran Sel",
-    emoji: "MEM",
-    desc: "Lapisan tipis di sebelah dalam dinding sel. Mengatur lalu lintas molekul keluar–masuk sel secara selektif.",
-    top: "26%",
-    left: "70%",
-    w: "w-10",
-    h: "h-10",
-  },
-  {
-    id: "sitoplasma",
-    name: "Sitoplasma",
-    emoji: "SIT",
-    desc: "Cairan kental di dalam sel tempat organel-organel berada. Menjadi medium berlangsungnya banyak reaksi metabolik.",
-    top: "62%",
-    left: "50%",
-    w: "w-16",
-    h: "h-8",
-  },
-  {
-    id: "mitokondria",
-    name: "Mitokondria",
-    emoji: "MIT",
-    desc: "Organel respirasi seluler. Mengoksidasi glukosa menjadi ATP melalui siklus Krebs dan rantai transpor elektron.",
-    top: "65%",
-    left: "36%",
-    w: "w-12",
-    h: "h-6",
-  },
+  { id: "membran-inti",   name: "Membran Inti",        short: "MI",  desc: "Selaput ganda yang membungkus inti sel. Memiliki pori-pori untuk mengatur keluar-masuknya RNA dan protein antara inti dan sitoplasma.", top: "12%", left: "60%" },
+  { id: "kromatin",       name: "Kromatin",            short: "KR",  desc: "Untaian DNA + protein histon di dalam inti. Sumber informasi genetik yang akan diekspresikan menjadi protein.", top: "18%", left: "62%" },
+  { id: "nukleolus",      name: "Nukleolus",           short: "NL",  desc: "Bagian padat di dalam inti tempat sintesis RNA ribosom (rRNA) dan perakitan subunit ribosom.", top: "23%", left: "60%" },
+  { id: "inti-sel",       name: "Inti Sel (Nukleus)",  short: "IS",  desc: "Pusat kendali sel. Menyimpan materi genetik (DNA) dan mengatur ekspresi gen, pembelahan sel, serta seluruh aktivitas metabolik.", top: "29%", left: "58%", size: "w-16 h-16" },
+  { id: "nukleoplasma",   name: "Nukleoplasma",        short: "NP",  desc: "Cairan kental di dalam inti sel tempat kromatin dan nukleolus berada.", top: "33%", left: "62%" },
+  { id: "re-halus",       name: "RE Halus",            short: "RH",  desc: "Retikulum endoplasma halus — jaringan membran tanpa ribosom. Berperan dalam sintesis lipid dan detoksifikasi.", top: "40%", left: "70%" },
+  { id: "re-kasar",       name: "RE Kasar",            short: "RK",  desc: "Retikulum endoplasma kasar — ditempeli ribosom. Tempat sintesis protein untuk diekspor atau dimasukkan ke organel.", top: "46%", left: "70%" },
+  { id: "kloroplas",      name: "Kloroplas",           short: "KL",  desc: "Plastida hijau bermembran ganda yang mengandung klorofil. TEMPAT BERLANGSUNGNYA FOTOSINTESIS — mengubah energi cahaya menjadi glukosa.", top: "53%", left: "58%", size: "w-12 h-10", markerClass: "border-[hsl(var(--glucose))] bg-[hsl(var(--glucose)/0.25)] shadow-[0_0_0_3px_hsl(var(--glucose)/0.9),0_0_22px_6px_hsl(var(--glucose)/0.7)]", isTarget: true },
+  { id: "plastida",       name: "Plastida",            short: "PL",  desc: "Kelompok organel pada tumbuhan (kloroplas, kromoplas, leukoplas) yang menyimpan pigmen atau cadangan makanan.", top: "59%", left: "72%" },
+  { id: "dinding-sel",    name: "Dinding Sel",         short: "DS",  desc: "Lapisan kaku di luar membran plasma. Tersusun dari selulosa, memberi bentuk dan proteksi sel tumbuhan.", top: "63%", left: "80%", size: "w-12 h-8" },
+  { id: "selulosa",       name: "Selulosa",            short: "SL",  desc: "Polisakarida penyusun utama dinding sel tumbuhan. Memberikan kekuatan struktural seperti rangka.", top: "73%", left: "72%" },
+  { id: "sitoskeleton",   name: "Sitoskeleton",        short: "SK",  desc: "Jaringan filamen protein (mikrotubulus, mikrofilamen) yang menopang bentuk sel dan membantu pergerakan organel.", top: "76%", left: "74%" },
+  { id: "plasmodesmata",  name: "Plasmodesmata",       short: "PM",  desc: "Saluran sitoplasma kecil yang menghubungkan dua sel tumbuhan bersebelahan melalui dinding sel — jalur komunikasi antar sel.", top: "82%", left: "62%" },
+  { id: "membran-plasma", name: "Membran Plasma",      short: "MP",  desc: "Lapisan tipis fosfolipid di dalam dinding sel. Mengatur lalu lintas molekul keluar-masuk sel secara selektif.", top: "84%", left: "48%" },
+  { id: "sitosol",        name: "Protoplasma / Sitosol", short: "ST", desc: "Cairan sel tempat organel berada. Medium tempat berlangsungnya banyak reaksi metabolik.", top: "78%", left: "44%" },
+  { id: "peroksisom",     name: "Peroksisom",          short: "PR",  desc: "Organel kecil bermembran tunggal. Mengurai asam lemak dan menetralkan hidrogen peroksida (H₂O₂) berbahaya.", top: "72%", left: "38%" },
+  { id: "mitokondria",    name: "Mitokondria",         short: "MT",  desc: "Pembangkit energi sel. Mengoksidasi glukosa menjadi ATP melalui respirasi seluler (siklus Krebs + rantai transpor elektron).", top: "65%", left: "30%" },
+  { id: "lamella-tengah", name: "Lamella Tengah",      short: "LT",  desc: "Lapisan pektin di antara dinding dua sel bersebelahan yang merekatkan keduanya.", top: "57%", left: "27%" },
+  { id: "vakuola-tengah", name: "Vakuola Tengah",      short: "VT",  desc: "Vakuola besar berisi getah sel. Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder pada sel tumbuhan dewasa.", top: "46%", left: "30%", size: "w-14 h-12" },
+  { id: "badan-golgi",    name: "Badan Golgi",         short: "BG",  desc: "Tumpukan kantung membran yang memodifikasi, menyortir, dan mengemas protein/lipid hasil dari RE sebelum dikirim ke tujuannya.", top: "39%", left: "27%" },
+  { id: "ribosom",        name: "Ribosom",             short: "RB",  desc: "Mesin pembuat protein. Menerjemahkan mRNA menjadi rantai asam amino — bisa bebas di sitosol atau menempel pada RE Kasar.", top: "33%", left: "27%" },
+  { id: "vakuola-vesikel",name: "Vakuola / Vesikel",   short: "VV",  desc: "Kantung kecil bermembran untuk transpor zat di dalam sel atau menyimpan cadangan jangka pendek.", top: "25%", left: "30%" },
 ];
 
 const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
@@ -115,7 +67,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
   const selected = organelles.find((o) => o.id === selectedId);
   const activeId = hoverId ?? selectedId;
   const discoveredCount = discoveredIds.size;
-  const targetFound = discoveredIds.has("kloroplas1");
+  const targetFound = discoveredIds.has("kloroplas");
 
   return (
     <SceneLayout
@@ -130,25 +82,20 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
     >
       <div className="max-w-3xl mx-auto flex flex-col items-center gap-4 py-4">
         <p className="text-center text-sm text-muted-foreground max-w-lg">
-          Pilih nama organel di panel kiri untuk menyorot lokasinya pada preparat.
-          Temukan <strong className="text-primary">Kloroplas</strong> untuk melanjutkan.
+          Klik <strong className="text-primary">nama organel</strong> di daftar atau langsung pada <strong className="text-primary">marker</strong> di gambar untuk mempelajarinya. Temukan{" "}
+          <strong className="text-[hsl(var(--glucose))]">Kloroplas</strong> untuk melanjutkan.
         </p>
 
         {/* Checklist progress */}
-        <div
-          className="lab-panel w-full max-w-md p-4"
-          role="region"
-          aria-label="Daftar organel ditemukan"
-        >
+        <div className="lab-panel w-full max-w-md p-4" role="region" aria-label="Daftar organel ditemukan">
           <div className="flex items-center justify-between mb-2">
             <span className="lab-label">Organel Ditemukan</span>
             <span className="lcd-readout" aria-live="polite" aria-atomic="true">
-              {discoveredCount.toString().padStart(2, "0")}/
-              {organelles.length.toString().padStart(2, "0")}
+              {discoveredCount.toString().padStart(2, "0")}/{organelles.length.toString().padStart(2, "0")}
             </span>
           </div>
           <div
-            className="h-1.5 w-full rounded-full bg-muted overflow-hidden mb-3"
+            className="h-1.5 w-full rounded-full bg-muted overflow-hidden mb-1"
             role="progressbar"
             aria-valuemin={0}
             aria-valuemax={organelles.length}
@@ -162,38 +109,12 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               transition={{ duration: 0.4, ease: "easeOut" }}
             />
           </div>
-          <ul className="grid grid-cols-2 gap-1.5 text-xs">
-            {organelles.map((org) => {
-              const found = discoveredIds.has(org.id);
-              return (
-                <li
-                  key={org.id}
-                  className={`flex items-center gap-1.5 px-2 py-1 rounded border transition-colors ${
-                    found
-                      ? "bg-primary/10 border-primary/30 text-foreground"
-                      : "bg-muted/40 border-border text-muted-foreground"
-                  }`}
-                >
-                  <CheckCircle2
-                    className={`w-3.5 h-3.5 shrink-0 ${
-                      found ? "text-primary" : "text-muted-foreground/40"
-                    }`}
-                    aria-hidden="true"
-                  />
-                  <span className="truncate">{org.name}</span>
-                  <span className="sr-only">
-                    {found ? "ditemukan" : "belum ditemukan"}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-5 w-full items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-5 w-full items-start">
           {/* Organelle name list */}
-          <div className="lab-panel p-3 flex flex-col gap-1.5">
-            <div className="lab-label mb-1">Organel</div>
+          <div className="lab-panel p-3 flex flex-col gap-1 max-h-[500px] overflow-y-auto">
+            <div className="lab-label mb-1 sticky top-0 bg-card pb-1">Daftar Organel</div>
             {organelles.map((org) => {
               const isActive = activeId === org.id;
               const isFound = discoveredIds.has(org.id);
@@ -206,10 +127,11 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                   onFocus={() => setHoverId(org.id)}
                   onBlur={() => setHoverId(null)}
                   aria-pressed={selectedId === org.id}
-                  aria-label={`${org.name}${isFound ? " (sudah ditemukan)" : ""}`}
-                  className={`group flex items-center justify-between gap-2 text-left px-2.5 py-2 rounded-md border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                  className={`group flex items-center justify-between gap-2 text-left px-2 py-1.5 rounded-md border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                     isActive
-                      ? "bg-primary/15 border-primary text-foreground shadow-[0_0_0_2px_hsl(var(--primary)/0.25)]"
+                      ? org.isTarget
+                        ? "bg-[hsl(var(--glucose)/0.15)] border-[hsl(var(--glucose))] text-foreground"
+                        : "bg-primary/15 border-primary text-foreground"
                       : "bg-card/40 border-border hover:border-primary/60 hover:bg-primary/5"
                   }`}
                 >
@@ -218,104 +140,105 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                       aria-hidden="true"
                       className={`font-mono text-[10px] px-1.5 py-0.5 rounded ${
                         isActive
-                          ? "bg-primary text-primary-foreground"
+                          ? org.isTarget
+                            ? "bg-[hsl(var(--glucose))] text-white"
+                            : "bg-primary text-primary-foreground"
                           : "bg-muted text-muted-foreground"
                       }`}
                     >
-                      {org.emoji}
+                      {org.short}
                     </span>
-                    <span className="text-sm truncate">{org.name}</span>
+                    <span className="text-[12px] truncate">{org.name}</span>
                   </div>
-                  {isFound && (
-                    <CheckCircle2
-                      className="w-3.5 h-3.5 text-primary shrink-0"
-                      aria-hidden="true"
-                    />
-                  )}
+                  {isFound && <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" aria-hidden="true" />}
                 </button>
               );
             })}
           </div>
 
-          {/* Image with highlights */}
+          {/* Image with clickable markers */}
           <figure className="relative justify-self-center m-0">
-            <motion.img
-              src={plantCellImg}
-              alt="Ilustrasi struktur sel tumbuhan dengan kloroplas, nukleus, vakuola, mitokondria, dinding sel, dan sitoplasma"
-              className="rounded-xl shadow-lg max-w-full w-[400px] block"
-              width={400}
-              height={400}
-            />
+            <div className="relative">
+              <motion.img
+                src={plantCellImg}
+                alt="Diagram sel tumbuhan dengan label dalam Bahasa Indonesia"
+                className="rounded-xl shadow-lg max-w-full w-[420px] block"
+                width={420}
+                height={249}
+              />
 
-            {/* Dim overlay when something is highlighted */}
-            <AnimatePresence>
-              {activeId && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="absolute inset-0 rounded-xl bg-background/45 pointer-events-none"
-                />
-              )}
-            </AnimatePresence>
+              {/* Dim overlay when something is highlighted */}
+              <AnimatePresence>
+                {activeId && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 rounded-xl bg-background/35 pointer-events-none"
+                  />
+                )}
+              </AnimatePresence>
 
-            {/* Highlight rings */}
-            {organelles.map((org) => {
-              const isActive = activeId === org.id;
-              const isFound = discoveredIds.has(org.id);
-              if (!isActive && !isFound) return null;
-              const customMarker = org.markerClass;
-              return (
-                <motion.div
-                  key={org.id}
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  animate={
-                    isActive
-                      ? {
-                          opacity: 1,
-                          scale: [1, 1.18, 1],
-                        }
-                      : { opacity: 0.55, scale: 1 }
-                  }
-                  transition={
-                    isActive
-                      ? { scale: { duration: 1.4, repeat: Infinity, ease: "easeInOut" } }
-                      : { duration: 0.3 }
-                  }
-                  className={`absolute ${org.w} ${org.h} rounded-full pointer-events-none border-2 ${
-                    isActive
-                      ? customMarker ??
-                        "border-primary bg-primary/25 shadow-[0_0_0_3px_hsl(var(--primary)/0.9),0_0_22px_6px_hsl(var(--primary)/0.7)]"
-                      : customMarker
-                      ? "border-[hsl(var(--glucose))]/60 bg-[hsl(var(--glucose)/0.15)]"
-                      : "border-primary/50 bg-primary/10"
-                  }`}
-                  style={{ top: org.top, left: org.left }}
-                />
-              );
-            })}
+              {/* Clickable markers untuk setiap organel */}
+              {organelles.map((org) => {
+                const isActive = activeId === org.id;
+                const isFound = discoveredIds.has(org.id);
+                const size = org.size ?? "w-7 h-7";
+                const customMarker = org.markerClass;
+                return (
+                  <button
+                    key={org.id}
+                    type="button"
+                    onClick={() => handleSelect(org)}
+                    onMouseEnter={() => setHoverId(org.id)}
+                    onMouseLeave={() => setHoverId(null)}
+                    onFocus={() => setHoverId(org.id)}
+                    onBlur={() => setHoverId(null)}
+                    aria-label={`Marker ${org.name}`}
+                    style={{ top: org.top, left: org.left, transform: "translate(-50%, -50%)" }}
+                    className={`absolute ${size} rounded-full border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center cursor-pointer ${
+                      isActive
+                        ? customMarker ??
+                          "border-primary bg-primary/30 shadow-[0_0_0_3px_hsl(var(--primary)/0.85),0_0_22px_6px_hsl(var(--primary)/0.6)] animate-pulse"
+                        : isFound
+                        ? customMarker
+                          ? "border-[hsl(var(--glucose))]/70 bg-[hsl(var(--glucose)/0.2)]"
+                          : "border-primary/60 bg-primary/15"
+                        : "border-white/80 bg-white/20 backdrop-blur-[1px] hover:border-primary hover:bg-primary/30"
+                    }`}
+                  >
+                    <span
+                      className={`font-mono text-[8px] font-bold pointer-events-none ${
+                        isActive || isFound ? (org.isTarget ? "text-[hsl(var(--glucose-foreground,0_0%_100%))] text-white" : "text-primary-foreground") : "text-foreground/80"
+                      }`}
+                      aria-hidden="true"
+                    >
+                      {isFound ? "✓" : "+"}
+                    </span>
+                  </button>
+                );
+              })}
 
-            {/* Floating label for active */}
-            <AnimatePresence>
-              {activeId && (
-                <motion.div
-                  key={activeId}
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  className={`absolute -bottom-3 left-1/2 -translate-x-1/2 text-xs font-mono px-2.5 py-1 rounded shadow-lg whitespace-nowrap ${
-                    activeId === "kloroplas1"
-                      ? "bg-[hsl(var(--glucose))] text-white"
-                      : "bg-primary text-primary-foreground"
-                  }`}
-                >
-                  {organelles.find((o) => o.id === activeId)?.name}
-                </motion.div>
-              )}
-            </AnimatePresence>
+              {/* Floating label for active */}
+              <AnimatePresence>
+                {activeId && (
+                  <motion.div
+                    key={activeId}
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    className={`absolute -bottom-3 left-1/2 -translate-x-1/2 text-xs font-mono px-2.5 py-1 rounded shadow-lg whitespace-nowrap z-10 ${
+                      activeId === "kloroplas" ? "bg-[hsl(var(--glucose))] text-white" : "bg-primary text-primary-foreground"
+                    }`}
+                  >
+                    {organelles.find((o) => o.id === activeId)?.name}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             <figcaption className="mt-4 text-[11px] text-muted-foreground text-center italic">
-              Sumber: Diadaptasi dari OpenStax Biology 2e (CC BY 4.0) — Bab 4.4 "Eukaryotic Cells".
+              Sumber: Encyclopaedia Britannica, Inc. (2008) — diadaptasi via bioearthworm.wordpress.com (label Bahasa Indonesia).
             </figcaption>
           </figure>
         </div>
@@ -335,7 +258,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               }`}
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="specimen-chip">{selected.emoji}</span>
+                <span className="specimen-chip">{selected.short}</span>
                 <h3 className="font-semibold text-foreground">{selected.name}</h3>
                 <span className="ml-auto text-[10px] font-mono text-primary flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" /> ditemukan
@@ -355,11 +278,10 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               animate={{ opacity: 1 }}
               className="lab-panel p-4 max-w-md text-sm"
             >
-              <div className="lab-label mb-2">Briefing</div>
+              <div className="lab-label mb-2">Petunjuk</div>
               <p className="text-muted-foreground">
-                Klik nama organel di panel sebelah untuk menyorot lokasinya pada preparat.
-                Sel tumbuhan memiliki organel plastida bernama{" "}
-                <strong className="text-primary">kloroplas</strong> yang mengandung klorofil.
+                Setiap titik bertanda <span className="font-mono">+</span> pada gambar adalah penanda organel yang dapat diklik. Cari{" "}
+                <strong className="text-[hsl(var(--glucose))]">Kloroplas</strong> — organel hijau tempat berlangsungnya fotosintesis — untuk melanjutkan ke tahap berikutnya.
               </p>
             </motion.div>
           )}

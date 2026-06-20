@@ -133,7 +133,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                     {selectedPart === "tilakoid" ? (
                       <>
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="specimen-chip">THY</span>
+                          <span className="specimen-chip">TIL</span>
                           <h3 className="font-semibold text-primary">Membran Tilakoid</h3>
                         </div>
                         <p className="text-muted-foreground mb-3">
