@@ -80,7 +80,7 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
                 </div>
               ))}
               <p className="text-[10px] text-muted-foreground leading-snug pt-1 border-t border-border/40">
-                <b>Dasar simulasi:</b> Hasil penelitian uji cakram daun menunjukkan efektivitas fotosintesis tertinggi pada spektrum cahaya tertentu, sedangkan spektrum lain menunjukkan efektivitas paling rendah.
+                <b>Dasar simulasi:</b> Hasil penelitian uji cakram daun menunjukkan efektivitas fotosintesis tertinggi pada cahaya <b style={{ color: "#ef4444" }}>merah</b> dan <b style={{ color: "#3b82f6" }}>biru</b>, sedangkan cahaya <b style={{ color: "#22c55e" }}>hijau</b> menunjukkan efektivitas paling rendah.
               </p>
             </div>
           </details>
