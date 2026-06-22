@@ -67,20 +67,20 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
             </summary>
             <div className="px-2 pb-2 pt-1 space-y-1.5">
               {[
-                { label: "Merah", color: "#ef4444", level: 95, status: "Tinggi" },
-                { label: "Biru",  color: "#3b82f6", level: 90, status: "Tinggi" },
-                { label: "Hijau", color: "#22c55e", level: 18, status: "Rendah" },
-              ].map((b) => (
-                <div key={b.label} className="flex items-center gap-2 text-[10px] font-mono">
-                  <span className="w-10 text-foreground/80">{b.label}</span>
+                { color: "#ef4444", level: 95, status: "Tinggi" },
+                { color: "#3b82f6", level: 90, status: "Tinggi" },
+                { color: "#22c55e", level: 18, status: "Rendah" },
+              ].map((b, i) => (
+                <div key={i} className="flex items-center gap-2 text-[10px] font-mono">
+                  <span className="w-3 h-3 rounded-sm shrink-0 border border-border/40" style={{ background: b.color }} />
                   <div className="flex-1 h-2.5 rounded-sm bg-muted overflow-hidden">
-                    <div className="h-full rounded-sm" style={{ width: `${b.level}%`, background: b.color }} />
+                    <div className="h-full rounded-sm transition-all" style={{ width: `${b.level}%`, background: b.color }} />
                   </div>
                   <span className={`w-12 text-right ${b.status === "Tinggi" ? "text-emerald-600" : "text-amber-600"}`}>{b.status}</span>
                 </div>
               ))}
               <p className="text-[10px] text-muted-foreground leading-snug pt-1 border-t border-border/40">
-                <b>Dasar simulasi:</b> Hasil penelitian uji cakram daun menunjukkan efektivitas fotosintesis tertinggi pada cahaya <b style={{ color: "#ef4444" }}>merah</b> dan <b style={{ color: "#3b82f6" }}>biru</b>, sedangkan cahaya <b style={{ color: "#22c55e" }}>hijau</b> menunjukkan efektivitas paling rendah.
+                <b>Dasar simulasi:</b> Hasil penelitian uji cakram daun menunjukkan efektivitas fotosintesis tertinggi pada spektrum cahaya tertentu, sedangkan spektrum lain menunjukkan efektivitas paling rendah.
               </p>
             </div>
           </details>
