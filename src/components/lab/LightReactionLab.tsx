@@ -66,24 +66,23 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
               <span className="text-muted-foreground transition-transform group-open:rotate-180">▾</span>
             </summary>
             <div className="px-2 pb-2 pt-1 space-y-2">
-              <div className="flex items-end justify-around gap-3 h-24 px-2 pt-1 rounded-md bg-muted/40 border border-border/40">
+              <div className="space-y-1.5 p-2 rounded-md bg-muted/40 border border-border/40">
                 {[
                   { color: "#ef4444", level: 95, status: "Tinggi" },
                   { color: "#3b82f6", level: 90, status: "Tinggi" },
                   { color: "#22c55e", level: 18, status: "Rendah" },
                 ].map((b, i) => (
-                  <div key={i} className="flex flex-col items-center justify-end h-full flex-1 gap-1">
-                    <span className="font-mono text-[9px] text-foreground/70">{b.level}%</span>
-                    <div
-                      className="w-full rounded-sm transition-all"
-                      style={{ height: `${b.level}%`, background: b.color, minHeight: 2 }}
-                    />
-                    <span className={`font-mono text-[9px] ${b.status === "Tinggi" ? "text-emerald-600" : "text-amber-600"}`}>{b.status}</span>
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-sm shrink-0 border border-border/40" style={{ background: b.color }} />
+                    <div className="flex-1 h-3 rounded-sm bg-background/60 overflow-hidden">
+                      <div className="h-full rounded-sm transition-all" style={{ width: `${b.level}%`, background: b.color }} />
+                    </div>
+                    <span className={`w-14 text-right font-mono text-[10px] ${b.status === "Tinggi" ? "text-emerald-600" : "text-amber-600"}`}>{b.status}</span>
                   </div>
                 ))}
               </div>
               <p className="text-[10px] text-muted-foreground leading-snug pt-1 border-t border-border/40">
-                <b>Dasar simulasi:</b> Hasil penelitian uji cakram daun menunjukkan efektivitas fotosintesis tertinggi pada cahaya <b style={{ color: "#ef4444" }}>merah</b> dan <b style={{ color: "#3b82f6" }}>biru</b>, sedangkan cahaya <b style={{ color: "#22c55e" }}>hijau</b> menunjukkan efektivitas paling rendah.
+                <b>Dasar simulasi:</b> Hasil penelitian uji cakram daun menunjukkan efektivitas fotosintesis tertinggi pada cahaya <b style={{ color: "#ef4444" }}>merah</b> dan <b style={{ color: "#3b82f6" }}>biru</b> (bar memanjang menandakan laju fotosintesis <b className="text-emerald-600">tinggi</b>), sedangkan cahaya <b style={{ color: "#22c55e" }}>hijau</b> menunjukkan efektivitas paling <b className="text-amber-600">rendah</b> (bar pendek karena sebagian besar dipantulkan oleh klorofil).
               </p>
             </div>
           </details>
