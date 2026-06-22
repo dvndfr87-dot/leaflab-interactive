@@ -59,6 +59,31 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
           <div className="flex justify-between font-mono text-[9px] text-muted-foreground">
             <span>gelap</span><span>fase rendah</span><span>fase optimal</span>
           </div>
+
+          <details className="group mt-2 rounded-md border border-border/50 bg-muted/30">
+            <summary className="cursor-pointer list-none px-2 py-1.5 text-[10px] font-mono uppercase tracking-wide text-foreground/80 flex items-center justify-between">
+              <span>📊 Hasil Penelitian Uji Cakram Daun</span>
+              <span className="text-muted-foreground transition-transform group-open:rotate-180">▾</span>
+            </summary>
+            <div className="px-2 pb-2 pt-1 space-y-1.5">
+              {[
+                { label: "Merah", color: "#ef4444", level: 95, status: "Tinggi" },
+                { label: "Biru",  color: "#3b82f6", level: 90, status: "Tinggi" },
+                { label: "Hijau", color: "#22c55e", level: 18, status: "Rendah" },
+              ].map((b) => (
+                <div key={b.label} className="flex items-center gap-2 text-[10px] font-mono">
+                  <span className="w-10 text-foreground/80">{b.label}</span>
+                  <div className="flex-1 h-2.5 rounded-sm bg-muted overflow-hidden">
+                    <div className="h-full rounded-sm" style={{ width: `${b.level}%`, background: b.color }} />
+                  </div>
+                  <span className={`w-12 text-right ${b.status === "Tinggi" ? "text-emerald-600" : "text-amber-600"}`}>{b.status}</span>
+                </div>
+              ))}
+              <p className="text-[10px] text-muted-foreground leading-snug pt-1 border-t border-border/40">
+                <b>Dasar simulasi:</b> Hasil penelitian uji cakram daun menunjukkan efektivitas fotosintesis tertinggi pada cahaya <b style={{ color: "#ef4444" }}>merah</b> dan <b style={{ color: "#3b82f6" }}>biru</b>, sedangkan cahaya <b style={{ color: "#22c55e" }}>hijau</b> menunjukkan efektivitas paling rendah.
+              </p>
+            </div>
+          </details>
         </div>
 
         <div className="lab-panel lab-corner p-3 space-y-2">
