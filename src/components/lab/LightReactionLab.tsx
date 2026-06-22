@@ -68,9 +68,9 @@ const LightReactionLab = ({ light, setLight, water, setWater }: Props) => {
             <div className="px-2 pb-2 pt-1 space-y-2">
               <div className="flex items-end justify-around gap-3 h-24 px-2 pt-1 rounded-md bg-muted/40 border border-border/40">
                 {[
-                  { color: "hsl(var(--oxygen))", level: 95, status: "Tinggi" },
-                  { color: "hsl(var(--accent))", level: 90, status: "Tinggi" },
-                  { color: "hsl(var(--leaf))",   level: 18, status: "Rendah" },
+                  { color: "#ef4444", level: 95, status: "Tinggi" },
+                  { color: "#3b82f6", level: 90, status: "Tinggi" },
+                  { color: "#22c55e", level: 18, status: "Rendah" },
                 ].map((b, i) => (
                   <div key={i} className="flex flex-col items-center justify-end h-full flex-1 gap-1">
                     <span className="font-mono text-[9px] text-foreground/70">{b.level}%</span>
