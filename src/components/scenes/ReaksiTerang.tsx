@@ -450,6 +450,16 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
               </div>
             ))}
           </div>
+          </div>{/* /sticky wrapper */}
+
+          {/* Control Panel — placed BELOW the visualization so its values are always visible */}
+          <AnimatePresence>
+            {showMiniSim && (
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-4">
+                <LightReactionLab light={light} setLight={setLight} water={water} setWater={setWater} />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
 
         </div>
