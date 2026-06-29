@@ -150,16 +150,10 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
             </button>
           </div>
 
-          {/* Light intensity instrument panel */}
-          <AnimatePresence>
-            {showMiniSim && (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-3">
-                <LightReactionLab light={light} setLight={setLight} water={water} setWater={setWater} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Light intensity instrument panel — moved BELOW the visualization so changes are visible */}
 
-          {/* Main visualization — taller, more detailed */}
+          {/* Main visualization — taller, more detailed. Sticky-top when control panel open so user can see changes while sliding. */}
+          <div className={showMiniSim ? "sticky top-2 z-20 bg-card rounded-lg pb-2 mb-3 shadow-md" : ""}>
           <div
             className="relative h-64 md:h-72 rounded-lg overflow-hidden border border-border/50 select-none"
             style={{
@@ -456,6 +450,16 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
               </div>
             ))}
           </div>
+          </div>{/* /sticky wrapper */}
+
+          {/* Control Panel — placed BELOW the visualization so its values are always visible */}
+          <AnimatePresence>
+            {showMiniSim && (
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-4">
+                <LightReactionLab light={light} setLight={setLight} water={water} setWater={setWater} />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
 
         </div>

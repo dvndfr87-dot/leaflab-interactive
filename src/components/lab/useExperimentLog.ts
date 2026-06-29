@@ -73,16 +73,24 @@ export function useExperimentLog({ params, results, debounceMs = 350, max = 50 }
     if (entries.length === 0) return;
     const paramKeys = Object.keys(entries[0].params);
     const resultKeys = Object.keys(entries[0].results);
-    const header = ["timestamp", "changed", ...paramKeys, ...resultKeys].join(",");
-    const rows = entries.map(e =>
-      [
-        new Date(e.t).toISOString(),
-        e.changed,
-        ...paramKeys.map(k => e.params[k]?.toFixed(2) ?? ""),
-        ...resultKeys.map(k => e.results[k]?.toFixed(2) ?? ""),
-      ].join(",")
-    );
-    const blob = new Blob([[header, ...rows].join("\n")], { type: "text/csv" });
+    // Match UI table columns exactly: Waktu, Δ, params..., results...
+    const header = ["Waktu", "Δ (Berubah)", ...paramKeys, ...resultKeys];
+    const fmt = (n: number) => (Number.isInteger(n) ? n.toString() : n.toFixed(1));
+    const timeStr = (t: number) => {
+      const d = new Date(t);
+      return `${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}:${d.getSeconds().toString().padStart(2, "0")}`;
+    };
+    const esc = (s: string) => /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    // Newest entry first in UI → keep same order in export
+    const rows = entries.map(e => [
+      timeStr(e.t),
+      e.changed,
+      ...paramKeys.map(k => e.params[k] != null ? fmt(e.params[k]) : ""),
+      ...resultKeys.map(k => e.results[k] != null ? fmt(e.results[k]) : ""),
+    ]);
+    const csv = [header, ...rows].map(r => r.map(c => esc(String(c))).join(",")).join("\n");
+    // BOM for Excel UTF-8 detection
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;

@@ -61,6 +61,22 @@ const DarkReactionLab = ({ co2, setCo2, o2, setO2, energy, setEnergy }: Props) =
 
   return (
     <div className="space-y-3">
+      {/* Cara kerja control panel — penjelasan teks */}
+      <div className="lab-panel lab-corner p-3 text-xs leading-relaxed text-foreground/90 space-y-1.5">
+        <div className="font-mono text-[10px] tracking-widest text-primary">▸ CARA KERJA CONTROL PANEL</div>
+        <p>
+          Panel ini mensimulasikan <b>Siklus Calvin</b> di stroma kloroplas. Tiga slider mengatur kondisi reaksi:
+        </p>
+        <ul className="list-disc pl-5 space-y-1 text-foreground/85">
+          <li><b>CH-03 · CO₂</b> — jumlah substrat yang difiksasi RuBisCO ke RuBP. Naikkan CO₂ → laju siklus & produksi glukosa meningkat. CO₂ = 0 → siklus berhenti walau energi tersedia.</li>
+          <li><b>CH-04 · O₂</b> — kadar oksigen yang berkompetisi dengan CO₂ di sisi aktif RuBisCO (fotorespirasi). O₂ tinggi → laju turun meski CO₂ banyak.</li>
+          <li><b>CH-05 · Energi (ATP/NADPH)</b> — pasokan energi dari reaksi terang. Tanpa ATP/NADPH, reduksi 3-PGA → G3P tidak terjadi sehingga glukosa & pati tidak terbentuk.</li>
+        </ul>
+        <p className="pt-1">
+          <span className="font-semibold">Output yang dihasilkan panel:</span> kecepatan siklus (<b>Cycle Speed</b>), molekul antara <b>G3P</b>, akumulasi <b>Glukosa (C₆H₁₂O₆)</b>, serta penimbunan <b>Pati</b> ketika glukosa berlebih. Semua nilai output bergerak real-time mengikuti kombinasi slider di atas.
+        </p>
+      </div>
+
       <div className="grid md:grid-cols-3 gap-2">
         <div className="lab-panel lab-corner p-3 space-y-2">
           <div className="flex items-center justify-between">
