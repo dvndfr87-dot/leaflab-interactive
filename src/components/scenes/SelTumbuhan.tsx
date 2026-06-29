@@ -29,20 +29,20 @@ interface Organelle {
  * Posisi marker dikalibrasi terhadap ilustrasi baru `plant-cell-id.jpg`.
  */
 const organelles: Organelle[] = [
-  { id: "dinding-sel",    name: "Dinding Sel",          short: "DS", desc: "Lapisan kaku terluar yang tersusun dari selulosa. Memberi bentuk dan proteksi mekanik pada sel tumbuhan.", top: "8%",  left: "50%", size: "w-10 h-7" },
-  { id: "membran-plasma", name: "Membran Plasma",       short: "MP", desc: "Selaput tipis fosfolipid di dalam dinding sel. Mengatur lalu lintas molekul keluar-masuk sel secara selektif.", top: "14%", left: "50%" },
-  { id: "sitoplasma",     name: "Sitoplasma",           short: "SP", desc: "Cairan sel tempat semua organel berada. Medium berlangsungnya banyak reaksi metabolik.", top: "48%", left: "45%" },
-  { id: "inti-sel",       name: "Inti Sel (Nukleus)",   short: "IS", desc: "Pusat kendali sel. Menyimpan materi genetik (DNA) dan mengatur ekspresi gen serta seluruh aktivitas sel.", top: "26%", left: "73%", size: "w-14 h-14" },
-  { id: "nukleolus",      name: "Nukleolus",            short: "NL", desc: "Bagian padat di dalam inti tempat sintesis RNA ribosom (rRNA) dan perakitan subunit ribosom.", top: "28%", left: "72%" },
-  { id: "membran-inti",   name: "Membran Inti",         short: "MI", desc: "Selaput ganda yang membungkus inti sel. Memiliki pori-pori untuk lalu lintas RNA dan protein.", top: "36%", left: "82%" },
-  { id: "kloroplas",      name: "Kloroplas",            short: "KL", desc: "Plastida hijau bermembran ganda yang mengandung klorofil. TEMPAT BERLANGSUNGNYA FOTOSINTESIS — mengubah energi cahaya menjadi glukosa.", top: "38%", left: "36%", size: "w-12 h-10", markerClass: "border-[hsl(var(--glucose))] bg-[hsl(var(--glucose)/0.25)] shadow-[0_0_0_3px_hsl(var(--glucose)/0.9),0_0_22px_6px_hsl(var(--glucose)/0.7)]", isTarget: true },
-  { id: "mitokondria",    name: "Mitokondria",          short: "MT", desc: "Pembangkit energi sel. Mengoksidasi glukosa menjadi ATP melalui respirasi seluler.", top: "34%", left: "44%" },
-  { id: "re",             name: "Retikulum Endoplasma", short: "RE", desc: "Jaringan membran tempat sintesis protein (RE Kasar dengan ribosom) dan lipid (RE Halus).", top: "42%", left: "62%" },
-  { id: "badan-golgi",    name: "Badan Golgi",          short: "BG", desc: "Tumpukan kantung membran yang memodifikasi, menyortir, dan mengemas protein/lipid sebelum dikirim ke tujuannya.", top: "60%", left: "72%" },
-  { id: "ribosom",        name: "Ribosom",              short: "RB", desc: "Mesin pembuat protein. Menerjemahkan mRNA menjadi rantai asam amino — bisa bebas di sitosol atau menempel pada RE Kasar.", top: "65%", left: "82%" },
-  { id: "vakuola-tengah", name: "Vakuola Tengah",       short: "VT", desc: "Vakuola besar berisi getah sel. Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder.", top: "58%", left: "50%", size: "w-14 h-12" },
-  { id: "peroksisom",     name: "Peroksisom",           short: "PR", desc: "Organel kecil bermembran tunggal. Mengurai asam lemak dan menetralkan hidrogen peroksida (H₂O₂) berbahaya.", top: "78%", left: "44%" },
-  { id: "plasmodesmata",  name: "Plasmodesmata",        short: "PM", desc: "Saluran sitoplasma kecil yang menembus dinding sel — jalur komunikasi antar sel tumbuhan yang bersebelahan.", top: "92%", left: "48%" },
+  { id: "dinding-sel",    name: "Dinding Sel",          short: "DS", desc: "Lapisan kaku terluar yang tersusun dari selulosa. Memberi bentuk dan proteksi mekanik pada sel tumbuhan.", top: "11%", left: "50%", size: "w-10 h-7" },
+  { id: "membran-plasma", name: "Membran Plasma",       short: "MP", desc: "Selaput tipis fosfolipid di dalam dinding sel. Mengatur lalu lintas molekul keluar-masuk sel secara selektif.", top: "17%", left: "50%" },
+  { id: "sitoplasma",     name: "Sitoplasma",           short: "SP", desc: "Cairan sel tempat semua organel berada. Medium berlangsungnya banyak reaksi metabolik.", top: "48%", left: "42%" },
+  { id: "inti-sel",       name: "Inti Sel (Nukleus)",   short: "IS", desc: "Pusat kendali sel. Menyimpan materi genetik (DNA) dan mengatur ekspresi gen serta seluruh aktivitas sel.", top: "28%", left: "72%", size: "w-14 h-14" },
+  { id: "nukleolus",      name: "Nukleolus",            short: "NL", desc: "Bagian padat di dalam inti tempat sintesis RNA ribosom (rRNA) dan perakitan subunit ribosom.", top: "30%", left: "70%" },
+  { id: "membran-inti",   name: "Membran Inti",         short: "MI", desc: "Selaput ganda yang membungkus inti sel. Memiliki pori-pori untuk lalu lintas RNA dan protein.", top: "32%", left: "76%" },
+  { id: "kloroplas",      name: "Kloroplas",            short: "KL", desc: "Plastida hijau bermembran ganda yang mengandung klorofil. TEMPAT BERLANGSUNGNYA FOTOSINTESIS — mengubah energi cahaya menjadi glukosa.", top: "38%", left: "36%", size: "w-12 h-10", markerClass: "border-orange-500 bg-yellow-400 shadow-[0_0_0_3px_rgb(249_115_22_/_0.75),0_0_20px_6px_rgb(249_115_22_/_0.55)]", isTarget: true },
+  { id: "mitokondria",    name: "Mitokondria",          short: "MT", desc: "Pembangkit energi sel. Mengoksidasi glukosa menjadi ATP melalui respirasi seluler.", top: "36%", left: "46%" },
+  { id: "re",             name: "Retikulum Endoplasma", short: "RE", desc: "Jaringan membran tempat sintesis protein (RE Kasar dengan ribosom) dan lipid (RE Halus).", top: "44%", left: "60%" },
+  { id: "badan-golgi",    name: "Badan Golgi",          short: "BG", desc: "Tumpukan kantung membran yang memodifikasi, menyortir, dan mengemas protein/lipid sebelum dikirim ke tujuannya.", top: "58%", left: "68%" },
+  { id: "ribosom",        name: "Ribosom",              short: "RB", desc: "Mesin pembuat protein. Menerjemahkan mRNA menjadi rantai asam amino — bisa bebas di sitosol atau menempel pada RE Kasar.", top: "64%", left: "76%" },
+  { id: "vakuola-tengah", name: "Vakuola Tengah",       short: "VT", desc: "Vakuola besar berisi getah sel. Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder.", top: "56%", left: "48%", size: "w-14 h-12" },
+  { id: "peroksisom",     name: "Peroksisom",           short: "PR", desc: "Organel kecil bermembran tunggal. Mengurai asam lemak dan menetralkan hidrogen peroksida (H₂O₂) berbahaya.", top: "74%", left: "42%" },
+  { id: "plasmodesmata",  name: "Plasmodesmata",        short: "PM", desc: "Saluran sitoplasma kecil yang menembus dinding sel — jalur komunikasi antar sel tumbuhan yang bersebelahan.", top: "86%", left: "50%" },
 ];
 
 const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
