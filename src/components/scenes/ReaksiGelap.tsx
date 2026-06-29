@@ -395,9 +395,17 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
               </div>
             ))}
           </div>
+          </div>{/* /sticky wrapper */}
 
+          {/* Control Panel BELOW the visualization so values are visible while sliding */}
+          <AnimatePresence>
+            {showMiniSim && (
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-4">
+                <DarkReactionLab co2={co2Slider} setCo2={setCo2Slider} o2={o2Atm} setO2={setO2Atm} energy={energy} setEnergy={setEnergy} />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        </div>
 
         {/* Summary */}
         <div className="bg-card rounded-lg p-4 border border-border text-sm">
