@@ -190,19 +190,20 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                     style={{ top: org.top, left: org.left, transform: "translate(-50%, -50%)" }}
                     className={`absolute ${size} rounded-full border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center cursor-pointer ${
                       isActive
-                        ? customMarker ??
-                          "border-primary bg-primary/30 shadow-[0_0_0_3px_hsl(var(--primary)/0.85),0_0_22px_6px_hsl(var(--primary)/0.6)] animate-pulse"
+                        ? customMarker
+                          ? `${customMarker} animate-pulse`
+                          : "border-red-600 bg-yellow-400 shadow-[0_0_0_3px_rgb(220_38_38_/_0.6),0_0_18px_5px_rgb(220_38_38_/_0.45)] animate-pulse"
                         : isFound
                         ? customMarker
-                          ? "border-[hsl(var(--glucose))]/70 bg-[hsl(var(--glucose)/0.2)]"
-                          : "border-primary/60 bg-primary/15"
-                        : "border-white/80 bg-white/20 backdrop-blur-[1px] hover:border-primary hover:bg-primary/30"
+                          ? customMarker
+                          : "border-red-500 bg-yellow-400"
+                        : customMarker
+                          ? customMarker
+                          : "border-red-500 bg-yellow-400 hover:border-red-600 hover:bg-yellow-300"
                     }`}
                   >
                     <span
-                      className={`font-mono text-[8px] font-bold pointer-events-none ${
-                        isActive || isFound ? (org.isTarget ? "text-[hsl(var(--glucose-foreground,0_0%_100%))] text-white" : "text-primary-foreground") : "text-foreground/80"
-                      }`}
+                      className={`font-mono text-[8px] font-bold pointer-events-none text-red-700`}
                       aria-hidden="true"
                     >
                       {isFound ? "✓" : "+"}
