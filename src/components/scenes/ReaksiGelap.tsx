@@ -405,7 +405,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
               </motion.div>
             )}
           </AnimatePresence>
-
+        </div>
 
         {/* Summary */}
         <div className="bg-card rounded-lg p-4 border border-border text-sm">
