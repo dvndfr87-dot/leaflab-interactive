@@ -143,15 +143,8 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
             </button>
           </div>
 
-          {/* CO₂ instrument panel */}
-          <AnimatePresence>
-            {showMiniSim && (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-3">
-                <DarkReactionLab co2={co2Slider} setCo2={setCo2Slider} o2={o2Atm} setO2={setO2Atm} energy={energy} setEnergy={setEnergy} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
+          {/* Visualization moved above control panel; sticky-top when panel open so values update visibly while sliding */}
+          <div className={showMiniSim ? "sticky top-2 z-20 bg-card rounded-lg pb-2 mb-3 shadow-md" : ""}>
           <div className="relative h-72 md:h-80 rounded-lg overflow-hidden border border-border/50 select-none bg-gradient-to-br from-primary/3 via-background to-sunlight/3">
             {/* ── STROMA LABEL ── */}
             <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[9px] text-muted-foreground font-semibold tracking-wider bg-card/60 px-2 py-0.5 rounded-full">STROMA</div>
