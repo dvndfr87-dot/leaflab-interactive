@@ -29,20 +29,20 @@ interface Organelle {
  * Posisi marker dikalibrasi terhadap ilustrasi baru `plant-cell-id.jpg`.
  */
 const organelles: Organelle[] = [
-  { id: "dinding-sel",    name: "Dinding Sel",          short: "DS", desc: "Lapisan kaku terluar yang tersusun dari selulosa. Memberi bentuk dan proteksi mekanik pada sel tumbuhan.", top: "11%", left: "50%", size: "w-10 h-7" },
-  { id: "membran-plasma", name: "Membran Plasma",       short: "MP", desc: "Selaput tipis fosfolipid di dalam dinding sel. Mengatur lalu lintas molekul keluar-masuk sel secara selektif.", top: "17%", left: "50%" },
-  { id: "sitoplasma",     name: "Sitoplasma",           short: "SP", desc: "Cairan sel tempat semua organel berada. Medium berlangsungnya banyak reaksi metabolik.", top: "48%", left: "42%" },
-  { id: "inti-sel",       name: "Inti Sel (Nukleus)",   short: "IS", desc: "Pusat kendali sel. Menyimpan materi genetik (DNA) dan mengatur ekspresi gen serta seluruh aktivitas sel.", top: "28%", left: "72%", size: "w-14 h-14" },
-  { id: "nukleolus",      name: "Nukleolus",            short: "NL", desc: "Bagian padat di dalam inti tempat sintesis RNA ribosom (rRNA) dan perakitan subunit ribosom.", top: "30%", left: "70%" },
-  { id: "membran-inti",   name: "Membran Inti",         short: "MI", desc: "Selaput ganda yang membungkus inti sel. Memiliki pori-pori untuk lalu lintas RNA dan protein.", top: "32%", left: "76%" },
-  { id: "kloroplas",      name: "Kloroplas",            short: "KL", desc: "Plastida hijau bermembran ganda yang mengandung klorofil. TEMPAT BERLANGSUNGNYA FOTOSINTESIS — mengubah energi cahaya menjadi glukosa.", top: "38%", left: "36%", size: "w-12 h-10", markerClass: "border-orange-500 bg-yellow-400 shadow-[0_0_0_3px_rgb(249_115_22_/_0.75),0_0_20px_6px_rgb(249_115_22_/_0.55)]", isTarget: true },
-  { id: "mitokondria",    name: "Mitokondria",          short: "MT", desc: "Pembangkit energi sel. Mengoksidasi glukosa menjadi ATP melalui respirasi seluler.", top: "36%", left: "46%" },
-  { id: "re",             name: "Retikulum Endoplasma", short: "RE", desc: "Jaringan membran tempat sintesis protein (RE Kasar dengan ribosom) dan lipid (RE Halus).", top: "44%", left: "60%" },
-  { id: "badan-golgi",    name: "Badan Golgi",          short: "BG", desc: "Tumpukan kantung membran yang memodifikasi, menyortir, dan mengemas protein/lipid sebelum dikirim ke tujuannya.", top: "58%", left: "68%" },
-  { id: "ribosom",        name: "Ribosom",              short: "RB", desc: "Mesin pembuat protein. Menerjemahkan mRNA menjadi rantai asam amino — bisa bebas di sitosol atau menempel pada RE Kasar.", top: "64%", left: "76%" },
-  { id: "vakuola-tengah", name: "Vakuola Tengah",       short: "VT", desc: "Vakuola besar berisi getah sel. Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder.", top: "56%", left: "48%", size: "w-14 h-12" },
-  { id: "peroksisom",     name: "Peroksisom",           short: "PR", desc: "Organel kecil bermembran tunggal. Mengurai asam lemak dan menetralkan hidrogen peroksida (H₂O₂) berbahaya.", top: "74%", left: "42%" },
-  { id: "plasmodesmata",  name: "Plasmodesmata",        short: "PM", desc: "Saluran sitoplasma kecil yang menembus dinding sel — jalur komunikasi antar sel tumbuhan yang bersebelahan.", top: "86%", left: "50%" },
+  { id: "dinding-sel",    name: "Dinding Sel",          short: "DS", desc: "Lapisan kaku terluar yang tersusun dari selulosa. Memberi bentuk dan proteksi mekanik pada sel tumbuhan.", top: "7%",  left: "28%" },
+  { id: "membran-plasma", name: "Membran Plasma",       short: "MP", desc: "Selaput tipis fosfolipid di dalam dinding sel. Mengatur lalu lintas molekul keluar-masuk sel secara selektif.", top: "17%", left: "30%" },
+  { id: "sitoplasma",     name: "Sitoplasma",           short: "SP", desc: "Cairan sel tempat semua organel berada. Medium berlangsungnya banyak reaksi metabolik.", top: "26%", left: "31%" },
+  { id: "inti-sel",       name: "Inti Sel (Nukleus)",   short: "IS", desc: "Pusat kendali sel. Menyimpan materi genetik (DNA) dan mengatur ekspresi gen serta seluruh aktivitas sel.", top: "21%", left: "70%", size: "w-14 h-14" },
+  { id: "nukleolus",      name: "Nukleolus",            short: "NL", desc: "Bagian padat di dalam inti tempat sintesis RNA ribosom (rRNA) dan perakitan subunit ribosom.", top: "26%", left: "71%" },
+  { id: "membran-inti",   name: "Membran Inti",         short: "MI", desc: "Selaput ganda yang membungkus inti sel. Memiliki pori-pori untuk lalu lintas RNA dan protein.", top: "32%", left: "74%" },
+  { id: "kloroplas",      name: "Kloroplas",            short: "KL", desc: "Plastida hijau bermembran ganda yang mengandung klorofil. TEMPAT BERLANGSUNGNYA FOTOSINTESIS — mengubah energi cahaya menjadi glukosa.", top: "39%", left: "31%", size: "w-12 h-10", isTarget: true },
+  { id: "mitokondria",    name: "Mitokondria",          short: "MT", desc: "Pembangkit energi sel. Mengoksidasi glukosa menjadi ATP melalui respirasi seluler.", top: "47%", left: "31%" },
+  { id: "re",             name: "Retikulum Endoplasma", short: "RE", desc: "Jaringan membran tempat sintesis protein (RE Kasar dengan ribosom) dan lipid (RE Halus).", top: "43%", left: "74%" },
+  { id: "badan-golgi",    name: "Badan Golgi",          short: "BG", desc: "Tumpukan kantung membran yang memodifikasi, menyortir, dan mengemas protein/lipid sebelum dikirim ke tujuannya.", top: "58%", left: "74%" },
+  { id: "ribosom",        name: "Ribosom",              short: "RB", desc: "Mesin pembuat protein. Menerjemahkan mRNA menjadi rantai asam amino — bisa bebas di sitosol atau menempel pada RE Kasar.", top: "67%", left: "74%" },
+  { id: "vakuola-tengah", name: "Vakuola Tengah",       short: "VT", desc: "Vakuola besar berisi getah sel. Mengatur tekanan turgor, menyimpan air, ion, dan metabolit sekunder.", top: "60%", left: "46%", size: "w-14 h-12" },
+  { id: "peroksisom",     name: "Peroksisom",           short: "PR", desc: "Organel kecil bermembran tunggal. Mengurai asam lemak dan menetralkan hidrogen peroksida (H₂O₂) berbahaya.", top: "72%", left: "31%" },
+  { id: "plasmodesmata",  name: "Plasmodesmata",        short: "PM", desc: "Saluran sitoplasma kecil yang menembus dinding sel — jalur komunikasi antar sel tumbuhan yang bersebelahan.", top: "88%", left: "31%" },
 ];
 
 const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
@@ -175,8 +175,17 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               {organelles.map((org) => {
                 const isActive = activeId === org.id;
                 const isFound = discoveredIds.has(org.id);
-                const size = org.size ?? "w-7 h-7";
-                const customMarker = org.markerClass;
+                const size = org.size ?? "w-6 h-6";
+                // Default: transparent + subtle dashed ring. Active (hover/click): kuning, kecuali kloroplas yang pakai ungu khas.
+                const activeStyle = org.isTarget
+                  ? "border-purple-600 bg-purple-500/70 shadow-[0_0_0_4px_rgb(168_85_247_/_0.45),0_0_22px_8px_rgb(168_85_247_/_0.55)] animate-pulse"
+                  : "border-yellow-500 bg-yellow-400/80 shadow-[0_0_0_4px_rgb(250_204_21_/_0.5),0_0_18px_6px_rgb(250_204_21_/_0.55)] animate-pulse";
+                const idleStyle = org.isTarget
+                  ? "border-purple-500/70 border-dashed bg-transparent hover:bg-purple-400/30 hover:border-purple-600"
+                  : "border-foreground/40 border-dashed bg-transparent hover:bg-yellow-300/40 hover:border-yellow-500";
+                const foundIdle = org.isTarget
+                  ? "border-purple-500 bg-purple-400/25"
+                  : "border-yellow-500/80 bg-yellow-300/30";
                 return (
                   <button
                     key={org.id}
@@ -189,21 +198,13 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                     aria-label={`Marker ${org.name}`}
                     style={{ top: org.top, left: org.left, transform: "translate(-50%, -50%)" }}
                     className={`absolute ${size} rounded-full border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center cursor-pointer ${
-                      isActive
-                        ? customMarker
-                          ? `${customMarker} animate-pulse`
-                          : "border-red-600 bg-yellow-400 shadow-[0_0_0_3px_rgb(220_38_38_/_0.6),0_0_18px_5px_rgb(220_38_38_/_0.45)] animate-pulse"
-                        : isFound
-                        ? customMarker
-                          ? customMarker
-                          : "border-red-500 bg-yellow-400"
-                        : customMarker
-                          ? customMarker
-                          : "border-red-500 bg-yellow-400 hover:border-red-600 hover:bg-yellow-300"
+                      isActive ? activeStyle : isFound ? foundIdle : idleStyle
                     }`}
                   >
                     <span
-                      className={`font-mono text-[8px] font-bold pointer-events-none text-red-700`}
+                      className={`font-mono text-[9px] font-bold pointer-events-none ${
+                        isActive ? "text-white" : isFound ? (org.isTarget ? "text-purple-800" : "text-yellow-800") : "text-foreground/70"
+                      }`}
                       aria-hidden="true"
                     >
                       {isFound ? "✓" : "+"}
