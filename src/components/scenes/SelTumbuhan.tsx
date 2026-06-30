@@ -175,8 +175,17 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
               {organelles.map((org) => {
                 const isActive = activeId === org.id;
                 const isFound = discoveredIds.has(org.id);
-                const size = org.size ?? "w-7 h-7";
-                const customMarker = org.markerClass;
+                const size = org.size ?? "w-6 h-6";
+                // Default: transparent + subtle dashed ring. Active (hover/click): kuning, kecuali kloroplas yang pakai ungu khas.
+                const activeStyle = org.isTarget
+                  ? "border-purple-600 bg-purple-500/70 shadow-[0_0_0_4px_rgb(168_85_247_/_0.45),0_0_22px_8px_rgb(168_85_247_/_0.55)] animate-pulse"
+                  : "border-yellow-500 bg-yellow-400/80 shadow-[0_0_0_4px_rgb(250_204_21_/_0.5),0_0_18px_6px_rgb(250_204_21_/_0.55)] animate-pulse";
+                const idleStyle = org.isTarget
+                  ? "border-purple-500/70 border-dashed bg-transparent hover:bg-purple-400/30 hover:border-purple-600"
+                  : "border-foreground/40 border-dashed bg-transparent hover:bg-yellow-300/40 hover:border-yellow-500";
+                const foundIdle = org.isTarget
+                  ? "border-purple-500 bg-purple-400/25"
+                  : "border-yellow-500/80 bg-yellow-300/30";
                 return (
                   <button
                     key={org.id}
@@ -189,21 +198,13 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                     aria-label={`Marker ${org.name}`}
                     style={{ top: org.top, left: org.left, transform: "translate(-50%, -50%)" }}
                     className={`absolute ${size} rounded-full border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center cursor-pointer ${
-                      isActive
-                        ? customMarker
-                          ? `${customMarker} animate-pulse`
-                          : "border-red-600 bg-yellow-400 shadow-[0_0_0_3px_rgb(220_38_38_/_0.6),0_0_18px_5px_rgb(220_38_38_/_0.45)] animate-pulse"
-                        : isFound
-                        ? customMarker
-                          ? customMarker
-                          : "border-red-500 bg-yellow-400"
-                        : customMarker
-                          ? customMarker
-                          : "border-red-500 bg-yellow-400 hover:border-red-600 hover:bg-yellow-300"
+                      isActive ? activeStyle : isFound ? foundIdle : idleStyle
                     }`}
                   >
                     <span
-                      className={`font-mono text-[8px] font-bold pointer-events-none text-red-700`}
+                      className={`font-mono text-[9px] font-bold pointer-events-none ${
+                        isActive ? "text-white" : isFound ? (org.isTarget ? "text-purple-800" : "text-yellow-800") : "text-foreground/70"
+                      }`}
                       aria-hidden="true"
                     >
                       {isFound ? "✓" : "+"}
