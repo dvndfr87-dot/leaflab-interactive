@@ -120,6 +120,10 @@ const Pembuka = ({ onStart }: PembukaProps) => {
               <li>Pilih atau seret jawaban sesuai instruksi.</li>
               <li>Periksa kembali jawaban sebelum melanjutkan.</li>
             </ul>
+            <PetunjukQR
+              size={96}
+              caption="Pindai QR ini dengan kamera ponsel untuk membaca petunjuk penggunaan media versi lengkap (dokumen)."
+            />
           </div>
 
           <div className="flex items-start gap-2 p-3 rounded-md border border-border bg-muted/40">
