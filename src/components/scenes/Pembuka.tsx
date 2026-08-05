@@ -78,6 +78,8 @@ const Pembuka = ({ onStart }: PembukaProps) => {
           <Play className="w-5 h-5" />
           Mulai
         </Button>
+
+        <PetunjukQR className="mt-8 mx-auto max-w-sm" />
       </motion.div>
 
       <Dialog open={open} onOpenChange={setOpen}>
