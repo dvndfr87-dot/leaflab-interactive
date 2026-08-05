@@ -12,6 +12,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-photosynthesis.jpg";
+import PetunjukQR from "@/components/PetunjukQR";
 import { sounds } from "@/lib/sounds";
 
 interface PembukaProps {
@@ -77,6 +78,8 @@ const Pembuka = ({ onStart }: PembukaProps) => {
           <Play className="w-5 h-5" />
           Mulai
         </Button>
+
+        <PetunjukQR className="mt-8 mx-auto max-w-sm" />
       </motion.div>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -117,6 +120,10 @@ const Pembuka = ({ onStart }: PembukaProps) => {
               <li>Pilih atau seret jawaban sesuai instruksi.</li>
               <li>Periksa kembali jawaban sebelum melanjutkan.</li>
             </ul>
+            <PetunjukQR
+              size={96}
+              caption="Pindai QR ini dengan kamera ponsel untuk membaca petunjuk penggunaan media versi lengkap (dokumen)."
+            />
           </div>
 
           <div className="flex items-start gap-2 p-3 rounded-md border border-border bg-muted/40">
