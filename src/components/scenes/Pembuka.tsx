@@ -12,6 +12,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import heroImg from "@/assets/hero-photosynthesis.jpg";
+import PetunjukQR from "@/components/PetunjukQR";
 import { sounds } from "@/lib/sounds";
 
 interface PembukaProps {
