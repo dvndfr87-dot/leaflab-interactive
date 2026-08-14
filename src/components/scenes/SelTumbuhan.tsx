@@ -203,7 +203,7 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                   >
                     <span
                       className={`font-mono text-[9px] font-bold pointer-events-none ${
-                        isActive ? "text-white" : isFound ? (org.isTarget ? "text-purple-800" : "text-yellow-800") : "text-foreground/70"
+                        isActive ? "text-white" : isFound ? (org.isTarget ? "text-purple-800" : "text-yellow-800") : "text-foreground/90"
                       }`}
                       aria-hidden="true"
                     >

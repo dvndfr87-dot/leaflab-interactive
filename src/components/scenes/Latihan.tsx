@@ -203,7 +203,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
         }`}
       >
         {!showFinalScore && !inZone && (
-          <GripVertical className="w-3 h-3 text-muted-foreground/60 flex-shrink-0" />
+          <GripVertical className="w-3 h-3 text-muted-foreground flex-shrink-0" />
         )}
         <span className="specimen-chip flex-shrink-0">{item.emoji}</span>
         <span className="text-xs md:text-[13px] text-foreground/90">{item.label}</span>
@@ -215,7 +215,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
             : null
         )}
         {!showFinalScore && inZone && (
-          <button onClick={(e) => { e.stopPropagation(); handleRemoveFromZone(item.id); }} className="ml-auto text-muted-foreground/60 hover:text-destructive transition-colors flex-shrink-0">
+          <button onClick={(e) => { e.stopPropagation(); handleRemoveFromZone(item.id); }} className="ml-auto text-muted-foreground hover:text-destructive transition-colors flex-shrink-0">
             <XCircle className="w-3.5 h-3.5" />
           </button>
         )}
@@ -326,7 +326,7 @@ const Latihan = ({ onBack, onGoHome }: { onBack: () => void; onGoHome?: () => vo
                         <div className="flex flex-col gap-1.5">
                           {itemsInZone.map(item => renderItem(item, true))}
                           {itemsInZone.length === 0 && (
-                            <div className="text-center text-[11px] text-muted-foreground/70 py-5 font-mono">
+                            <div className="text-center text-[11px] text-muted-foreground py-5 font-mono">
                               [ drop zone ]
                             </div>
                           )}

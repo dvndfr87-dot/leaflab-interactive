@@ -20,7 +20,7 @@ interface Props {
 const SliderTip = ({ children }: { children: React.ReactNode }) => (
   <Tooltip delayDuration={150}>
     <TooltipTrigger asChild>
-      <Info className="w-3 h-3 text-muted-foreground/70 cursor-help" />
+      <Info className="w-3 h-3 text-muted-foreground cursor-help" />
     </TooltipTrigger>
     <TooltipContent side="top" className="max-w-[280px] text-xs">{children}</TooltipContent>
   </Tooltip>
@@ -127,7 +127,7 @@ const DarkReactionLab = ({ co2, setCo2, o2, setO2, energy, setEnergy }: Props) =
           <div>
             <div className="flex items-center justify-between text-[10px]">
               <span className="font-mono text-co2">CO₂ · substrat</span>
-              <span className="font-mono text-foreground/70">{co2}%</span>
+              <span className="font-mono text-foreground/90">{co2}%</span>
             </div>
             <div className="mt-1 h-2 rounded-full bg-muted overflow-hidden">
               <div className="h-full transition-all duration-300" style={{ width: `${co2}%`, background: "hsl(var(--co2))", boxShadow: "0 0 6px hsl(var(--co2) / 0.4)" }} />
@@ -136,7 +136,7 @@ const DarkReactionLab = ({ co2, setCo2, o2, setO2, energy, setEnergy }: Props) =
           <div>
             <div className="flex items-center justify-between text-[10px]">
               <span className="font-mono text-oxygen">O₂ · kompetitor</span>
-              <span className="font-mono text-foreground/70">{o2}%</span>
+              <span className="font-mono text-foreground/90">{o2}%</span>
             </div>
             <div className="mt-1 h-2 rounded-full bg-muted overflow-hidden">
               <div className="h-full transition-all duration-300" style={{ width: `${o2}%`, background: "hsl(var(--oxygen))", boxShadow: "0 0 6px hsl(var(--oxygen) / 0.4)" }} />

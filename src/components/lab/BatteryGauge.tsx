@@ -20,7 +20,7 @@ const BatteryGauge = ({ label, sublabel, value, cells = 10, colorVar, tooltip }:
         <div className="flex items-center gap-1">
           <BatteryFull className="w-3 h-3" style={{ color: `hsl(var(${colorVar}))` }} />
           <div className="lab-label">{label}</div>
-          {tooltip && <Info className="w-2.5 h-2.5 text-muted-foreground/60" />}
+          {tooltip && <Info className="w-2.5 h-2.5 text-muted-foreground" />}
         </div>
         <div className="font-mono text-[10px] text-foreground/80">
           {filled}/{cells}

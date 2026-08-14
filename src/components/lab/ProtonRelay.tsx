@@ -76,7 +76,7 @@ const RelayBar = ({ icon, label, value, unit, colorVar }: BarProps) => (
       <span className="flex items-center gap-1 font-mono text-muted-foreground" style={{ color: `hsl(var(${colorVar}))` }}>
         {icon}{label}
       </span>
-      <span className="font-mono text-[9px] text-foreground/70">{unit}</span>
+      <span className="font-mono text-[9px] text-foreground/90">{unit}</span>
     </div>
     <div className="mt-1 h-2 rounded-full bg-muted overflow-hidden">
       <div
