@@ -214,7 +214,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
 
           {/* Intro */}
           {!predictionsDone && (
-            <div className="bg-sunlight/5 rounded-xl p-4 border border-sunlight/20">
+            <div className="bg-sunlight/15 rounded-xl p-4 border border-sunlight/40">
               <div className="flex items-start gap-3">
                 <Lightbulb className="w-5 h-5 text-sunlight mt-0.5 flex-shrink-0" />
                 <div>
@@ -264,12 +264,12 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
                           onClick={() => handleSelectPrediction(currentPrediction, opt.value)}
                           className={`flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all ${
                             isRight
-                              ? "border-primary bg-primary/10"
+                              ? "border-primary bg-primary/22"
                               : isWrong
-                              ? "border-destructive bg-destructive/10"
+                              ? "border-destructive bg-destructive/22"
                               : isSelected
-                              ? "border-primary/50 bg-primary/5"
-                              : "border-border bg-background hover:border-primary/30"
+                              ? "border-primary/50 bg-primary/15"
+                              : "border-border bg-background hover:border-primary/50"
                           }`}
                         >
                           <span className="text-2xl">{opt.emoji}</span>
@@ -292,7 +292,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
                     </Button>
                   ) : (
                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-3">
-                      <div className={`rounded-lg p-3 text-sm ${isCorrect ? "bg-primary/10 border border-primary/20" : "bg-destructive/5 border border-destructive/20"}`}>
+                      <div className={`rounded-lg p-3 text-sm ${isCorrect ? "bg-primary/22 border border-primary/40" : "bg-destructive/15 border border-destructive/40"}`}>
                         <p className="font-semibold mb-1">{isCorrect ? "✅ Benar!" : "❌ Belum tepat"}</p>
                         <p className="text-foreground/80 text-xs">{pred.explanation}</p>
                       </div>
@@ -344,7 +344,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
         {/* Phase indicator */}
         <div className="flex items-center gap-3 bg-card rounded-xl p-3 border border-border">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center text-sm font-bold">✓</div>
+            <div className="w-8 h-8 rounded-full bg-primary/30 text-primary flex items-center justify-center text-sm font-bold">✓</div>
             <span className="text-sm font-semibold text-primary/60">Prediksi</span>
           </div>
           <div className="flex-1 h-0.5 bg-primary/30" />
@@ -370,14 +370,14 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
           {co2Level > 10 && (
             <div className="absolute top-4 right-4 flex flex-col gap-1">
               {Array.from({ length: Math.ceil(co2Level / 25) }, (_, i) => (
-                <motion.div key={i} animate={{ x: [0, -8, 0], opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }} className="px-1.5 py-0.5 bg-co2/20 text-co2 text-[10px] font-bold rounded border border-co2/30">
+                <motion.div key={i} animate={{ x: [0, -8, 0], opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }} className="px-1.5 py-0.5 bg-co2/30 text-co2 text-[10px] font-bold rounded border border-co2/50">
                   CO₂
                 </motion.div>
               ))}
             </div>
           )}
 
-          <motion.div animate={{ height: `${waterLevel * 0.4}%` }} className="absolute bottom-0 left-0 right-0 bg-water/15 border-t border-water/30">
+          <motion.div animate={{ height: `${waterLevel * 0.4}%` }} className="absolute bottom-0 left-0 right-0 bg-water/28 border-t border-water/50">
             <motion.div animate={{ x: [0, 10, 0] }} transition={{ duration: 4, repeat: Infinity }} className="absolute top-0 left-0 right-0 h-1 bg-water/30" />
           </motion.div>
 
@@ -395,7 +395,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
           </AnimatePresence>
 
           {isRunning && rate > 0.3 && (
-            <motion.div animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 3, repeat: Infinity }} className="absolute bottom-12 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-glucose/20 rounded-full text-[9px] text-glucose font-bold border border-glucose/30">
+            <motion.div animate={{ opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 3, repeat: Infinity }} className="absolute bottom-12 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-glucose/30 rounded-full text-[9px] text-glucose font-bold border border-glucose/50">
               Glukosa terbentuk...
             </motion.div>
           )}
@@ -470,12 +470,12 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
             <div className="text-lg font-bold text-foreground">{elapsedTime}s</div>
             <div className="text-[10px] text-muted-foreground">Waktu</div>
           </div>
-          <div className="bg-oxygen/10 rounded-xl p-3 border border-oxygen/30 text-center">
+          <div className="bg-oxygen/22 rounded-xl p-3 border border-oxygen/50 text-center">
             <div className="text-2xl mb-1">🫧</div>
             <div className="text-lg font-bold text-oxygen">{o2Produced}</div>
             <div className="text-[10px] text-muted-foreground">O₂ (mL)</div>
           </div>
-          <div className="bg-glucose/10 rounded-xl p-3 border border-glucose/30 text-center">
+          <div className="bg-glucose/22 rounded-xl p-3 border border-glucose/50 text-center">
             <div className="text-2xl mb-1">🍬</div>
             <div className="text-lg font-bold text-glucose">{glucoseProduced}</div>
             <div className="text-[10px] text-muted-foreground">Glukosa (mg)</div>
@@ -521,7 +521,7 @@ const Simulasi = ({ onNext, onBack }: SimulasiProps) => {
         )}
 
         {/* Guiding questions */}
-        <div className="bg-primary/5 rounded-xl p-4 border border-primary/20">
+        <div className="bg-primary/15 rounded-xl p-4 border border-primary/40">
           <h4 className="font-semibold text-sm text-primary mb-2">🤔 Pertanyaan Panduan</h4>
           <ol className="space-y-1.5 text-xs text-foreground/80 list-decimal pl-4">
             <li>Apa yang terjadi jika intensitas cahaya dinaikkan tapi CO₂ tetap rendah?</li>

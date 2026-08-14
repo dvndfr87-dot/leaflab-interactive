@@ -123,8 +123,8 @@ const SelTumbuhan = ({ onNext, onBack }: SelTumbuhanProps) => {
                     isActive
                       ? org.isTarget
                         ? "bg-[hsl(var(--glucose)/0.15)] border-[hsl(var(--glucose))] text-foreground"
-                        : "bg-primary/15 border-primary text-foreground"
-                      : "bg-card/40 border-border hover:border-primary/60 hover:bg-primary/5"
+                        : "bg-primary/28 border-primary text-foreground"
+                      : "bg-card/40 border-border hover:border-primary/60 hover:bg-primary/15"
                   }`}
                 >
                   <div className="flex items-center gap-2 min-w-0">

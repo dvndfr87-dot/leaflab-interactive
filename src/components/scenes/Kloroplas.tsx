@@ -77,7 +77,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                     whileTap={{ scale: 0.95 }}
                     className={`w-full p-4 rounded-xl border-2 transition-all ${
                       selectedPart === "tilakoid"
-                        ? "border-primary bg-primary/10 shadow-lg"
+                        ? "border-primary bg-primary/22 shadow-lg"
                         : "border-border bg-card hover:border-primary/50"
                     }`}
                   >
@@ -103,7 +103,7 @@ const Kloroplas = ({ onNext, onBack, onGoToScene }: KloroplasProps) => {
                     whileTap={{ scale: 0.95 }}
                     className={`w-full p-4 rounded-xl border-2 transition-all ${
                       selectedPart === "stroma"
-                        ? "border-sunlight bg-sunlight/10 shadow-lg"
+                        ? "border-sunlight bg-sunlight/22 shadow-lg"
                         : "border-border bg-card hover:border-sunlight/50"
                     }`}
                   >

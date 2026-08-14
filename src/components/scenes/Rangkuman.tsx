@@ -119,7 +119,7 @@ const Rangkuman = ({ onNext, onBack }: RangkumanProps) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-primary/10 rounded-xl p-4 border border-primary/20 text-sm"
+          className="bg-primary/22 rounded-xl p-4 border border-primary/40 text-sm"
         >
           <div className="lab-label text-primary mb-1">Keterhubungan Reaksi</div>
           <p className="text-foreground/80">
