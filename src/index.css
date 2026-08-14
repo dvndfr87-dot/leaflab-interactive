@@ -15,35 +15,35 @@
     --popover: 0 0% 100%;
     --popover-foreground: 150 25% 15%;
 
-    --primary: 142 45% 38%;
+    --primary: 142 55% 40%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 45 80% 55%;
+    --secondary: 45 95% 60%;
     --secondary-foreground: 150 25% 15%;
 
-    --muted: 100 20% 90%;
-    --muted-foreground: 150 10% 45%;
+    --muted: 100 22% 92%;
+    --muted-foreground: 155 22% 27%;
 
-    --accent: 195 60% 50%;
+    --accent: 195 75% 52%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 65% 55%;
+    --destructive: 0 75% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 120 15% 85%;
-    --input: 120 15% 85%;
-    --ring: 142 45% 38%;
+    --border: 120 15% 82%;
+    --input: 120 15% 82%;
+    --ring: 142 55% 40%;
 
     --radius: 0.75rem;
 
-    --leaf: 120 50% 45%;
-    --sunlight: 42 95% 60%;
-    --water: 200 70% 55%;
-    --oxygen: 195 80% 65%;
-    --glucose: 35 90% 55%;
-    --atp: 280 55% 55%;
-    --nadph: 320 50% 55%;
-    --co2: 0 0% 55%;
+    --leaf: 120 60% 48%;
+    --sunlight: 42 100% 62%;
+    --water: 200 85% 58%;
+    --oxygen: 195 90% 62%;
+    --glucose: 35 100% 58%;
+    --atp: 280 70% 60%;
+    --nadph: 320 68% 60%;
+    --co2: 0 0% 45%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
