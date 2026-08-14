@@ -16,7 +16,7 @@ const steps = [
     title: "1. Transisi Energi",
     desc: "ATP dan NADPH yang dihasilkan dari reaksi terang bergerak dari tilakoid menuju stroma.",
     icon: "🔋",
-    color: "bg-atp/20 border-atp",
+    color: "bg-atp/30 border-atp",
   },
   {
     title: "2. CO₂ Masuk",
@@ -28,19 +28,19 @@ const steps = [
     title: "3. Fiksasi Karbon",
     desc: "CO₂ diikat oleh enzim RuBisCO dan bergabung dengan molekul 5-karbon (RuBP) membentuk 2 molekul 3-karbon (3-PGA).",
     icon: "🔄",
-    color: "bg-primary/20 border-primary",
+    color: "bg-primary/30 border-primary",
   },
   {
     title: "4. Reduksi (ATP & NADPH Digunakan)",
     desc: "ATP dan NADPH digunakan untuk mengubah 3-PGA menjadi G3P (gliseraldehida-3-fosfat). Energi dari \"baterai\" reaksi terang habis terpakai.",
     icon: "⚡",
-    color: "bg-atp/20 border-atp",
+    color: "bg-atp/30 border-atp",
   },
   {
     title: "5. Regenerasi RuBP & Glukosa",
     desc: "Sebagian G3P digunakan untuk membentuk glukosa (C₆H₁₂O₆), sisanya untuk meregenerasi RuBP agar siklus terus berputar.",
     icon: "🍬",
-    color: "bg-glucose/20 border-glucose",
+    color: "bg-glucose/30 border-glucose",
   },
 ];
 
@@ -67,7 +67,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
     >
       <div className="max-w-2xl mx-auto py-4 space-y-4">
         {/* Penjelasan Singkat Reaksi Gelap — di bawah label scene */}
-        <details className="group rounded-xl border border-glucose/30 bg-gradient-to-br from-glucose/5 to-primary/5 open:from-glucose/10 open:to-primary/10 transition-colors shadow-sm">
+        <details className="group rounded-xl border border-glucose/50 bg-gradient-to-br from-glucose/5 to-primary/5 open:from-glucose/10 open:to-primary/10 transition-colors shadow-sm">
           <summary className="cursor-pointer list-none px-4 py-3 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="text-lg">📖</span>
@@ -85,7 +85,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
             {Object.values(darkInfo).map((entry) => (
               <div key={entry.id} className="rounded-lg border border-border/50 bg-card p-2.5">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded">{entry.label}</span>
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/22 px-1.5 py-0.5 rounded">{entry.label}</span>
                   <span className="text-xs font-semibold text-foreground">{entry.title}</span>
                 </div>
                 <p className="text-[11px] text-muted-foreground leading-relaxed">{entry.description}</p>
@@ -159,7 +159,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                   className="flex items-center gap-1 mb-1"
                 >
                   <span className="text-[10px]">⚡</span>
-                  <span className="text-[8px] font-bold text-atp bg-atp/10 px-1 rounded">ATP</span>
+                  <span className="text-[8px] font-bold text-atp bg-atp/22 px-1 rounded">ATP</span>
                 </motion.div>
                 <motion.div
                   animate={{ x: [0, 20, 40], opacity: [0.9, 0.6, 0.2] }}
@@ -167,7 +167,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                   className="flex items-center gap-1"
                 >
                   <span className="text-[10px]">🔋</span>
-                  <span className="text-[8px] font-bold text-nadph bg-nadph/10 px-1 rounded">NADPH</span>
+                  <span className="text-[8px] font-bold text-nadph bg-nadph/22 px-1 rounded">NADPH</span>
                 </motion.div>
               </div>
             )}
@@ -205,7 +205,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
               transition={{ duration: 2, repeat: Infinity }}
               className="absolute top-[14%] left-1/2 -translate-x-1/2 flex flex-col items-center"
             >
-              <div className="w-12 h-12 rounded-full bg-primary/15 border-2 border-primary/40 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-primary/28 border-2 border-primary/40 flex items-center justify-center">
                 <span className="text-[9px] font-bold text-primary">RuBP</span>
               </div>
               <span className="text-[7px] text-muted-foreground mt-0.5">5C</span>
@@ -218,7 +218,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="absolute top-[58%] right-[12%] flex flex-col items-center"
               >
-                <div className="w-12 h-12 rounded-full bg-accent/15 border-2 border-accent/40 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-accent/28 border-2 border-accent/40 flex items-center justify-center">
                   <span className="text-[9px] font-bold text-accent">3-PGA</span>
                 </div>
                 <span className="text-[7px] text-muted-foreground mt-0.5">3C × 2</span>
@@ -232,7 +232,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="absolute top-[58%] left-[12%] flex flex-col items-center"
               >
-                <div className="w-12 h-12 rounded-full bg-glucose/15 border-2 border-glucose/40 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-glucose/28 border-2 border-glucose/40 flex items-center justify-center">
                   <span className="text-[9px] font-bold text-glucose">G3P</span>
                 </div>
                 <span className="text-[7px] text-muted-foreground mt-0.5">3C × 2</span>
@@ -310,7 +310,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                 <motion.div
                   animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
                   transition={{ duration: 3, repeat: Infinity }}
-                  className="px-2 py-1.5 bg-primary/10 rounded-lg border border-primary/30 shadow-sm"
+                  className="px-2 py-1.5 bg-primary/22 rounded-lg border border-primary/50 shadow-sm"
                 >
                   <span className="text-[8px] font-bold text-primary">🧬 RuBisCO</span>
                   <div className="text-[7px] text-muted-foreground text-center">Enzim</div>
@@ -328,12 +328,12 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                 <motion.div
                   animate={{ opacity: [1, 0.3, 1], scale: [1, 0.9, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="px-2 py-1 bg-atp/15 text-atp text-[9px] font-bold rounded border border-atp/30"
+                  className="px-2 py-1 bg-atp/28 text-atp text-[9px] font-bold rounded border border-atp/50"
                 >ATP →</motion.div>
                 <motion.div
                   animate={{ opacity: [1, 0.3, 1], scale: [1, 0.9, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
-                  className="px-2 py-1 bg-nadph/15 text-nadph text-[9px] font-bold rounded border border-nadph/30"
+                  className="px-2 py-1 bg-nadph/28 text-nadph text-[9px] font-bold rounded border border-nadph/50"
                 >NADPH →</motion.div>
                 <span className="text-[8px] text-muted-foreground self-center">terpakai</span>
               </motion.div>
@@ -350,7 +350,7 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
                 <motion.div
                   animate={{ y: [0, -5, 0], boxShadow: ["0 0 8px hsl(35 90% 55% / 0.2)", "0 0 16px hsl(35 90% 55% / 0.5)", "0 0 8px hsl(35 90% 55% / 0.2)"] }}
                   transition={{ duration: 2.5, repeat: Infinity }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-glucose/15 rounded-xl border border-glucose/40"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-glucose/28 rounded-xl border border-glucose/40"
                 >
                   <span className="text-xl">🍬</span>
                   <div>
@@ -411,11 +411,11 @@ const ReaksiGelap = ({ onNext, onBack }: ReaksiGelapProps) => {
         <div className="bg-card rounded-lg p-4 border border-border text-sm">
           <h4 className="font-semibold text-foreground mb-2">📝 Ringkasan Reaksi Gelap</h4>
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-primary/5 rounded-lg p-2">
+            <div className="bg-primary/15 rounded-lg p-2">
               <span className="font-semibold text-foreground">Input:</span>
               <p className="text-muted-foreground">CO₂ + ATP + NADPH</p>
             </div>
-            <div className="bg-primary/5 rounded-lg p-2">
+            <div className="bg-primary/15 rounded-lg p-2">
               <span className="font-semibold text-foreground">Output:</span>
               <p className="text-muted-foreground">Glukosa (C₆H₁₂O₆)</p>
             </div>

@@ -16,37 +16,37 @@ const steps = [
     title: "1. Cahaya Masuk",
     desc: "Cahaya matahari mengenai membran tilakoid dan diserap oleh klorofil pada fotosistem II.",
     icon: "☀️",
-    color: "bg-sunlight/20 border-sunlight",
+    color: "bg-sunlight/30 border-sunlight",
   },
   {
     title: "2. Air Masuk (H₂O)",
     desc: "Molekul air (H₂O) masuk ke dalam tilakoid sebagai bahan baku reaksi terang.",
     icon: "💧",
-    color: "bg-water/20 border-water",
+    color: "bg-water/30 border-water",
   },
   {
     title: "3. Fotolisis Air",
     desc: "Air dipecah oleh energi cahaya (fotolisis): H₂O → 2H⁺ + ½O₂ + elektron. Proses ini melepaskan oksigen.",
     icon: "⚡",
-    color: "bg-accent/20 border-accent",
+    color: "bg-accent/30 border-accent",
   },
   {
     title: "4. O₂ Keluar",
     desc: "Oksigen (O₂) dilepaskan sebagai produk sampingan. Inilah oksigen yang kita hirup!",
     icon: "🫧",
-    color: "bg-oxygen/20 border-oxygen",
+    color: "bg-oxygen/30 border-oxygen",
   },
   {
     title: "5. Elektron Bergerak",
     desc: "Elektron bergerak melalui rantai transpor elektron (ETC) dari Fotosistem II → plastoquinon → sitokrom b6f → plastosianin → Fotosistem I.",
     icon: "⚡",
-    color: "bg-atp/20 border-atp",
+    color: "bg-atp/30 border-atp",
   },
   {
     title: "6. ATP & NADPH Terbentuk",
     desc: "Energi elektron digunakan untuk membentuk ATP (melalui kemiosmosis) dan NADPH — \"baterai\" energi untuk reaksi gelap.",
     icon: "🔋",
-    color: "bg-primary/20 border-primary",
+    color: "bg-primary/30 border-primary",
   },
 ];
 
@@ -74,7 +74,7 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
     >
       <div className="max-w-2xl mx-auto py-4 space-y-4">
         {/* Penjelasan Singkat Reaksi Terang — di bawah label scene */}
-        <details className="group rounded-xl border border-primary/30 bg-gradient-to-br from-primary/5 to-sunlight/5 open:from-primary/10 open:to-sunlight/10 transition-colors shadow-sm">
+        <details className="group rounded-xl border border-primary/50 bg-gradient-to-br from-primary/5 to-sunlight/5 open:from-primary/10 open:to-sunlight/10 transition-colors shadow-sm">
           <summary className="cursor-pointer list-none px-4 py-3 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="text-lg">📖</span>
@@ -92,7 +92,7 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
             {Object.values(lightInfo).map((entry) => (
               <div key={entry.id} className="rounded-lg border border-border/50 bg-card p-2.5">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded">{entry.label}</span>
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/22 px-1.5 py-0.5 rounded">{entry.label}</span>
                   <span className="text-xs font-semibold text-foreground">{entry.title}</span>
                 </div>
                 <p className="text-[11px] text-muted-foreground leading-relaxed">{entry.description}</p>
@@ -320,8 +320,8 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
                 >⚡</motion.div>
                 <div className="flex gap-1 mt-0.5">
                   <span className="text-[7px] bg-foreground/10 px-1 rounded text-foreground font-medium">2H⁺</span>
-                  <span className="text-[7px] bg-oxygen/20 px-1 rounded text-oxygen font-medium">½O₂</span>
-                  <span className="text-[7px] bg-atp/20 px-1 rounded text-atp font-medium">e⁻</span>
+                  <span className="text-[7px] bg-oxygen/30 px-1 rounded text-oxygen font-medium">½O₂</span>
+                  <span className="text-[7px] bg-atp/30 px-1 rounded text-atp font-medium">e⁻</span>
                 </div>
               </motion.div>
             )}
@@ -403,14 +403,14 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
                 <motion.div
                   animate={{ y: [0, -5, 0], boxShadow: ["0 0 6px hsl(280 55% 55% / 0.2)", "0 0 14px hsl(280 55% 55% / 0.5)", "0 0 6px hsl(280 55% 55% / 0.2)"] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="px-2.5 py-1.5 bg-atp/15 text-atp text-xs font-bold rounded-lg border border-atp/40"
+                  className="px-2.5 py-1.5 bg-atp/28 text-atp text-xs font-bold rounded-lg border border-atp/40"
                 >
                   ATP {showMiniSim ? `(${atpRate}%)` : ""}
                 </motion.div>
                 <motion.div
                   animate={{ y: [0, -5, 0], boxShadow: ["0 0 6px hsl(320 50% 55% / 0.2)", "0 0 14px hsl(320 50% 55% / 0.5)", "0 0 6px hsl(320 50% 55% / 0.2)"] }}
                   transition={{ duration: 2, repeat: Infinity, delay: 0.4 }}
-                  className="px-2.5 py-1.5 bg-nadph/15 text-nadph text-xs font-bold rounded-lg border border-nadph/40"
+                  className="px-2.5 py-1.5 bg-nadph/28 text-nadph text-xs font-bold rounded-lg border border-nadph/40"
                 >
                   NADPH
                 </motion.div>
@@ -468,11 +468,11 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
         <div className="bg-card rounded-lg p-4 border border-border text-sm">
           <h4 className="font-semibold text-foreground mb-2">📝 Ringkasan Reaksi Terang</h4>
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="bg-primary/5 rounded-lg p-2">
+            <div className="bg-primary/15 rounded-lg p-2">
               <span className="font-semibold text-foreground">Input:</span>
               <p className="text-muted-foreground">Cahaya + H₂O</p>
             </div>
-            <div className="bg-primary/5 rounded-lg p-2">
+            <div className="bg-primary/15 rounded-lg p-2">
               <span className="font-semibold text-foreground">Output:</span>
               <p className="text-muted-foreground">O₂ + ATP + NADPH</p>
             </div>
