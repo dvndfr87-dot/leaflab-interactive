@@ -6,43 +6,43 @@
 
 @layer base {
   :root {
-    --background: 90 30% 97%;
+    --background: 90 30% 98%;
     --foreground: 150 25% 15%;
 
-    --card: 80 25% 95%;
+    --card: 80 25% 96%;
     --card-foreground: 150 25% 15%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 150 25% 15%;
 
-    --primary: 142 55% 40%;
+    --primary: 142 65% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 45 95% 60%;
+    --secondary: 45 100% 60%;
     --secondary-foreground: 150 25% 15%;
 
-    --muted: 100 22% 92%;
+    --muted: 100 22% 93%;
     --muted-foreground: 155 22% 27%;
 
-    --accent: 195 75% 52%;
+    --accent: 195 85% 52%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 58%;
+    --destructive: 0 80% 58%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 120 15% 82%;
     --input: 120 15% 82%;
-    --ring: 142 55% 40%;
+    --ring: 142 65% 45%;
 
     --radius: 0.75rem;
 
-    --leaf: 120 60% 48%;
+    --leaf: 120 70% 50%;
     --sunlight: 42 100% 62%;
-    --water: 200 85% 58%;
-    --oxygen: 195 90% 62%;
-    --glucose: 35 100% 58%;
-    --atp: 280 70% 60%;
-    --nadph: 320 68% 60%;
+    --water: 200 90% 60%;
+    --oxygen: 195 95% 62%;
+    --glucose: 35 100% 60%;
+    --atp: 280 75% 62%;
+    --nadph: 320 72% 62%;
     --co2: 0 0% 45%;
 
     --sidebar-background: 0 0% 98%;
