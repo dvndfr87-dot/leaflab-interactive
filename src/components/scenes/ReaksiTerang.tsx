@@ -386,7 +386,7 @@ const ReaksiTerang = ({ onNext, onBack }: ReaksiTerangProps) => {
                     key={i}
                     animate={{ y: [0, 8, 0], opacity: [0.4, 0.8, 0.4] }}
                     transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.25 }}
-                    className="text-[8px] font-bold text-foreground/50"
+                    className="text-[8px] font-bold text-foreground/90"
                   >H⁺</motion.div>
                 ))}
               </div>

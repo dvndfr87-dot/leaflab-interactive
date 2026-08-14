@@ -19,7 +19,7 @@ interface Props {
 const SliderTip = ({ children }: { children: React.ReactNode }) => (
   <Tooltip delayDuration={150}>
     <TooltipTrigger asChild>
-      <Info className="w-3 h-3 text-muted-foreground/70 cursor-help" />
+      <Info className="w-3 h-3 text-muted-foreground cursor-help" />
     </TooltipTrigger>
     <TooltipContent side="top" className="max-w-[260px] text-xs">{children}</TooltipContent>
   </Tooltip>
